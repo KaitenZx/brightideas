@@ -1,0 +1,36 @@
+@use 'sass:meta'; // Для работы с `meta.load-css`
+@use '../../node_modules/normalize.css/normalize.css'; // Импортируем normalize.css
+@use 'vars'; // Подключаем ваши SCSS-переменные
+
+/* Базовые стили для HTML и body */
+html,
+body,
+#root {
+  height: 100%;
+  min-height: 100%;
+  width: 100%;
+  position: relative;
+}
+
+/* Стили для body */
+body {
+  font-family: vars.$defaultFontFamily;
+  font-size: vars.$defaultFontSize;
+  background: vars.$defaultBackgroundColor;
+  color: vars.$defaultTextColor;
+  line-height: vars.$defaultLineHeight;
+  margin: 0; // Это добавляется, чтобы гарантировать отсутствие отступов (normalize.css не сбрасывает margin у body)
+}
+
+/* Глобальные правила для box-sizing */
+*,
+*:before,
+*:after {
+  box-sizing: border-box;
+}
+
+/* Упрощённые стили для ссылок */
+a {
+  text-decoration: none;
+  color: inherit; // Добавлено для наследования цвета текста
+}

@@ -76,6 +76,10 @@ export default [
       '@typescript-eslint/consistent-type-assertions': 'off',
       'jsx-a11y/anchor-is-valid': 'off',
       'eslint-comments/require-description': 'off',
+      "@typescript-eslint/no-unsafe-call": "off",
+      "@typescript-eslint/no-magic-numbers": "off",
+      "@typescript-eslint/no-unsafe-assignment": "off",
+      "@typescript-eslint/no-unsafe-type-assertion": "off",
       curly: ['error', 'all'],
       'no-irregular-whitespace': [
         'error',

@@ -1,3 +1,10 @@
 packages:
   - backend
   - webapp
+packageExtensions:
+  '@typescript-eslint/eslint-plugin@*':
+    peerDependencies:
+      eslint: '*'
+  'eslint-plugin-react-hooks@*':
+    peerDependencies:
+      eslint: '*'
