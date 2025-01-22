@@ -1,32 +1,15 @@
-import * as trpcExpress from '@trpc/server/adapters/express'
-import cors from 'cors' // Импорт CORS
+import cors from 'cors'
 import express from 'express'
-import { trpcRouter } from './trpc'
-
-const port = 3000
+import { applyTrpcToExpressApp } from './lib/trpc'
+import { trpcRouter } from './router'
 
 const expressApp = express()
-
-// Настройка CORS
-expressApp.use(
-  cors({
-    origin: 'http://localhost:5173', // Замените на ваш URL фронтенда
-    methods: ['GET', 'POST'],
-    allowedHeaders: ['Content-Type'],
-  })
-)
-
+expressApp.use(cors())
 expressApp.get('/ping', (req, res) => {
   res.send('pong')
 })
+applyTrpcToExpressApp(expressApp, trpcRouter)
 
-expressApp.use(
-  '/trpc',
-  trpcExpress.createExpressMiddleware({
-    router: trpcRouter,
-  })
-)
-
-expressApp.listen(port, () => {
-  console.info(`Listening at http://localhost:${port}`)
+expressApp.listen(3000, () => {
+  console.info('Listening at http://localhost:3000')
 })

@@ -80,6 +80,24 @@ export default [
       "@typescript-eslint/no-magic-numbers": "off",
       "@typescript-eslint/no-unsafe-assignment": "off",
       "@typescript-eslint/no-unsafe-type-assertion": "off",
+      "@typescript-eslint/no-restricted-imports": [
+        "error",
+        {
+          patterns: [
+            {
+              group: [
+                "@brightideas/backend/**",
+                "!@brightideas/backend/**/",
+                "!@brightideas/backend/**/input",
+              ],
+              allowTypeImports: true,
+              message:
+                "Only types and input schemas are allowed to be imported from backend workspace",
+            },
+          ],
+        },
+      ],
+      "@typescript-eslint/prefer-destructuring": "off",
       curly: ['error', 'all'],
       'no-irregular-whitespace': [
         'error',
