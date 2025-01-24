@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import cn from 'classnames'
 import type { FormikProps } from "formik"
-import css from './index.module.css'
+import css from './index.module.scss'
 
 export const Input = <TValues extends Record<string, any>>({
 	name,

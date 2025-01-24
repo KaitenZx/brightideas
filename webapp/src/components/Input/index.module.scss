@@ -1,5 +1,5 @@
-@import '../../styles/_vars';
-@import '../../styles/_mixins';
+@use '../../styles/_vars';
+@use '../../styles/_mixins';
 
 .field {
 	&.disabled {
@@ -15,24 +15,24 @@
 	.input {
 		display: block;
 		padding: 7px;
-		border: 1px solid $black;
-		border-radius: $borderRadiusSmall;
-		background-color: $white;
+		border: 1px solid vars.$black;
+		border-radius: vars.$borderRadiusSmall;
+		background-color: vars.$white;
 		outline: none;
 		width: 100%;
 		max-width: 200px;
 
 		&:focus {
-			border-color: $blue;
+			border-color: vars.$blue;
 		}
 
 		&.invalid {
-			border-color: $red;
+			border-color: vars.$red;
 		}
 	}
 
 	.error {
 		margin-top: 2px;
-		color: $red;
+		color: vars.$red;
 	}
 }

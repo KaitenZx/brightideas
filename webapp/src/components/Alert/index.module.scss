@@ -1,9 +1,9 @@
-@import '../../styles/_vars';
-@import '../../styles/_mixins';
+@use '../../styles/_vars';
+@use '../../styles/_mixins';
 
 .alert {
 	padding: 10px;
-	border-radius: $borderRadiusSmall;
+	border-radius: vars.$borderRadiusSmall;
 
 	&.red {
 		background-color: #ffd1d1;

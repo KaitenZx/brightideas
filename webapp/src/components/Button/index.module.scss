@@ -1,13 +1,13 @@
-@import '../../styles/_vars';
-@import '../../styles/_mixins';
+@use '../../styles/_vars';
+@use '../../styles/_mixins';
 
 .button {
 	padding: 8px 15px;
-	color: $white;
+	color: vars.$white;
 	background-color: #0a980a;
 	border: none;
 	font-weight: bold;
-	border-radius: $borderRadiusSmall;
+	border-radius: vars.$borderRadiusSmall;
 	cursor: pointer;
 	user-select: none;
 

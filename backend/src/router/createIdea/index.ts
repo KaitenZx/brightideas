@@ -1,16 +1,26 @@
 import { TRPCError } from '@trpc/server'
-import { ideas } from '../../lib/ideas'
 import { trpc } from '../../lib/trpc'
 import { zCreateIdeaTrpcInput } from './input'
 
-export const createIdeaTrpcRoute = trpc.procedure.input(zCreateIdeaTrpcInput).mutation(({ input }) => {
-  if (ideas.find((idea) => idea.nick === input.nick)) {
+export const createIdeaTrpcRoute = trpc.procedure.input(zCreateIdeaTrpcInput).mutation(async ({ input, ctx }) => {
+  // Проверка существующей идеи с таким же nick
+  const existingIdea = await ctx.prisma.idea.findUnique({
+    where: {
+      nick: input.nick,
+    },
+  })
+
+  if (existingIdea) {
     throw new TRPCError({
       code: 'CONFLICT', // HTTP 409 Conflict
       message: 'Idea with this nick already exists',
     })
   }
 
-  ideas.unshift(input)
+  // Создание новой записи
+  await ctx.prisma.idea.create({
+    data: input,
+  })
+
   return true
 })
