@@ -3,19 +3,14 @@ import love from 'eslint-config-love'
 import prettier from 'eslint-config-prettier'
 
 export default [
-  // 1. Игнорируем общие папки
   {
     ignores: ['node_modules', 'dist'],
   },
 
-  // 2. Настраиваем бэкенд
   {
-    // Разворачиваем все ключи из love
     ...love,
     // Файлы, к которым применяются эти настройки
     files: ['backend/**/*.ts', 'backend/**/*.tsx'],
-    // В новом формате ESLint, чтобы заработала
-    // типизированная проверка, нужно явно задать parser + project
     languageOptions: {
       // Ставим сам парсер
       parser: tsParser,
@@ -31,7 +26,6 @@ export default [
     },
   },
 
-  // 3. Настраиваем фронтенд
   {
     ...love,
     files: ['webapp/**/*.ts', 'webapp/**/*.tsx'],
@@ -45,13 +39,11 @@ export default [
     },
   },
 
-  // 4. Подключаем prettier-конфиг, чтобы отключать конфликтующие правила
   {
     ...prettier,
     files: ['**/*.ts', '**/*.tsx'],
   },
 
-  // 5. Ваши доп. правила (перезапишут правила из love, если совпадают)
   {
     files: ['**/*.ts', '**/*.tsx'],
     rules: {
@@ -112,6 +104,22 @@ export default [
           allow: ['info', 'error', 'warn'],
         },
       ],
+      'node/no-process-env': "error",
+      'no-restricted-syntax': [
+        'error',
+        {
+          selector: '[object.type=MetaProperty][property.name=env]',
+          message: 'Use instead import { env } from "lib/env"',
+        },
+      ],
+
     },
   },
+
+  {
+    plugins: {
+      node: require('eslint-plugin-node'),
+    },
+  },
+
 ]

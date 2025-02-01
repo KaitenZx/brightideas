@@ -7,12 +7,14 @@ export const Input = <TValues extends Record<string, any>>({
 	name,
 	label,
 	formik,
-	maxWidth
+	maxWidth,
+	type = 'text',
 }: {
 	name: string
 	label: string
 	formik: FormikProps<TValues>
 	maxWidth?: number
+	type?: 'text' | 'password'
 }) => {
 
 	const value = formik.values[name]
@@ -33,7 +35,7 @@ export const Input = <TValues extends Record<string, any>>({
 					[css.invalid]: invalid,
 				})}
 				style={{ maxWidth }}
-				type="text"
+				type={type}
 				onChange={(e) => {
 					void formik.setFieldValue(name, e.target.value)
 				}}
