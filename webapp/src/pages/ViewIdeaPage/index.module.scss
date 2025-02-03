@@ -1,16 +1,25 @@
 @use '../../styles/vars';
 @use '../../styles/mixins';
 
-
 .createdAt {
   font-size: 12px;
   margin-bottom: 10px;
 }
 
+.author {
+  font-weight: bold;
+  font-size: 16px;
+  margin-bottom: 20px;
+}
+
 .text {
   font-size: 14px;
 
-  &>*:not(:first-child) {
+  & > *:not(:first-child) {
     margin-top: 10px;
   }
+}
+
+.editButton {
+  margin-top: 20px;
 }

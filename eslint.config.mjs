@@ -1,6 +1,7 @@
 import tsParser from '@typescript-eslint/parser'
 import love from 'eslint-config-love'
 import prettier from 'eslint-config-prettier'
+import nodePlugin from 'eslint-plugin-node';
 
 export default [
   {
@@ -118,8 +119,8 @@ export default [
 
   {
     plugins: {
-      node: require('eslint-plugin-node'),
+      node: nodePlugin,
     },
-  },
+  }
 
 ]
