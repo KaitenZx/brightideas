@@ -1,5 +1,6 @@
 @use '../../styles/vars';
 @use '../../styles/mixins';
+@use 'sass:color';
 
 .button {
   padding: 8px 15px;
@@ -12,8 +13,16 @@
   user-select: none;
   position: relative;
 
-  &:hover {
-    background-color: #21b821;
+  &.color-red {
+    background-color: vars.$red;
+
+    &:hover {
+      background-color: color.scale(vars.$red, $lightness: 10%);
+    }
+
+    &:active {
+      background-color: color.scale(vars.$red, $lightness: 30%);
+    }
   }
 
   &.loading {
@@ -22,10 +31,6 @@
     .text {
       opacity: 0;
     }
-  }
-
-  &:active {
-    background-color: #39d039;
   }
 
   &.disabled {

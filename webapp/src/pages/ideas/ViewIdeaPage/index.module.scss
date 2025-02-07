@@ -15,7 +15,7 @@
 .text {
   font-size: 14px;
 
-  &>*:not(:first-child) {
+  & > *:not(:first-child) {
     margin-top: 10px;
   }
 }
@@ -29,5 +29,9 @@
 }
 
 .editButton {
+  margin-top: 20px;
+}
+
+.blockIdea {
   margin-top: 20px;
 }

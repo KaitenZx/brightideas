@@ -1,4 +1,5 @@
 import { zUpdateIdeaTrpcInput } from '@brightideas/backend/src/router/ideas/updateIdea/input'
+import { canEditIdea } from '@brightideas/backend/src/utils/can'
 import pick from 'lodash/pick'
 import { useNavigate, useParams } from 'react-router-dom'
 import { Alert } from '../../../components/Alert'
@@ -24,10 +25,13 @@ export const EditIdeaPage = withPageWrapper({
   checkExistsMessage: 'Idea not found',
   checkAccess: ({ queryResult, ctx }) => !!ctx.me && ctx.me.id === queryResult.data.idea?.authorId,
   checkAccessMessage: 'An idea can only be edited by the author',
-  setProps: ({ queryResult }) => ({
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    idea: queryResult.data.idea!,
-  }),
+  setProps: ({ queryResult, ctx, checkExists, checkAccess }) => {
+    const idea = checkExists(queryResult.data.idea, 'Idea not found')
+    checkAccess(canEditIdea(ctx.me, idea), 'An idea can only be edited by the author')
+    return {
+      idea,
+    }
+  },
 })(({ idea }) => {
   const navigate = useNavigate()
   const updateIdea = trpc.updateIdea.useMutation()

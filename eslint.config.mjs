@@ -83,6 +83,7 @@ export default [
                 "@brightideas/backend/**",
                 "!@brightideas/backend/**/",
                 "!@brightideas/backend/**/input",
+                "!@brightideas/backend/src/utils/can",
               ],
               allowTypeImports: true,
               message:
