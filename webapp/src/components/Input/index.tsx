@@ -13,7 +13,7 @@ export const Input = <TValues extends Record<string, any>>({
 	name: string
 	label: string
 	formik: FormikProps<TValues>
-	maxWidth?: number
+	maxWidth?: number | string
 	type?: 'text' | 'password'
 }) => {
 

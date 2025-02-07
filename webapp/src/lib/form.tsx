@@ -19,7 +19,7 @@ export const useForm = <TZodSchema extends z.ZodTypeAny>({
   showValidationAlert?: boolean
   initialValues?: z.infer<TZodSchema>
   validationSchema?: TZodSchema
-  onSubmit: (values: z.infer<TZodSchema>, actions: FormikHelpers<z.infer<TZodSchema>>) => Promise<void> | void
+  onSubmit?: (values: z.infer<TZodSchema>, actions: FormikHelpers<z.infer<TZodSchema>>) => Promise<void> | void
 }) => {
   const [successMessageVisible, setSuccessMessageVisible] = useState(false)
   const [submittingError, setSubmittingError] = useState<Error | null>(null)
@@ -28,6 +28,9 @@ export const useForm = <TZodSchema extends z.ZodTypeAny>({
     initialValues,
     ...(validationSchema && { validate: withZodSchema(validationSchema) }),
     onSubmit: async (values, formikHelpers) => {
+      if (!onSubmit) {
+        return
+      }
       try {
         setSubmittingError(null)
         await onSubmit(values, formikHelpers)

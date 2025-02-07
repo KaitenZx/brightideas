@@ -1,6 +1,10 @@
 @use '../../../styles/vars';
 @use '../../../styles/mixins';
 
+.filter {
+  margin-bottom: 20px;
+}
+
 .ideas {
   .idea {
     padding: 20px;
