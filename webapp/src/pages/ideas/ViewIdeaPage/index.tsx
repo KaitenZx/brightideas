@@ -80,6 +80,7 @@ export const ViewIdeaPage = withPageWrapper({
     idea: queryResult.data.idea!,
     me: ctx.me,
   }),
+  title: ({ idea }) => idea.name,
 })(({ idea, me }) => (
   <Segment title={idea.name} description={idea.description}>
     <div className={css.createdAt}>Created At: {format(idea.createdAt, 'yyyy-MM-dd')}</div>

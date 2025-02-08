@@ -8,11 +8,15 @@ import { layoutContentElRef } from '../../../components/Layout'
 import { Loader } from '../../../components/Loader'
 import { Segment } from '../../../components/Segment'
 import { useForm } from '../../../lib/form'
+import { withPageWrapper } from '../../../lib/pageWrapper'
 import { getViewIdeaRoute } from '../../../lib/routes'
 import { trpc } from '../../../lib/trpc'
 import css from './index.module.scss'
 
-export const AllIdeasPage = () => {
+export const AllIdeasPage = withPageWrapper({
+  title: 'BrightIdeas',
+  isTitleExact: true,
+})(() => {
   const { formik } = useForm({
     initialValues: { search: '' },
     validationSchema: zGetIdeasTrpcInput.pick({ search: true }),
@@ -83,4 +87,4 @@ export const AllIdeasPage = () => {
       )}
     </Segment>
   )
-}
+})
