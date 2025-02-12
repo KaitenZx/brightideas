@@ -6,21 +6,22 @@
     "dev": "nodemon --watch src --watch src/emails/dist --watch .env --ext ts --exit-child --exec \"node -r esbuild-register src/index.ts\"",
     "build-emails": "rimraf ./src/emails/dist && mkdir ./src/emails/dist && mjml ./src/emails/[!_]*.mjml -o ./src/emails/dist",
     "watch-emails": "mjml -w ./src/emails/[!_]*.mjml -o ./src/emails/dist",
-    "copy-emails": "copyfiles -u 1 ./src/emails/dist/*.html ./dist",
+    "copy-emails": "copyfiles ./src/emails/dist/*.html ./dist/backend",
     "build-ts": "rimraf ./dist && tsc --build ./tsconfig.json",
     "build": "pnpm build-ts && pnpm build-emails && pnpm copy-emails",
-    "start": "node ./dist/index.js",
+    "start": "node ./dist/backend/src/index.js",
     "pmd": "prisma migrate dev",
     "pgc": "prisma generate",
     "types": "tsc --noEmit --project ./tsconfig.json",
     "lint": "eslint  --cache --cache-location ./node_modules/.cache/.eslintcache .",
     "prettify": "prettier --log-level warn --cache --write \"{src/**/*.{ts,tsx,js,json,yml,scss},!**/{node_modules,dist}/**/*}\"",
-    "prepare": "pnpm pgc"
+    "prepare": "pnpm pgc && ts-patch install -s"
   },
   "prisma": {
     "schema": "./src/prisma/schema.prisma"
   },
   "devDependencies": {
+    "@brightideas/webapp": "workspace:*",
     "@types/cors": "^2.8.17",
     "@types/express": "^5.0.0",
     "@types/jsonwebtoken": "^9.0.8",
@@ -47,6 +48,7 @@
     "mjml": "^4.15.3",
     "passport": "^0.7.0",
     "passport-jwt": "^4.0.1",
+    "react-router-dom": "6",
     "superjson": "^2.2.2",
     "zod": "^3.24.1"
   }
