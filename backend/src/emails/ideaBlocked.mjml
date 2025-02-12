@@ -1,0 +1,21 @@
+<mjml>
+  <mj-head>
+    <mj-title>Your Idea Blocked!</mj-title>
+    <mj-include path="./_head.mjml" />
+  </mj-head>
+  <mj-body mj-class="body">
+    <mj-include path="./_header.mjml" />
+
+    <mj-section mj-class="content" padding="20px" background-color="#ffffff">
+      <mj-column>
+        <mj-text mj-class="h1" padding-bottom="10px">Your Idea Blocked!</mj-text>
+        <mj-text mj-class="text">
+          Sorry, but we have blocked your idea <strong>"{{ideaNick}}"</strong>. <br /><br />
+          If you have any questions, please contact our support.
+        </mj-text>
+      </mj-column>
+    </mj-section>
+
+    <mj-include path="./_footer.mjml" />
+  </mj-body>
+</mjml>

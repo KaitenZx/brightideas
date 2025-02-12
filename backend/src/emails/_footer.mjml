@@ -1,0 +1,18 @@
+<mjml>
+  <mj-head>
+    <mj-style> .unsubscribe-link { color: #aaaaaa !important; text-decoration: underline; } </mj-style>
+  </mj-head>
+  <mj-body>
+    <mj-section background-color="#f1f1f1" padding="20px">
+      <mj-column>
+        <mj-text mj-class="text" color="#666666" font-size="14px" align="center" padding="0">
+          Change the world — support the ideas that inspire you<br />
+          <span style="font-size: 14px; color: #333333"> Stay inspired with BrightIdeas! </span>
+        </mj-text>
+        <mj-text mj-class="text" color="#aaaaaa" font-size="12px" align="center" padding="10px 0 0">
+          <a href="{{unsubscribeUrl}}" class="unsubscribe-link">Unsubscribe</a>
+        </mj-text>
+      </mj-column>
+    </mj-section>
+  </mj-body>
+</mjml>

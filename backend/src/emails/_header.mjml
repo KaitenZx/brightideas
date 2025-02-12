@@ -1,0 +1,18 @@
+<mjml>
+  <mj-body>
+    <mj-section padding="15px 0" background-color="#ffffff">
+      <mj-column>
+        <mj-text
+          padding-top="5px"
+          padding-bottom="5px"
+          color="#222222"
+          font-size="20px"
+          font-weight="bold"
+          line-height="32px"
+        >
+          <a class="link-nostyle" href="{{homeUrl}}" style="color: #0066ff"> BrightIdeas </a>
+        </mj-text>
+      </mj-column>
+    </mj-section>
+  </mj-body>
+</mjml>
