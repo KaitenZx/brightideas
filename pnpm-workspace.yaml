@@ -1,6 +1,7 @@
 packages:
   - backend
   - webapp
+  - shared
 packageExtensions:
   '@typescript-eslint/eslint-plugin@*':
     peerDependencies:

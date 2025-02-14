@@ -41,6 +41,18 @@ export default [
   },
 
   {
+    ...love,
+    files: ['shared/**/*.ts', 'shared/**/*.tsx'],
+    languageOptions: {
+      parser: tsParser,
+      parserOptions: {
+        ...love.languageOptions?.parserOptions,
+        project: ['./shared/tsconfig.json'],
+      },
+    },
+  },
+
+  {
     ...prettier,
     files: ['**/*.ts', '**/*.tsx'],
   },

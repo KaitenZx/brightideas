@@ -1,16 +1,20 @@
+import { zEnvHost, zEnvNonemptyTrimmed, zEnvNonemptyTrimmedRequiredOnNotLocal } from '@brightideas/shared/src/zod'
 import * as dotenv from 'dotenv'
 import { z } from 'zod'
 
 dotenv.config()
 
 const zEnv = z.object({
-  HOST_ENV: z.enum(['local', 'production']),
-  PORT: z.string().trim().min(1),
-  DATABASE_URL: z.string().trim().min(1),
-  JWT_SECRET: z.string().trim().min(1),
-  PASSWORD_SALT: z.string().trim().min(1),
-  INITIAL_ADMIN_PASSWORD: z.string().trim().min(1),
-  WEBAPP_URL: z.string().trim().min(1),
+  PORT: zEnvNonemptyTrimmed,
+  HOST_ENV: zEnvHost,
+  DATABASE_URL: zEnvNonemptyTrimmed,
+  JWT_SECRET: zEnvNonemptyTrimmed,
+  PASSWORD_SALT: zEnvNonemptyTrimmed,
+  INITIAL_ADMIN_PASSWORD: zEnvNonemptyTrimmed,
+  WEBAPP_URL: zEnvNonemptyTrimmed,
+  BREVO_API_KEY: zEnvNonemptyTrimmedRequiredOnNotLocal,
+  FROM_EMAIL_NAME: zEnvNonemptyTrimmed,
+  FROM_EMAIL_ADDRESS: zEnvNonemptyTrimmed,
 })
 
 // eslint-disable-next-line node/no-process-env
