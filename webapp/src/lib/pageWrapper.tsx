@@ -1,14 +1,15 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable complexity */
+import { useStore } from '@nanostores/react'
 import type { UseTRPCQueryResult, UseTRPCQuerySuccessResult } from '@trpc/react-query/shared'
 import React, { useEffect } from 'react'
 import { Helmet } from 'react-helmet-async'
 import { useNavigate } from 'react-router-dom'
 import { ErrorPageComponent } from '../components/ErrorPageComponent'
 import { Loader } from '../components/Loader'
+import { lastVisistedNotAuthRouteStore } from '../components/NotAuthPageTracker'
 import { NotFoundPage } from '../pages/other/NotFoundPage'
 import { useAppContext, type AppContext } from './ctx'
-import { getAllIdeasRoute } from './routes'
 
 class CheckExistsError extends Error {}
 const checkExistsFn = <T,>(value: T, message?: string): NonNullable<T> => {
@@ -88,6 +89,7 @@ const PageWrapper = <TProps extends Props = object, TQueryResult extends QueryRe
   isTitleExact = false,
   Page,
 }: PageWrapperProps<TProps, TQueryResult>) => {
+  const lastVisistedNotAuthRoute = useStore(lastVisistedNotAuthRouteStore)
   const navigate = useNavigate()
   const ctx = useAppContext()
   const queryResult = useQuery?.()
@@ -96,9 +98,9 @@ const PageWrapper = <TProps extends Props = object, TQueryResult extends QueryRe
 
   useEffect(() => {
     if (redirectNeeded) {
-      navigate(getAllIdeasRoute(), { replace: true })
+      navigate(lastVisistedNotAuthRoute, { replace: true })
     }
-  }, [redirectNeeded, navigate])
+  }, [redirectNeeded, navigate, lastVisistedNotAuthRoute])
 
   if (queryResult?.isLoading || (showLoaderOnFetching && queryResult?.isFetching) || redirectNeeded) {
     return <Loader type="page" />
