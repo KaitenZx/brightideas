@@ -24,6 +24,9 @@ export default [
         // Часто нужно указать корень репо для правильных путей:
         // tsconfigRootDir: new URL('.', import.meta.url).pathname,
       },
+      rules: {
+        "no-console": "error",
+      }
     },
   },
 
@@ -37,6 +40,14 @@ export default [
         project: ['./webapp/tsconfig.json'],
         // tsconfigRootDir: new URL('.', import.meta.url).pathname,
       },
+      rules: {
+        'no-console': [
+          'error',
+          {
+            allow: ['info', 'error', 'warn'],
+          },
+        ],
+      }
     },
   },
 
@@ -113,12 +124,7 @@ export default [
           skipStrings: true,
         },
       ],
-      'no-console': [
-        'error',
-        {
-          allow: ['info', 'error', 'warn'],
-        },
-      ],
+
       'node/no-process-env': "error",
       'no-restricted-syntax': [
         'error',

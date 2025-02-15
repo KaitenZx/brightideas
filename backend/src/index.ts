@@ -8,6 +8,7 @@ import { applyPassportToExpressApp } from './lib/passport'
 import { applyTrpcToExpressApp } from './lib/trpc'
 import { trpcRouter } from './router'
 import { presetDb } from './scripts/presetDb'
+import { logger } from './lib/logger'
 
 void (async () => {
   let ctx: AppContext | null = null
@@ -22,11 +23,19 @@ void (async () => {
     applyPassportToExpressApp(expressApp, ctx)
     applyTrpcToExpressApp(expressApp, ctx, trpcRouter)
     applyCron(ctx)
+    expressApp.use((error: unknown, req: express.Request, res: express.Response, next: express.NextFunction) => {
+      logger.error('express', error)
+      if (res.headersSent) {
+        next(error)
+        return
+      }
+      res.status(500).send('Internal server error')
+    })
     expressApp.listen(env.PORT, () => {
-      console.info('Listening at http://localhost:3000')
+      logger.info('express', `Listening at http://localhost:${env.PORT}`)
     })
   } catch (error) {
-    console.error(error)
+    logger.error('app', error)
     await ctx?.stop()
   }
 })()

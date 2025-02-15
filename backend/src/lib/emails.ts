@@ -6,6 +6,7 @@ import fg from 'fast-glob'
 import Handlebars from 'handlebars'
 import _ from 'lodash'
 import { env } from './env'
+import { logger } from './logger'
 
 const getHbrTemplates = _.memoize(async () => {
   const htmlPathsPattern = path.resolve(__dirname, '../emails/dist/**/*.html')
@@ -44,15 +45,18 @@ const sendEmail = async ({
       homeUrl: env.WEBAPP_URL,
     }
     const html = await getEmailHtml(templateName, fullTemplateVaraibles)
-    console.info('sendEmail', {
+    logger.info('email', 'sendEmail', {
       to,
-      subject,
       templateName,
-      html,
+      templateVariables,
     })
     return { ok: true }
   } catch (error) {
-    console.error(error)
+    logger.error('email', error, {
+      to,
+      templateName,
+      templateVariables,
+    })
     return { ok: false }
   }
 }
