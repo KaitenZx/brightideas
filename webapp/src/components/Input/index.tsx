@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
+ 
 import cn from 'classnames'
 import type { FormikProps } from "formik"
 import css from './index.module.scss'

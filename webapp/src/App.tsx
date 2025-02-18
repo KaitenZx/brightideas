@@ -3,9 +3,10 @@ import './styles/global.scss'
 import { HelmetProvider } from 'react-helmet-async'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import { Layout } from './components/Layout'
-import { NotAuthRouteTracker } from './components/NotAuthPageTracker'
+import { NotAuthRouteTracker } from './components/NotAuthRouteTracker'
 import { AppContextProvider } from './lib/ctx'
 import * as routes from './lib/routes'
+import { SentryUser } from './lib/sentry'
 import { TrpcProvider } from './lib/trpc'
 import { EditProfilePage } from './pages/auth/EditProfilePage'
 import { SignInPage } from './pages/auth/SignInPage/Index'
@@ -23,6 +24,7 @@ export const App = () => {
       <TrpcProvider>
         <AppContextProvider>
           <BrowserRouter>
+            <SentryUser />
             <NotAuthRouteTracker />
             <Routes>
               <Route path={routes.getSignOutRoute.definition} element={<SignOutPage />} />

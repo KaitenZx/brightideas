@@ -7,6 +7,7 @@ dotenv.config()
 const zEnv = z.object({
   PORT: zEnvNonemptyTrimmed,
   HOST_ENV: zEnvHost,
+  SOURCE_VERSION: zEnvNonemptyTrimmedRequiredOnNotLocal,
   DATABASE_URL: zEnvNonemptyTrimmed,
   JWT_SECRET: zEnvNonemptyTrimmed,
   PASSWORD_SALT: zEnvNonemptyTrimmed,
@@ -16,6 +17,7 @@ const zEnv = z.object({
   FROM_EMAIL_NAME: zEnvNonemptyTrimmed,
   FROM_EMAIL_ADDRESS: zEnvNonemptyTrimmed,
   DEBUG: zEnvNonemptyTrimmed,
+  BACKEND_SENTRY_DSN: zEnvNonemptyTrimmedRequiredOnNotLocal,
 })
 
 // eslint-disable-next-line node/no-process-env

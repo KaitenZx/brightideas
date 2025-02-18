@@ -5,6 +5,8 @@ import { useMemo, useState } from 'react'
 import type { z } from 'zod'
 import type { AlertProps } from '../components/Alert'
 import type { ButtonProps } from '../components/Button'
+import { toError } from '../utils/toError'
+import { sentryCaptureException } from './sentry'
 
 export const useForm = <TZodSchema extends z.ZodTypeAny>({
   successMessage = false,
@@ -42,11 +44,13 @@ export const useForm = <TZodSchema extends z.ZodTypeAny>({
           setSuccessMessageVisible(false)
         }, 3000)
       } catch (error: unknown) {
-        if (error instanceof TRPCClientError) {
-          setSubmittingError(error)
-        } else {
-          setSubmittingError(new Error('An unexpected error occurred.'))
+        const err = toError(error);
+
+        if (!(err instanceof TRPCClientError)) {
+          sentryCaptureException(err);
         }
+
+        setSubmittingError(err);
       }
     },
   })

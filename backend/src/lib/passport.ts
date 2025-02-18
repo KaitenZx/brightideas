@@ -1,4 +1,4 @@
-import type { Express } from 'express'
+import type { Express, RequestHandler } from 'express'
 import { Passport } from 'passport'
 import { ExtractJwt, Strategy as JWTStrategy } from 'passport-jwt'
 import type { AppContext } from './ctx'
@@ -37,9 +37,15 @@ export const applyPassportToExpressApp = (expressApp: Express, ctx: AppContext):
       next()
       return
     }
-    passport.authenticate('jwt', { session: false }, (_error: unknown, user?: Express.User | false) => {
-      req.user = user || undefined
-      next()
-    })(req, res, next)
+    const middleware = passport.authenticate(
+      'jwt',
+      { session: false },
+      (_error: unknown, user?: Express.User | false) => {
+        req.user = user || undefined
+        next()
+      }
+    ) as RequestHandler
+
+    middleware(req, res, next)
   })
 }

@@ -16,9 +16,11 @@
     "@brightideas/backend": "workspace:*",
     "@brightideas/shared": "workspace:*",
     "@nanostores/react": "^0.8.4",
+    "@sentry/react": "^9.1.0",
     "@tanstack/react-query": "^4.36.1",
     "@trpc/client": "^10.45.2",
     "@trpc/react-query": "^10.45.2",
+    "@trpc/server": "^10.45.2",
     "classnames": "^2.5.1",
     "date-fns": "^4.1.0",
     "formik": "^2.4.6",
@@ -40,6 +42,7 @@
     "zod": "^3.24.1"
   },
   "devDependencies": {
+    "@sentry/vite-plugin": "^3.1.2",
     "@types/js-cookie": "^3.0.6",
     "@types/lodash": "^4.17.14",
     "@types/react": "^18.3.18",

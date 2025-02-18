@@ -1,17 +1,15 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-/* eslint-disable complexity */
 import { useStore } from '@nanostores/react'
-import type { UseTRPCQueryResult, UseTRPCQuerySuccessResult } from '@trpc/react-query/shared'
+import { UseTRPCQueryResult, UseTRPCQuerySuccessResult } from '@trpc/react-query/shared'
 import React, { useEffect } from 'react'
 import { Helmet } from 'react-helmet-async'
 import { useNavigate } from 'react-router-dom'
 import { ErrorPageComponent } from '../components/ErrorPageComponent'
 import { Loader } from '../components/Loader'
-import { lastVisistedNotAuthRouteStore } from '../components/NotAuthPageTracker'
+import { lastVisistedNotAuthRouteStore } from '../components/NotAuthRouteTracker'
 import { NotFoundPage } from '../pages/other/NotFoundPage'
 import { useAppContext, type AppContext } from './ctx'
 
-class CheckExistsError extends Error {}
+class CheckExistsError extends Error { }
 const checkExistsFn = <T,>(value: T, message?: string): NonNullable<T> => {
   if (!value) {
     throw new CheckExistsError(message)
@@ -19,15 +17,14 @@ const checkExistsFn = <T,>(value: T, message?: string): NonNullable<T> => {
   return value
 }
 
-class CheckAccessError extends Error {}
-// eslint-disable-next-line @typescript-eslint/no-unnecessary-type-parameters
+class CheckAccessError extends Error { }
 const checkAccessFn = <T,>(value: T, message?: string): void => {
   if (!value) {
     throw new CheckAccessError(message)
   }
 }
 
-class GetAuthorizedMeError extends Error {}
+class GetAuthorizedMeError extends Error { }
 
 type Props = Record<string, any>
 type QueryResult = UseTRPCQueryResult<any, any>
@@ -39,13 +36,11 @@ type HelperProps<TQueryResult extends QueryResult | undefined> = {
   ctx: AppContext
   queryResult: TQueryResult extends QueryResult ? QuerySuccessResult<TQueryResult> : undefined
 }
-
 type SetPropsProps<TQueryResult extends QueryResult | undefined> = HelperProps<TQueryResult> & {
   checkExists: typeof checkExistsFn
   checkAccess: typeof checkAccessFn
   getAuthorizedMe: (message?: string) => NonNullable<AppContext['me']>
 }
-
 type PageWrapperProps<TProps extends Props, TQueryResult extends QueryResult | undefined> = {
   redirectAuthorized?: boolean
 
@@ -71,7 +66,7 @@ type PageWrapperProps<TProps extends Props, TQueryResult extends QueryResult | u
   Page: React.FC<TProps>
 }
 
-const PageWrapper = <TProps extends Props = object, TQueryResult extends QueryResult | undefined = undefined>({
+const PageWrapper = <TProps extends Props = {}, TQueryResult extends QueryResult | undefined = undefined>({
   authorizedOnly,
   authorizedOnlyTitle = 'Please, Authorize',
   authorizedOnlyMessage = 'This page is available only for authorized users',
@@ -80,14 +75,14 @@ const PageWrapper = <TProps extends Props = object, TQueryResult extends QueryRe
   checkAccessTitle = 'Access Denied',
   checkAccessMessage = 'You have no access to this page',
   checkExists,
-  checkExistsTitle = 'Not Found',
-  checkExistsMessage = 'This page does not exist',
+  checkExistsTitle,
+  checkExistsMessage,
   useQuery,
   setProps,
-  showLoaderOnFetching = true,
   title,
   isTitleExact = false,
   Page,
+  showLoaderOnFetching = true,
 }: PageWrapperProps<TProps, TQueryResult>) => {
   const lastVisistedNotAuthRoute = useStore(lastVisistedNotAuthRouteStore)
   const navigate = useNavigate()
@@ -107,8 +102,7 @@ const PageWrapper = <TProps extends Props = object, TQueryResult extends QueryRe
   }
 
   if (queryResult?.isError) {
-    const message = queryResult.error instanceof Error ? queryResult.error.message : 'Unknown error'
-    return <ErrorPageComponent message={message} />
+    return <ErrorPageComponent message={queryResult.error.message} />
   }
 
   if (authorizedOnly && !ctx.me) {
@@ -145,10 +139,8 @@ const PageWrapper = <TProps extends Props = object, TQueryResult extends QueryRe
       checkAccess: checkAccessFn,
       getAuthorizedMe,
     }) as TProps
-
     const calculatedTitle = typeof title === 'function' ? title({ ...helperProps, ...props }) : title
     const exactTitle = isTitleExact ? calculatedTitle : `${calculatedTitle} — BrightIdeas`
-
     return (
       <>
         <Helmet>
@@ -167,14 +159,11 @@ const PageWrapper = <TProps extends Props = object, TQueryResult extends QueryRe
     if (error instanceof GetAuthorizedMeError) {
       return <ErrorPageComponent title={authorizedOnlyTitle} message={error.message || authorizedOnlyMessage} />
     }
-    throw error instanceof Error ? error : new Error(String(error))
+    throw error
   }
 }
 
-export const withPageWrapper = <
-  TProps extends Props = object,
-  TQueryResult extends QueryResult | undefined = undefined,
->(
+export const withPageWrapper = <TProps extends Props = {}, TQueryResult extends QueryResult | undefined = undefined>(
   pageWrapperProps: Omit<PageWrapperProps<TProps, TQueryResult>, 'Page'>
 ) => {
   return (Page: PageWrapperProps<TProps, TQueryResult>['Page']) => {

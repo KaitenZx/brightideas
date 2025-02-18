@@ -36,7 +36,7 @@ const sendEmail = async ({
   to: string
   subject: string
   templateName: string
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+   
   templateVariables?: Record<string, any>
 }) => {
   try {

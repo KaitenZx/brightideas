@@ -73,13 +73,11 @@ export const ViewIdeaPage = withPageWrapper({
       ideaNick,
     })
   },
-  checkExists: ({ queryResult }) => !!queryResult.data.idea,
-  checkExistsMessage: 'Idea not found',
-  setProps: ({ queryResult, ctx }) => ({
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    idea: queryResult.data.idea!,
+  setProps: ({ queryResult, checkExists, ctx }) => ({
+    idea: checkExists(queryResult.data.idea, 'Idea not found'),
     me: ctx.me,
   }),
+  showLoaderOnFetching: false,
   title: ({ idea }) => idea.name,
 })(({ idea, me }) => (
   <Segment title={idea.name} description={idea.description}>
