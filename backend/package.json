@@ -4,6 +4,7 @@
   "version": "0.0.0",
   "scripts": {
     "dev": "nodemon --watch src --watch src/emails/dist --watch .env --ext ts --exit-child --exec \"node -r esbuild-register src/index.ts\"",
+    "test": "jest",
     "build-emails": "rimraf ./src/emails/dist && mkdir ./src/emails/dist && mjml ./src/emails/[!_]*.mjml -o ./src/emails/dist",
     "watch-emails": "mjml -w ./src/emails/[!_]*.mjml -o ./src/emails/dist",
     "copy-emails": "copyfiles ./src/emails/dist/*.html ./dist/backend",
@@ -49,6 +50,7 @@
     "axios": "^1.7.9",
     "cors": "^2.8.5",
     "cron": "^3.5.0",
+    "date-fns": "^4.1.0",
     "debug": "^4.4.0",
     "dotenv": "^16.4.7",
     "express": "^4.21.2",
