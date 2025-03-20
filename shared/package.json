@@ -6,12 +6,14 @@
     "test": "jest",
     "types": "tsc --noEmit --project ./tsconfig.json",
     "lint": "eslint --cache --cache-location ./node_modules/.cache/.eslintcache --ext .ts .",
-    "prettify": "prettier --loglevel warn --cache --write '{src/**/*,*}.{ts,tsx,js,json,yml,scss}' '!**/{node_modules,dist}/**/*'"
+    "prettify": "prettier --log-level warn --cache --write '{src/**/*,*}.{ts,tsx,js,json,yml,scss}' '!**/{node_modules,dist}/**/*'"
   },
   "dependencies": {
+    "lodash": "^4.17.21",
     "zod": "^3.24.1"
   },
   "devDependencies": {
+    "@types/lodash": "^4.17.14",
     "@types/node": "^22.10.7"
   }
 }

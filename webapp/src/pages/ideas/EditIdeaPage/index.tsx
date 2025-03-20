@@ -1,6 +1,6 @@
 import { zUpdateIdeaTrpcInput } from '@brightideas/backend/src/router/ideas/updateIdea/input'
 import { canEditIdea } from '@brightideas/backend/src/utils/can'
-import pick from 'lodash/pick'
+import { pick } from '@brightideas/shared/src/pick'
 import { useNavigate } from 'react-router-dom'
 import { Alert } from '../../../components/Alert'
 import { Button } from '../../../components/Button'
@@ -41,7 +41,7 @@ export const EditIdeaPage = withPageWrapper({
     validationSchema: zUpdateIdeaTrpcInput.omit({ ideaId: true }),
     onSubmit: async (values) => {
       await updateIdea.mutateAsync({ ideaId: idea.id, ...values })
-      navigate(getViewIdeaRoute({ ideaNick: values.nick }))
+      navigate(getViewIdeaRoute({ ideaNick: values.nick as string }))
     },
   })
 

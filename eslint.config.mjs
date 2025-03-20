@@ -8,6 +8,13 @@ import jestPlugin from 'eslint-plugin-jest';
 export default [
   {
     ignores: ['node_modules', 'dist', '*.config.js'],
+    settings: {
+      'import/resolver': {
+        node: {
+          extensions: ['.js', '.ts', '.tsx'],
+        },
+      },
+    },
   },
 
   {
@@ -29,6 +36,24 @@ export default [
     },
     rules: {
       "no-console": "error",
+      'import/order': [
+        'error',
+        {
+          groups: ['builtin', 'external', 'parent', 'sibling', 'index'],
+          pathGroups: [
+            {
+              pattern: '{.,..}/**/test/integration',
+              group: 'builtin',
+              position: 'before',
+            },
+          ],
+          alphabetize: {
+            order: 'asc',
+            caseInsensitive: false,
+            orderImportKind: 'asc',
+          },
+        },
+      ],
     }
   },
 
@@ -133,6 +158,18 @@ export default [
         {
           selector: '[object.type=MetaProperty][property.name=env]',
           message: 'Use instead import { env } from "lib/env"',
+        },
+      ],
+      'import/no-restricted-paths': [
+        'error',
+        {
+          zones: [
+            {
+              target: './src/**/!(*.integration.test.ts)',
+              from: './src/test',
+              message: 'Import something from test dir only inside integration tests',
+            },
+          ],
         },
       ],
 

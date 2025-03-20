@@ -5,7 +5,7 @@
   "scripts": {
     "b": "pnpm --filter @brightideas/backend",
     "w": "pnpm --filter @brightideas/webapp",
-    "sh": "pnpm --filter @ideanick/shared",
+    "sh": "pnpm --filter @brightideas/shared",
     "dev": "pnpm -r --parallel dev",
     "test": "pnpm -r test",
     "types": "concurrently 'pnpm b types' 'pnpm w types' 'pnpm sh types'",
@@ -22,6 +22,7 @@
     "eslint-config-love": "^117.0.0",
     "eslint-config-prettier": "^10.0.1",
     "eslint-config-react-app": "^7.0.1",
+    "eslint-plugin-import": "^2.31.0",
     "eslint-plugin-jest": "^28.11.0",
     "husky": "^8.0.3",
     "jest": "^29.7.0",

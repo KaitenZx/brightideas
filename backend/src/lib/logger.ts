@@ -1,4 +1,5 @@
 import { EOL } from 'os'
+import { omit } from '@brightideas/shared/src/omit'
 import { TRPCError } from '@trpc/server'
 import debug from 'debug'
 import _ from 'lodash'
@@ -36,7 +37,7 @@ export const winstonLogger = winston.createLogger({
               const levelAndType = `${logData.level} ${logData.logType}`
               const topMessage = `${setColor(levelAndType)} ${pc.green(String(logData.timestamp))}${EOL}${logData.message}`
 
-              const visibleMessageTags = _.omit(logData, [
+              const visibleMessageTags = omit(logData, [
                 'level',
                 'logType',
                 'timestamp',
@@ -66,7 +67,19 @@ export const winstonLogger = winston.createLogger({
 export type LoggerMetaData = Record<string, any> | undefined
 const prettifyMeta = (meta: LoggerMetaData): LoggerMetaData => {
   return deepMap(meta, ({ key, value }) => {
-    if (['email', 'password', 'newPassword', 'oldPassword', 'token', 'text', 'description'].includes(key)) {
+    if (
+      [
+        'email',
+        'password',
+        'newPassword',
+        'oldPassword',
+        'token',
+        'text',
+        'description',
+        'apiKey',
+        'signature',
+      ].includes(key)
+    ) {
       return '🙈'
     }
     return value

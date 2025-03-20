@@ -1,3 +1,4 @@
+import { omit } from '@brightideas/shared/src/omit'
 import _ from 'lodash'
 import { trpcLoggedProcedure } from '../../../lib/trpc'
 import { zGetIdeasTrpcInput } from './input'
@@ -58,7 +59,7 @@ export const getIdeasTrpcRoute = trpcLoggedProcedure.input(zGetIdeasTrpcInput).q
   const nextCursor = nextIdea?.serialNumber
   const rawIdeasExceptNext = rawIdeas.slice(0, input.limit)
   const ideasExceptNext = rawIdeasExceptNext.map((idea) => ({
-    ..._.omit(idea, ['_count']),
+    ...omit(idea, ['_count']),
     likesCount: idea._count.ideasLikes,
   }))
 
