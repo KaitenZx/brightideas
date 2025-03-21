@@ -28,10 +28,14 @@
   }
 }
 
+.gallery {
+  margin: 10px 0;
+}
+
 .text {
   font-size: 14px;
 
-  &>*:not(:first-child) {
+  & > *:not(:first-child) {
     margin-top: 10px;
   }
 }
