@@ -1,17 +1,32 @@
+import {
+  signUpPath,
+  signInPath,
+  signOutPath,
+  editProfilePath,
+  allIdeasPath,
+  newIdeaPath,
+  viewIdeaPath,
+  editIdeaPath,
+} from '@brightideas/shared/src/routes'
 import { pgr } from '../utils/pumpGetRoute'
 
-export const getSignUpRoute = pgr(() => '/sign-up')
+// Импортируем из shared!
 
-export const getSignInRoute = pgr(() => '/sign-in')
+/**
+ * Здесь мы оборачиваем "чистые" функции из shared в pgr,
+ * чтобы фронтенд мог пользоваться:
+ *   - placeholders
+ *   - abs
+ *   - useParams
+ */
 
-export const getSignOutRoute = pgr(() => '/sign-out')
+export const getSignUpRoute = pgr(() => signUpPath())
+export const getSignInRoute = pgr(() => signInPath())
+export const getSignOutRoute = pgr(() => signOutPath())
+export const getEditProfileRoute = pgr(() => editProfilePath())
+export const getAllIdeasRoute = pgr(() => allIdeasPath())
+export const getNewIdeaRoute = pgr(() => newIdeaPath())
 
-export const getEditProfileRoute = pgr(() => '/edit-profile')
+export const getViewIdeaRoute = pgr({ ideaNick: true }, ({ ideaNick }) => viewIdeaPath(ideaNick))
 
-export const getAllIdeasRoute = pgr(() => '/')
-
-export const getViewIdeaRoute = pgr({ ideaNick: true }, ({ ideaNick }) => `/ideas/${ideaNick}`)
-
-export const getEditIdeaRoute = pgr({ ideaNick: true }, ({ ideaNick }) => `/ideas/${ideaNick}/edit`)
-
-export const getNewIdeaRoute = pgr(() => '/ideas/new')
+export const getEditIdeaRoute = pgr({ ideaNick: true }, ({ ideaNick }) => editIdeaPath(ideaNick))

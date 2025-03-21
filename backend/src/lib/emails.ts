@@ -1,6 +1,6 @@
 import { promises as fs } from 'fs'
 import path from 'path'
-import { getNewIdeaRoute, getViewIdeaRoute } from '@brightideas/webapp/src/lib/routes'
+import { newIdeaPath, viewIdeaPath } from '@brightideas/shared/src/routes'
 import type { Idea, User } from '@prisma/client'
 import fg from 'fast-glob'
 import Handlebars from 'handlebars'
@@ -36,7 +36,7 @@ const sendEmail = async ({
   to: string
   subject: string
   templateName: string
-   
+
   templateVariables?: Record<string, any>
 }) => {
   try {
@@ -68,7 +68,7 @@ export const sendWelcomeEmail = async ({ user }: { user: Pick<User, 'nick' | 'em
     templateName: 'welcome',
     templateVariables: {
       userNick: user.nick,
-      addIdeaUrl: getNewIdeaRoute({ abs: true }),
+      addIdeaUrl: env.WEBAPP_URL + newIdeaPath(),
     },
   })
 }
@@ -96,7 +96,7 @@ export const sendMostLikedIdeasEmail = async ({
     subject: 'Most Liked Ideas!',
     templateName: 'mostLikedIdeas',
     templateVariables: {
-      ideas: ideas.map((idea) => ({ name: idea.name, url: getViewIdeaRoute({ abs: true, ideaNick: idea.nick }) })),
+      ideas: ideas.map((idea) => ({ name: idea.name, url: env.WEBAPP_URL + viewIdeaPath(idea.nick) })),
     },
   })
 }
