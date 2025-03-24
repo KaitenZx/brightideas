@@ -1,7 +1,8 @@
+import { env } from './env'
 import { promises as fs } from 'fs'
 import path from 'path'
+import { parsePublicEnv } from '@brightideas/shared/src/parsePublicEnv'
 import express, { type Express } from 'express'
-import { env } from './env'
 import { logger } from './logger'
 
 const checkFileExists = async (filePath: string) => {
@@ -35,8 +36,12 @@ export const applyServeWebApp = async (expressApp: Express) => {
 
   const htmlSource = await fs.readFile(path.resolve(webappDistDir, 'index.html'), 'utf8')
 
+  // eslint-disable-next-line node/no-process-env
+  const publicEnv = parsePublicEnv(process.env)
+  const htmlSourceWithEnv = htmlSource.replace('{ replaceMeWithPublicEnv: true }', JSON.stringify(publicEnv, null, 2))
+
   expressApp.use(express.static(webappDistDir, { index: false }))
   expressApp.get('/*', (req, res) => {
-    res.send(htmlSource)
+    res.send(htmlSourceWithEnv)
   })
 }

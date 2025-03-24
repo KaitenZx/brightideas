@@ -1,12 +1,9 @@
-import { createRequire } from 'module';
 import tsParser from '@typescript-eslint/parser'
 import love from 'eslint-config-love'
 import prettier from 'eslint-config-prettier'
 import nodePlugin from 'eslint-plugin-node';
 import jestPlugin from 'eslint-plugin-jest';
 
-//const require = createRequire(import.meta.url);
-//const jest = require('eslint-plugin-jest');
 
 
 export default [
@@ -84,6 +81,16 @@ export default [
           allow: ['info', 'error', 'warn'],
         },
       ],
+      'import/order': [
+        'error',
+        {
+          alphabetize: {
+            order: 'asc',
+            caseInsensitive: false,
+            orderImportKind: 'asc',
+          },
+        },
+      ],
     }
   },
 
@@ -97,15 +104,6 @@ export default [
         project: ['./shared/tsconfig.json'],
       },
     },
-  },
-
-  {
-    ...prettier,
-    files: ['**/*.ts', '**/*.tsx'],
-  },
-
-  {
-    files: ['**/*.ts', '**/*.tsx'],
     rules: {
       'import/order': [
         'error',
@@ -117,6 +115,17 @@ export default [
           },
         },
       ],
+    }
+  },
+
+  {
+    ...prettier,
+    files: ['**/*.ts', '**/*.tsx'],
+  },
+
+  {
+    files: ['**/*.ts', '**/*.tsx'],
+    rules: {
       '@typescript-eslint/consistent-type-definitions': ['error', 'type'],
       '@typescript-eslint/strict-boolean-expressions': 'off',
       '@typescript-eslint/prefer-nullish-coalescing': 'off',
