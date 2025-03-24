@@ -44,6 +44,7 @@ export const winstonLogger = winston.createLogger({
                 'message',
                 'service',
                 'hostEnv',
+                'signedUrl',
               ])
 
               const stringifyedLogData = _.trim(

@@ -9,7 +9,12 @@
       "@brightideas/webapp/*": ["../webapp/*"],
       "@brightideas/shared/*": ["../shared/*"]
     },
+    "composite": true,
+    "declaration": true,
+    "declarationMap": true,
+    "incremental": true,
     "outDir": "./dist",
+    "rootDir": "./src",
     "allowJs": true,
     "allowSyntheticDefaultImports": true,
     "downlevelIteration": true,
@@ -29,5 +34,6 @@
     "moduleResolution": "Node",
     "target": "ES2021"
   },
+  "references": [{ "path": "../shared" }],
   "include": ["src"]
 }

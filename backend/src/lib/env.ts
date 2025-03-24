@@ -38,8 +38,8 @@ const zEnv = z.object({
   WEBAPP_URL: zEnvNonemptyTrimmed,
   INITIAL_ADMIN_PASSWORD: zEnvNonemptyTrimmed,
   BREVO_API_KEY: zEnvNonemptyTrimmedRequiredOnNotLocal,
-  FROM_EMAIL_NAME: zEnvNonemptyTrimmed,
-  FROM_EMAIL_ADDRESS: zEnvNonemptyTrimmed,
+  //FROM_EMAIL_NAME: zEnvNonemptyTrimmed,
+  //FROM_EMAIL_ADDRESS: zEnvNonemptyTrimmed,
   DEBUG: z
     .string()
     .optional()
@@ -52,6 +52,11 @@ const zEnv = z.object({
   CLOUDINARY_API_KEY: zEnvNonemptyTrimmedRequiredOnNotLocal,
   CLOUDINARY_API_SECRET: zEnvNonemptyTrimmedRequiredOnNotLocal,
   CLOUDINARY_CLOUD_NAME: zEnvNonemptyTrimmed,
+  S3_ACCESS_KEY_ID: zEnvNonemptyTrimmedRequiredOnNotLocal,
+  S3_SECRET_ACCESS_KEY: zEnvNonemptyTrimmedRequiredOnNotLocal,
+  S3_BUCKET_NAME: zEnvNonemptyTrimmedRequiredOnNotLocal,
+  S3_REGION: zEnvNonemptyTrimmedRequiredOnNotLocal,
+  S3_URL: zEnvNonemptyTrimmed,
 })
 
 export const env = zEnv.parse(process.env)

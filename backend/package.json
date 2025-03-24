@@ -17,7 +17,7 @@
     "pmd": "prisma migrate dev",
     "pmt": "dotenv -e ./.env.test prisma migrate deploy",
     "pgc": "prisma generate",
-    "types": "tsc --noEmit --project ./tsconfig.json",
+    "types": "tsc --build ./tsconfig.json",
     "lint": "eslint  --cache --cache-location ./node_modules/.cache/.eslintcache .",
     "prettify": "prettier --log-level warn --cache --write \"{src/**/*.{ts,tsx,js,json,yml,scss},!**/{node_modules,dist}/**/*}\"",
     "prepare": "pnpm pgc && ts-patch install -s"
@@ -36,6 +36,7 @@
     "@types/node": "^22.10.7",
     "@types/passport": "^1.0.17",
     "@types/passport-jwt": "^4.0.1",
+    "@types/randomstring": "^1.3.0",
     "@types/triple-beam": "^1.3.5",
     "cross-env": "^7.0.3",
     "dotenv-cli": "^8.0.0",
@@ -43,9 +44,12 @@
     "esbuild-register": "^3.6.0",
     "eslint-plugin-node": "^11.1.0",
     "nodemon": "^3.1.9",
-    "prisma": "^6.2.1"
+    "prisma": "^6.2.1",
+    "ts-node-dev": "^2.0.0"
   },
   "dependencies": {
+    "@aws-sdk/client-s3": "^3.772.0",
+    "@aws-sdk/s3-request-presigner": "^3.772.0",
     "@prisma/client": "^6.2.1",
     "@sentry/node": "^9.1.0",
     "@trpc/server": "^10.45.2",
@@ -64,6 +68,7 @@
     "passport": "^0.7.0",
     "passport-jwt": "^4.0.1",
     "picocolors": "^1.1.1",
+    "randomstring": "^1.3.1",
     "react-router-dom": "^6.28.2",
     "serialize-error": "8.1.0",
     "superjson": "^2.2.2",

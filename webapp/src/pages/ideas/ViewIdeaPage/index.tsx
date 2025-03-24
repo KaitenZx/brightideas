@@ -1,7 +1,9 @@
 import type { TrpcRouterOutput } from '@brightideas/backend/src/router'
 import { canBlockIdeas, canEditIdea } from '@brightideas/backend/src/utils/can'
+import { getS3UploadName, getS3UploadUrl } from '@brightideas/shared/s3'
 import { getAvatarUrl, getCloudinaryUploadUrl } from '@brightideas/shared/src/cloudinary'
 import { format } from 'date-fns/format'
+import { Fragment } from 'react'
 import ImageGallery from 'react-image-gallery'
 import { Alert } from '../../../components/Alert'
 import { Button, LinkButton } from '../../../components/Button'
@@ -103,6 +105,27 @@ export const ViewIdeaPage = withPageWrapper({
             thumbnail: getCloudinaryUploadUrl(image, 'image', 'preview'),
           }))}
         />
+      </div>
+    )}
+    {idea.certificate && (
+      <div className={css.certificate}>
+        Certificate:{' '}
+        <a className={css.certificateLink} target="_blank" href={getS3UploadUrl(idea.certificate)} rel="noreferrer">
+          {getS3UploadName(idea.certificate)}
+        </a>
+      </div>
+    )}
+    {!!idea.documents.length && (
+      <div className={css.documents}>
+        Documents:{' '}
+        {idea.documents.map((document) => (
+          <Fragment key={document}>
+            <br />
+            <a className={css.documentLink} target="_blank" href={getS3UploadUrl(document)} rel="noreferrer">
+              {getS3UploadName(document)}
+            </a>
+          </Fragment>
+        ))}
       </div>
     )}
     <div className={css.text} dangerouslySetInnerHTML={{ __html: idea.text }} />

@@ -1,3 +1,4 @@
+import path from 'path'
 import { sentryVitePlugin } from '@sentry/vite-plugin'
 import react from '@vitejs/plugin-react'
 import { defineConfig, loadEnv } from 'vite'
@@ -37,6 +38,11 @@ export default defineConfig(({ mode }) => {
             release: { name: env.SOURCE_VERSION },
           }),
     ],
+    resolve: {
+      alias: {
+        '@brightideas/shared/src': path.resolve(__dirname, '../shared/src'),
+      },
+    },
     build: {
       sourcemap: true,
     },

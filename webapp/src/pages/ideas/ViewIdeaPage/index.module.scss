@@ -32,10 +32,27 @@
   margin: 10px 0;
 }
 
+.certificate {
+  margin: 10px 0;
+
+  .certificateLink {
+    @include mixins.link;
+  }
+}
+
+.documents {
+  margin: 10px 0;
+
+  .documentLink {
+    @include mixins.link;
+  }
+}
+
+
 .text {
   font-size: 14px;
 
-  & > *:not(:first-child) {
+  &>*:not(:first-child) {
     margin-top: 10px;
   }
 }

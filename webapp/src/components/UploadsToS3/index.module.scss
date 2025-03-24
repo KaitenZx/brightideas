@@ -1,0 +1,28 @@
+@use '../UploadToS3/index.module';
+@use '../../styles/vars';
+
+
+.field {
+	.uploads {
+		.upload {
+			&+.upload {
+				margin-top: 3px;
+			}
+
+			.delete {
+				padding: 5px;
+				margin-bottom: -5px;
+				margin-top: -5px;
+				vertical-align: -2px;
+				line-height: 0;
+				background: none;
+				border: none;
+				cursor: pointer;
+
+				.deleteIcon {
+					color: vars.$red;
+				}
+			}
+		}
+	}
+}
