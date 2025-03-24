@@ -1,8 +1,12 @@
+import { createRequire } from 'module';
 import tsParser from '@typescript-eslint/parser'
 import love from 'eslint-config-love'
 import prettier from 'eslint-config-prettier'
 import nodePlugin from 'eslint-plugin-node';
 import jestPlugin from 'eslint-plugin-jest';
+
+const require = createRequire(import.meta.url);
+const jestRecommended = require('eslint-plugin-jest/configs/recommended');
 
 
 export default [
@@ -189,7 +193,7 @@ export default [
 
   {
     files: ['**/*.test.ts', '**/*.test.tsx', '**/*.spec.ts', '**/*.spec.tsx'],
-    extends: ['plugin:jest/recommended'],
+    ...jestRecommended,
     plugins: {
       jest: jestPlugin,
     },

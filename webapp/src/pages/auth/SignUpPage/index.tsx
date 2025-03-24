@@ -11,6 +11,7 @@ import { useForm } from '../../../lib/form'
 import { withPageWrapper } from '../../../lib/pageWrapper'
 import { getAllIdeasRoute } from '../../../lib/routes'
 import { trpc } from '../../../lib/trpc'
+import { mixpanelAlias, mixpanelTrackSignUp } from '../../../lib/mixpanel'
 
 export const SignUpPage = withPageWrapper({
   redirectAuthorized: true,
@@ -32,7 +33,9 @@ export const SignUpPage = withPageWrapper({
       })
       .superRefine(zPasswordsMustBeTheSame('password', 'passwordAgain')),
     onSubmit: async (values) => {
-      const { token } = await signUp.mutateAsync(values)
+      const { token, userId } = await signUp.mutateAsync(values)
+      mixpanelAlias(userId)
+      mixpanelTrackSignUp()
       Cookies.set('token', token, { expires: 99999 })
       void trpcUtils.invalidate()
       navigate(getAllIdeasRoute())

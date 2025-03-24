@@ -10,6 +10,7 @@ import { useForm } from '../../../lib/form'
 import { withPageWrapper } from '../../../lib/pageWrapper'
 import { getAllIdeasRoute } from '../../../lib/routes'
 import { trpc } from '../../../lib/trpc'
+import { mixpanelIdentify, mixpanelTrackSignIn } from '../../../lib/mixpanel'
 
 export const SignInPage = withPageWrapper({
   redirectAuthorized: true,
@@ -25,7 +26,9 @@ export const SignInPage = withPageWrapper({
     },
     validationSchema: zSignInTrpcInput,
     onSubmit: async (values) => {
-      const { token } = await signIn.mutateAsync(values)
+      const { token, userId } = await signIn.mutateAsync(values)
+      mixpanelIdentify(userId)
+      mixpanelTrackSignIn()
       Cookies.set('token', token, { expires: 99999 })
       void trpcUtils.invalidate()
       navigate(getAllIdeasRoute())

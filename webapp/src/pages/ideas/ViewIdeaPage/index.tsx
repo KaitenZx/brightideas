@@ -15,6 +15,7 @@ import { withPageWrapper } from '../../../lib/pageWrapper'
 import { getEditIdeaRoute, getViewIdeaRoute } from '../../../lib/routes'
 import { trpc } from '../../../lib/trpc'
 import css from './index.module.scss'
+import { mixpanelSetIdeaLike } from '../../../lib/mixpanel'
 
 const LikeButton = ({ idea }: { idea: NonNullable<TrpcRouterOutput['getIdea']['idea']> }) => {
   const trpcUtils = trpc.useUtils()
@@ -41,7 +42,13 @@ const LikeButton = ({ idea }: { idea: NonNullable<TrpcRouterOutput['getIdea']['i
     <button
       className={css.likeButton}
       onClick={() => {
-        void setIdeaLike.mutateAsync({ ideaId: idea.id, isLikedByMe: !idea.isLikedByMe })
+        void setIdeaLike
+          .mutateAsync({ ideaId: idea.id, isLikedByMe: !idea.isLikedByMe })
+          .then(({ idea: { isLikedByMe } }) => {
+            if (isLikedByMe) {
+              mixpanelSetIdeaLike(idea)
+            }
+          })
       }}
     >
       <Icon size={32} className={css.likeIcon} name={idea.isLikedByMe ? 'likeFilled' : 'likeEmpty'} />
