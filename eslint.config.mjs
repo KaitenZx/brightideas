@@ -5,8 +5,8 @@ import prettier from 'eslint-config-prettier'
 import nodePlugin from 'eslint-plugin-node';
 import jestPlugin from 'eslint-plugin-jest';
 
-const require = createRequire(import.meta.url);
-const jestRecommended = require('eslint-plugin-jest/configs/recommended');
+//const require = createRequire(import.meta.url);
+//const jest = require('eslint-plugin-jest');
 
 
 export default [
@@ -193,7 +193,7 @@ export default [
 
   {
     files: ['**/*.test.ts', '**/*.test.tsx', '**/*.spec.ts', '**/*.spec.tsx'],
-    ...jestRecommended,
+    ...jestPlugin.configs['flat/recommended'],
     plugins: {
       jest: jestPlugin,
     },
