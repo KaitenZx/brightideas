@@ -35,5 +35,6 @@
     "target": "ES2021"
   },
   "references": [{ "path": "../shared" }],
-  "include": ["src"]
+  "include": ["src"],
+  "exclude": ["dist", "**/*.tsbuildinfo"]
 }

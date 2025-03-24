@@ -7,7 +7,7 @@ import jestPlugin from 'eslint-plugin-jest';
 
 export default [
   {
-    ignores: ['node_modules', 'dist', '*.config.js'],
+    ignores: ['node_modules', 'dist', '*.config.js', '**/*.tsbuildinfo'],
     settings: {
       'import/resolver': {
         node: {
@@ -41,6 +41,11 @@ export default [
         {
           groups: ['builtin', 'external', 'parent', 'sibling', 'index'],
           pathGroups: [
+            {
+              pattern: '{.,..}/**/env',
+              group: 'builtin',
+              position: 'before',
+            },
             {
               pattern: '{.,..}/**/test/integration',
               group: 'builtin',

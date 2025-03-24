@@ -4,7 +4,7 @@
   "version": "0.0.0",
   "scripts": {
     "dev": "vite",
-    "test": "jest",
+    "test": "dotenv -e .env.test -e .env jest",
     "build": "tsc -b && vite build",
     "lint": "eslint  --cache --cache-location ./node_modules/.cache/.eslintcache .",
     "stylelint": "stylelint --cache --cache-location ./node_modules/.cache/.stylelintcache 'src/**/*.scss'",
