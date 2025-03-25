@@ -4,6 +4,10 @@ import prettier from 'eslint-config-prettier'
 import nodePlugin from 'eslint-plugin-node';
 import jestPlugin from 'eslint-plugin-jest';
 
+import reactPlugin from 'eslint-plugin-react';
+import hooksPlugin from 'eslint-plugin-react-hooks';
+import jsxA11yPlugin from 'eslint-plugin-jsx-a11y';
+
 
 
 export default [
@@ -15,6 +19,9 @@ export default [
           extensions: ['.js', '.ts', '.tsx'],
         },
       },
+    },
+    react: {
+      version: 'detect', // Автоматически определять версию React
     },
   },
 
@@ -64,17 +71,39 @@ export default [
   },
 
   {
-    ...love,
+    // Применяем к файлам webapp
     files: ['webapp/**/*.ts', 'webapp/**/*.tsx'],
+    // Начинаем с конфигурации love
+    ...love,
+    // Добавляем настройки парсера для TS
     languageOptions: {
       parser: tsParser,
       parserOptions: {
         ...love.languageOptions?.parserOptions,
         project: ['./webapp/tsconfig.json'],
-        // tsconfigRootDir: new URL('.', import.meta.url).pathname,
+        // Добавляем опции для JSX, если love их не добавляет
+        ecmaFeatures: { jsx: true },
       },
+      // Указываем глобальные переменные для браузера, если нужно
+      globals: {
+        // Например:
+        window: 'readonly',
+        document: 'readonly',
+        // ...другие браузерные API
+      }
+    },
+    // Регистрируем плагины
+    plugins: {
+      react: reactPlugin,
+      'react-hooks': hooksPlugin,
+      'jsx-a11y': jsxA11yPlugin,
     },
     rules: {
+      ...reactPlugin.configs.recommended.rules,
+      // Наследуем рекомендуемые правила React Hooks
+      ...hooksPlugin.configs.recommended.rules,
+      // Наследуем рекомендуемые правила JSX A11y
+      ...jsxA11yPlugin.configs.recommended.rules,
       'no-console': [
         'error',
         {
@@ -118,13 +147,14 @@ export default [
     }
   },
 
-  {
-    ...prettier,
-    files: ['**/*.ts', '**/*.tsx'],
-  },
+
 
   {
     files: ['**/*.ts', '**/*.tsx'],
+    plugins: {
+      node: nodePlugin, // Убедись, что плагин зарегистрирован, если используешь его правила (node/no-process-env)
+      // jest: jestPlugin, // Jest регистрируется ниже
+    },
     rules: {
       '@typescript-eslint/consistent-type-definitions': ['error', 'type'],
       '@typescript-eslint/strict-boolean-expressions': 'off',
@@ -194,10 +224,10 @@ export default [
     },
   },
 
+
   {
-    plugins: {
-      node: nodePlugin,
-    },
+    ...prettier,
+    files: ['**/*.ts', '**/*.tsx'],
   },
 
   {
