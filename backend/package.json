@@ -13,7 +13,7 @@
     "sentry-release": "dotenv -- bash -c 'sentry-cli releases new ${SOURCE_VERSION} --finalize --org brightideas --project backend --auth-token ${SENTRY_AUTH_TOKEN}'",
     "sentry-sourcemaps": "dotenv -- bash -c 'sentry-cli releases files ${SOURCE_VERSION} upload-sourcemaps ./dist --org brightideas --project backend'",
     "sentry": "pnpm sentry-release && pnpm sentry-sourcemaps",
-    "start": "cross-env NODE_ENV=development ts-node-dev --watch ./src/emails/dist,./.env --rs --exit-child ./src/index.ts",
+    "start": "cross-env NODE_ENV=production node ./dist/backend/src/index.js",
     "pmd": "prisma migrate dev",
     "pmt": "dotenv -e ./.env.test prisma migrate deploy",
     "pmp": "dotenv -e ./.env.production prisma migrate deploy",

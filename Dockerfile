@@ -43,5 +43,6 @@ RUN pnpm b pgc
 
 ARG SOURCE_VERSION
 ENV SOURCE_VERSION=$SOURCE_VERSION
+ENV SOURCE_VERSION=$SOURCE_VERSION
 
-CMD pnpm b pmp && pnpm b start
+CMD ["pnpm", "--filter", "@brightideas/backend", "run", "start"]
