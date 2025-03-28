@@ -19,10 +19,11 @@ export default [
           extensions: ['.js', '.ts', '.tsx'],
         },
       },
+      react: {
+        version: 'detect', // Автоматически определять версию React
+      },
     },
-    react: {
-      version: 'detect', // Автоматически определять версию React
-    },
+
   },
 
   {

@@ -14,7 +14,10 @@ ARG NODE_ENV=production
 ARG SENTRY_AUTH_TOKEN
 ARG SOURCE_VERSION
 
+RUN pnpm sh build
+
 RUN pnpm b prepare
+
 RUN pnpm b build
 RUN pnpm b sentry
 RUN pnpm w build
@@ -44,5 +47,7 @@ RUN pnpm b pgc
 ARG SOURCE_VERSION
 ENV SOURCE_VERSION=$SOURCE_VERSION
 ENV SOURCE_VERSION=$SOURCE_VERSION
+
+
 
 CMD ["pnpm", "--filter", "@brightideas/backend", "run", "start"]
