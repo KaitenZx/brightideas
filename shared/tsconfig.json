@@ -1,10 +1,26 @@
 {
-  "extends": "../backend/tsconfig.json",
   "compilerOptions": {
+    // Важно для Project References
     "composite": true,
+    "declaration": true,
+    "declarationMap": true,
+    "sourceMap": true, // Полезно для отладки
+
+    // Структура проекта
+    "outDir": "./dist",
     "rootDir": "./src",
-    "outDir": "./dist"
+
+    // Совместимость с backend (CommonJS) и потенциально webapp (ESM)
+    "module": "CommonJS", // Основной формат для Node.js/backend
+    "target": "ES2021", // Совместимо с backend
+    "moduleResolution": "Node", // Стандартное разрешение
+    "esModuleInterop": true, // Для совместимости с разными типами модулей
+    "allowSyntheticDefaultImports": true, // Стандартная практика
+    "skipLibCheck": true, // Ускоряет сборку
+    "forceConsistentCasingInFileNames": true,
+    "strict": true, // Рекомендуется
+    "lib": ["ES2021"] // Совместимо с backend
   },
-  "include": ["src"],
-  "exclude": ["dist", "**/*.tsbuildinfo"]
+  "include": ["src/**/*"], // Включаем все файлы из src
+  "exclude": ["node_modules", "dist", "**/*.test.ts"] // Исключаем лишнее
 }

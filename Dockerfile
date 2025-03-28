@@ -1,6 +1,6 @@
 FROM node:22.13.1
 
-RUN npm install -g pnpm
+RUN npm install -g pnpm@10.7.0
 
 WORKDIR /app
 
@@ -36,7 +36,7 @@ COPY --from=0 /app/backend/src/prisma /app/backend/src/prisma
 
 WORKDIR /app
 
-RUN npm install -g pnpm
+RUN npm install -g pnpm@10.7.0
 RUN pnpm install --ignore-scripts --frozen-lockfile --prod
 
 RUN pnpm b pgc
