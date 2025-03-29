@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unsafe-call */
-import { sharedEnv } from '@brightideas/shared/env'
+import { getSharedEnv } from '@brightideas/shared'
 import { useParams as useReactRouterParams } from 'react-router-dom'
 
 type PumpedGetRouteInputBase = {
@@ -29,7 +29,8 @@ function pumpGetRoute(routeParamsOrGetRoute?: any, maybeGetRoute?: any) {
   const pumpedGetRoute = (routeParams?: PumpedGetRouteInputBase) => {
     const route = getRoute(routeParams)
     if (routeParams?.abs) {
-      return `${sharedEnv.WEBAPP_URL}${route}`
+      const webappUrl = getSharedEnv().WEBAPP_URL
+      return `${webappUrl}${route}`
     } else {
       return route
     }

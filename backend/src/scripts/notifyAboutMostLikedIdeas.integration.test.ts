@@ -1,6 +1,6 @@
 import { startOfMonth, sub } from 'date-fns'
-import { appContext, createIdeaLike, createIdeaWithAuthor, withoutNoize } from '../test/integration'
-import { getMostLikedIdeas } from './notifyAboutMostLikedIdeas'
+import { appContext, createIdeaLike, createIdeaWithAuthor, withoutNoize } from '../test/integration.js'
+import { getMostLikedIdeas } from './notifyAboutMostLikedIdeas.js'
 
 const createData = async (now: Date) => {
   // has 3 likes in prev month

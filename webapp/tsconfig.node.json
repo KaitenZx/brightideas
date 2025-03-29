@@ -20,5 +20,6 @@
     "noFallthroughCasesInSwitch": true,
     "noUncheckedSideEffectImports": true
   },
-  "include": ["vite.config.ts", "../shared/src/parsePublicEnv.ts"]
+  //"include": ["vite.config.ts", "../shared/src/parsePublicEnv.ts"]
+  "include": ["vite.config.ts"]
 }

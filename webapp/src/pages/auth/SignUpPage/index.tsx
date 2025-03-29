@@ -1,5 +1,5 @@
 import { zSignUpTrpcInput } from '@brightideas/backend/src/router/auth/signUp/input'
-import { zPasswordsMustBeTheSame, zStringRequired } from '@brightideas/shared/src/zod'
+import { zPasswordsMustBeTheSame, zStringRequired } from '@brightideas/shared'
 import Cookies from 'js-cookie'
 import { useNavigate } from 'react-router-dom'
 import { Alert } from '../../../components/Alert'
@@ -8,10 +8,10 @@ import { FormItems } from '../../../components/FormItems'
 import { Input } from '../../../components/Input'
 import { Segment } from '../../../components/Segment'
 import { useForm } from '../../../lib/form'
+import { mixpanelAlias, mixpanelTrackSignUp } from '../../../lib/mixpanel'
 import { withPageWrapper } from '../../../lib/pageWrapper'
 import { getAllIdeasRoute } from '../../../lib/routes'
 import { trpc } from '../../../lib/trpc'
-import { mixpanelAlias, mixpanelTrackSignUp } from '../../../lib/mixpanel'
 
 export const SignUpPage = withPageWrapper({
   redirectAuthorized: true,

@@ -1,8 +1,8 @@
-import { ExpectedError } from '../../../lib/error'
-import { trpcLoggedProcedure } from '../../../lib/trpc'
-import { getPasswordHash } from '../../../utils/getPasswordHash'
-import { signJWT } from '../../../utils/signJWT'
-import { zSignInTrpcInput } from './input'
+import { ExpectedError } from '../../../lib/error.js'
+import { trpcLoggedProcedure } from '../../../lib/trpc.js'
+import { getPasswordHash } from '../../../utils/getPasswordHash.js'
+import { signJWT } from '../../../utils/signJWT.js'
+import { zSignInTrpcInput } from './input.js'
 
 export const signInTrpcRoute = trpcLoggedProcedure.input(zSignInTrpcInput).mutation(async ({ ctx, input }) => {
   const user = await ctx.prisma.user.findFirst({

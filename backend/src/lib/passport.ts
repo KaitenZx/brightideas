@@ -1,8 +1,8 @@
 import type { Express, RequestHandler } from 'express'
 import { Passport } from 'passport'
 import { ExtractJwt, Strategy as JWTStrategy } from 'passport-jwt'
-import type { AppContext } from './ctx'
-import { env } from './env'
+import type { AppContext } from './ctx.js'
+import { env } from './env.js'
 
 export const applyPassportToExpressApp = (expressApp: Express, ctx: AppContext): void => {
   const passport = new Passport()

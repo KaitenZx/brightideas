@@ -1,4 +1,4 @@
-import { zEnvHost, zEnvNonemptyTrimmed, zEnvNonemptyTrimmedRequiredOnNotLocal } from '@brightideas/shared/src/zod'
+import { zEnvHost, zEnvNonemptyTrimmed, zEnvNonemptyTrimmedRequiredOnNotLocal } from '@brightideas/shared'
 import { z } from 'zod'
 
 export const zEnv = z.object({

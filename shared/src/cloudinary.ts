@@ -1,6 +1,12 @@
-import { sharedEnv } from './env'
+import { getSharedEnv } from './env.js'
 
-const cloudinaryUrl = `https://res.cloudinary.com/${sharedEnv.CLOUDINARY_CLOUD_NAME}/image/upload`
+//const cloudinaryUrl = `https://res.cloudinary.com/${sharedEnvInstance.CLOUDINARY_CLOUD_NAME}/image/upload`
+
+const getBaseCloudinaryUrl = (): string => {
+  // Получаем env ТОЛЬКО когда функция вызвана
+  const cloudName = getSharedEnv().CLOUDINARY_CLOUD_NAME
+  return `https://res.cloudinary.com/${cloudName}/image/upload`
+}
 
 type CloudinaryUploadType = {
   folder: string
@@ -42,6 +48,7 @@ export const getCloudinaryUploadUrl = <TTypeName extends CloudinaryUploadTypeNam
 ) => {
   const type = cloudinaryUploadTypes[typeName] as CloudinaryUploadType
   const preset = type.presets[presetName as string]
+  const cloudinaryUrl = getBaseCloudinaryUrl()
   return `${cloudinaryUrl}/${preset}/${publicId}`
 }
 
@@ -51,4 +58,4 @@ export const getAvatarUrl = (
 ) =>
   publicId
     ? getCloudinaryUploadUrl(publicId, 'avatar', preset)
-    : getCloudinaryUploadUrl('v1695811282/avatars/avatar-placeholder', 'avatar', preset)
+    : getCloudinaryUploadUrl('v1743279658/avatar-placeholder_nkldza.png', 'avatar', preset)

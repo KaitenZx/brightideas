@@ -8,7 +8,7 @@
     "skipLibCheck": true,
 
     "paths": {
-      "@brightideas/shared/*": ["../shared/src/*"],
+      //"@brightideas/shared/*": ["../shared/src/*"],
       "@brightideas/backend/*": ["../backend/src/*"]
     },
 

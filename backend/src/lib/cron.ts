@@ -1,7 +1,7 @@
 import { CronJob } from 'cron'
-import { notifyAboutMostLikedIdeas } from '../scripts/notifyAboutMostLikedIdeas'
-import type { AppContext } from './ctx'
-import { logger } from './logger'
+import { notifyAboutMostLikedIdeas } from '../scripts/notifyAboutMostLikedIdeas.js'
+import type { AppContext } from './ctx.js'
+import { logger } from './logger.js'
 
 export const applyCron = (ctx: AppContext) => {
   new CronJob(

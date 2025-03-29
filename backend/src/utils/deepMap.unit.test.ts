@@ -1,5 +1,5 @@
 import _ from 'lodash'
-import { deepMap } from './deepMap'
+import { deepMap } from './deepMap.js'
 
 describe('deepMap', () => {
   it('should map object', () => {

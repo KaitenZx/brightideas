@@ -1,8 +1,8 @@
-import { omit } from '@brightideas/shared/src/omit'
+import { omit } from '@brightideas/shared'
 import _ from 'lodash'
-import { ExpectedError } from '../../../lib/error'
-import { trpcLoggedProcedure } from '../../../lib/trpc'
-import { zGetIdeaTrpcInput } from './input'
+import { ExpectedError } from '../../../lib/error.js'
+import { trpcLoggedProcedure } from '../../../lib/trpc.js'
+import { zGetIdeaTrpcInput } from './input.js'
 
 export const getIdeaTrpcRoute = trpcLoggedProcedure.input(zGetIdeaTrpcInput).query(async ({ ctx, input }) => {
   const rawIdea = await ctx.prisma.idea.findUnique({

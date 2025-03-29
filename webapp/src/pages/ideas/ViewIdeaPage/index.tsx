@@ -1,7 +1,7 @@
 import type { TrpcRouterOutput } from '@brightideas/backend/src/router'
 import { canBlockIdeas, canEditIdea } from '@brightideas/backend/src/utils/can'
-import { getS3UploadName, getS3UploadUrl } from '@brightideas/shared/s3'
-import { getAvatarUrl, getCloudinaryUploadUrl } from '@brightideas/shared/src/cloudinary'
+import { getS3UploadName, getS3UploadUrl } from '@brightideas/shared'
+import { getAvatarUrl, getCloudinaryUploadUrl } from '@brightideas/shared'
 import { format } from 'date-fns/format'
 import { Fragment } from 'react'
 import ImageGallery from 'react-image-gallery'
@@ -11,11 +11,11 @@ import { FormItems } from '../../../components/FormItems'
 import { Icon } from '../../../components/Icon'
 import { Segment } from '../../../components/Segment'
 import { useForm } from '../../../lib/form'
+import { mixpanelSetIdeaLike } from '../../../lib/mixpanel'
 import { withPageWrapper } from '../../../lib/pageWrapper'
 import { getEditIdeaRoute, getViewIdeaRoute } from '../../../lib/routes'
 import { trpc } from '../../../lib/trpc'
 import css from './index.module.scss'
-import { mixpanelSetIdeaLike } from '../../../lib/mixpanel'
 
 const LikeButton = ({ idea }: { idea: NonNullable<TrpcRouterOutput['getIdea']['idea']> }) => {
   const trpcUtils = trpc.useUtils()

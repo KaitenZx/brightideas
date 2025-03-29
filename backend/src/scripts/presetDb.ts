@@ -1,6 +1,6 @@
-import type { AppContext } from '../lib/ctx'
-import { env } from '../lib/env'
-import { getPasswordHash } from '../utils/getPasswordHash'
+import type { AppContext } from '../lib/ctx.js'
+import { env } from '../lib/env.js'
+import { getPasswordHash } from '../utils/getPasswordHash.js'
 
 export const presetDb = async (ctx: AppContext) => {
   await ctx.prisma.user.upsert({

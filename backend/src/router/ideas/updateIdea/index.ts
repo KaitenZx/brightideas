@@ -1,6 +1,6 @@
-import { trpcLoggedProcedure } from '../../../lib/trpc'
-import { canEditIdea } from '../../../utils/can'
-import { zUpdateIdeaTrpcInput } from './input'
+import { trpcLoggedProcedure } from '../../../lib/trpc.js'
+import { canEditIdea } from '../../../utils/can.js'
+import { zUpdateIdeaTrpcInput } from './input.js'
 
 export const updateIdeaTrpcRoute = trpcLoggedProcedure.input(zUpdateIdeaTrpcInput).mutation(async ({ ctx, input }) => {
   const { ideaId, ...ideaInput } = input

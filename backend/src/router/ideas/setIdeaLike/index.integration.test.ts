@@ -1,4 +1,4 @@
-import { appContext, createIdeaWithAuthor, createUser, getTrpcCaller } from '../../../test/integration'
+import { appContext, createIdeaWithAuthor, createUser, getTrpcCaller } from '../../../test/integration.js'
 
 describe('setIdeaLike', () => {
   it('create like', async () => {

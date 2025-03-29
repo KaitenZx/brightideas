@@ -1,7 +1,7 @@
-import { omit } from '@brightideas/shared/src/omit'
+import { omit } from '@brightideas/shared'
 import _ from 'lodash'
-import { trpcLoggedProcedure } from '../../../lib/trpc'
-import { zGetIdeasTrpcInput } from './input'
+import { trpcLoggedProcedure } from '../../../lib/trpc.js'
+import { zGetIdeasTrpcInput } from './input.js'
 
 export const getIdeasTrpcRoute = trpcLoggedProcedure.input(zGetIdeasTrpcInput).query(async ({ ctx, input }) => {
   // const normalizedSearch = input.search ? input.search.trim().replace(/[\s\n\t]/g, '_') : undefined

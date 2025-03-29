@@ -2,7 +2,7 @@ import {
   type CloudinaryUploadPresetName,
   type CloudinaryUploadTypeName,
   getCloudinaryUploadUrl,
-} from '@brightideas/shared/src/cloudinary'
+} from '@brightideas/shared'
 import cn from 'classnames'
 import { type FormikProps } from 'formik'
 import memoize from 'lodash/memoize'
@@ -14,6 +14,7 @@ import css from './index.module.scss'
 export const useUploadToCloudinary = (type: CloudinaryUploadTypeName) => {
   const prepareCloudinaryUpload = trpc.prepareCloudinaryUpload.useMutation()
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const getPreparedData = useCallback(
     memoize(
       async () => {

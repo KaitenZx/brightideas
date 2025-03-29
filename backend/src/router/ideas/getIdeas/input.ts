@@ -1,4 +1,4 @@
-import { zStringOptional } from '@brightideas/shared/src/zod'
+import { zStringOptional } from '@brightideas/shared'
 import { z } from 'zod'
 
 export const zGetIdeasTrpcInput = z.object({

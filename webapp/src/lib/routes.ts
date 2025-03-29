@@ -7,7 +7,7 @@ import {
   newIdeaPath,
   viewIdeaPath,
   editIdeaPath,
-} from '@brightideas/shared/src/routes'
+} from '@brightideas/shared'
 import { pgr } from '../utils/pumpGetRoute'
 
 // Импортируем из shared!

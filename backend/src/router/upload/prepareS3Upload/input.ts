@@ -1,4 +1,4 @@
-import { zStringRequired } from '@brightideas/shared/src/zod'
+import { zStringRequired } from '@brightideas/shared'
 import { z } from 'zod'
 
 export const zPrepareS3UploadTrpcInput = z.object({

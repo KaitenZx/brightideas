@@ -1,6 +1,8 @@
 import tsParser from '@typescript-eslint/parser'
+import tsPlugin from '@typescript-eslint/eslint-plugin';
 import love from 'eslint-config-love'
 import prettier from 'eslint-config-prettier'
+import importPlugin from 'eslint-plugin-import';
 import nodePlugin from 'eslint-plugin-node';
 import jestPlugin from 'eslint-plugin-jest';
 
@@ -42,6 +44,9 @@ export default [
         // Часто нужно указать корень репо для правильных путей:
         // tsconfigRootDir: new URL('.', import.meta.url).pathname,
       },
+    },
+    plugins: {
+      import: importPlugin,
     },
     rules: {
       "no-console": "error",
@@ -98,6 +103,7 @@ export default [
       react: reactPlugin,
       'react-hooks': hooksPlugin,
       'jsx-a11y': jsxA11yPlugin,
+      import: importPlugin,
     },
     rules: {
       ...reactPlugin.configs.recommended.rules,
@@ -105,6 +111,7 @@ export default [
       ...hooksPlugin.configs.recommended.rules,
       // Наследуем рекомендуемые правила JSX A11y
       ...jsxA11yPlugin.configs.recommended.rules,
+      'react/react-in-jsx-scope': 'off',
       'no-console': [
         'error',
         {
@@ -134,6 +141,9 @@ export default [
         project: ['./shared/tsconfig.json'],
       },
     },
+    plugins: {
+      import: importPlugin,
+    },
     rules: {
       'import/order': [
         'error',
@@ -152,9 +162,13 @@ export default [
 
   {
     files: ['**/*.ts', '**/*.tsx'],
+    languageOptions: { // Явно укажем парсер для этих файлов
+      parser: tsParser,
+    },
     plugins: {
       node: nodePlugin, // Убедись, что плагин зарегистрирован, если используешь его правила (node/no-process-env)
-      // jest: jestPlugin, // Jest регистрируется ниже
+      import: importPlugin,
+      '@typescript-eslint': tsPlugin,
     },
     rules: {
       '@typescript-eslint/consistent-type-definitions': ['error', 'type'],

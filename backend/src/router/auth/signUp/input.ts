@@ -1,4 +1,4 @@
-import { zEmailRequired, zNickRequired, zStringRequired } from '@brightideas/shared/src/zod'
+import { zEmailRequired, zNickRequired, zStringRequired } from '@brightideas/shared'
 import { z } from 'zod'
 
 export const zSignUpTrpcInput = z.object({

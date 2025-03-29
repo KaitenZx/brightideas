@@ -1,4 +1,4 @@
-import { pick } from '@brightideas/shared/src/pick'
+import { pick } from '@brightideas/shared'
 import type { User } from '@prisma/client'
 
 export const toClientMe = (user: User | null) => {

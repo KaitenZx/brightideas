@@ -1,4 +1,4 @@
-import lodashPick from 'lodash/pick'
+import lodashPick from 'lodash/pick.js'
 
 export const pick = <TObject extends object, TKeys extends keyof TObject>(
   obj: TObject,

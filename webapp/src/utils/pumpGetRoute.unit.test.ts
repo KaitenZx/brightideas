@@ -1,8 +1,14 @@
-import { sharedEnv } from '@brightideas/shared/src/env'
+import { loadAndValidateSharedEnv } from '@brightideas/shared'
+
+const mockEnvData = {
+  WEBAPP_URL: 'https://test.example.com',
+  CLOUDINARY_CLOUD_NAME: 'mock-cloud-name',
+  S3_URL: 'https://mock.s3.url.com',
+}
+
+loadAndValidateSharedEnv(mockEnvData)
 
 import { pgr } from './pumpGetRoute'
-
-sharedEnv.WEBAPP_URL = 'https://example.com'
 
 describe('pgr', () => {
   it('return simple route', () => {

@@ -1,7 +1,7 @@
 import type { TrpcRouterOutput } from '@brightideas/backend/src/router'
 import { zUpdatePasswordTrpcInput } from '@brightideas/backend/src/router/auth/updatePassword/input'
 import { zUpdateProfileTrpcInput } from '@brightideas/backend/src/router/auth/updateProfile/input'
-import { zPasswordsMustBeTheSame, zStringRequired } from '@brightideas/shared/src/zod'
+import { zPasswordsMustBeTheSame, zStringRequired } from '@brightideas/shared'
 import { Alert } from '../../../components/Alert'
 import { Button } from '../../../components/Button'
 import { FormItems } from '../../../components/FormItems'

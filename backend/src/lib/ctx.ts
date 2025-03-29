@@ -1,4 +1,4 @@
-import { createPrismaClient } from './prisma'
+import { createPrismaClient } from './prisma.js'
 
 export const createAppContext = () => {
   const prisma = createPrismaClient()

@@ -1,4 +1,4 @@
-import { zNickRequired } from '@brightideas/shared/src/zod'
+import { zNickRequired } from '@brightideas/shared'
 import { z } from 'zod'
 
 export const zUpdateProfileTrpcInput = z.object({

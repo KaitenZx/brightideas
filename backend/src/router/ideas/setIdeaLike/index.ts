@@ -1,5 +1,5 @@
-import { trpcLoggedProcedure } from '../../../lib/trpc'
-import { zSetIdeaLikeIdeaTrpcInput } from './input'
+import { trpcLoggedProcedure } from '../../../lib/trpc.js'
+import { zSetIdeaLikeIdeaTrpcInput } from './input.js'
 
 export const setIdeaLikeTrpcRoute = trpcLoggedProcedure
   .input(zSetIdeaLikeIdeaTrpcInput)

@@ -1,9 +1,13 @@
-import { env } from './env'
 import { promises as fs } from 'fs'
 import path from 'path'
-import { parsePublicEnv } from '@brightideas/shared/src/parsePublicEnv'
+import { fileURLToPath } from 'url'
+import { parsePublicEnv } from '@brightideas/shared'
 import express, { type Express } from 'express'
-import { logger } from './logger'
+import { env } from './env.js'
+import { logger } from './logger.js'
+
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = path.dirname(__filename)
 
 const checkFileExists = async (filePath: string) => {
   return await fs

@@ -1,15 +1,15 @@
 import '../lib/sentry.mock'
 
-import { omit } from '@brightideas/shared/src/omit'
+import { omit } from '@brightideas/shared'
 import { type Idea, type User } from '@prisma/client'
 import _ from 'lodash'
-import { createAppContext } from '../lib/ctx'
-import { env } from '../lib/env'
-import { getTrpcContext } from '../lib/trpc'
-import { trpcRouter } from '../router'
-import { deepMap } from '../utils/deepMap'
-import { getPasswordHash } from '../utils/getPasswordHash'
-import { type ExpressRequest } from '../utils/types'
+import { createAppContext } from '../lib/ctx.js'
+import { env } from '../lib/env.js'
+import { getTrpcContext } from '../lib/trpc.js'
+import { trpcRouter } from '../router/index.js'
+import { deepMap } from '../utils/deepMap.js'
+import { getPasswordHash } from '../utils/getPasswordHash.js'
+import { type ExpressRequest } from '../utils/types.js'
 
 if (env.NODE_ENV !== 'test') {
   throw new Error('Run integration tests only with NODE_ENV=test')

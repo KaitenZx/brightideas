@@ -1,4 +1,4 @@
-import { canEditIdea, hasPermission } from './can'
+import { canEditIdea, hasPermission } from './can.js'
 
 describe('can', () => {
   it('hasPermission return true for user with this permission', () => {

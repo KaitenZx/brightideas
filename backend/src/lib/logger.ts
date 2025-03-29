@@ -1,5 +1,5 @@
 import { EOL } from 'os'
-import { omit } from '@brightideas/shared/src/omit'
+import { omit } from '@brightideas/shared'
 import { TRPCError } from '@trpc/server'
 import debug from 'debug'
 import _ from 'lodash'
@@ -8,10 +8,10 @@ import { serializeError } from 'serialize-error'
 import { MESSAGE } from 'triple-beam'
 import winston from 'winston'
 import * as yaml from 'yaml'
-import { deepMap } from '../utils/deepMap'
-import { env } from './env'
-import { ExpectedError } from './error'
-import { sentryCaptureException } from './sentry'
+import { deepMap } from '../utils/deepMap.js'
+import { env } from './env.js'
+import { ExpectedError } from './error.js'
+import { sentryCaptureException } from './sentry.js'
 
 export const winstonLogger = winston.createLogger({
   level: 'debug',

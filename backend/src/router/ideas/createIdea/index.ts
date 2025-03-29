@@ -1,6 +1,6 @@
 import { TRPCError } from '@trpc/server'
-import { trpcLoggedProcedure } from '../../../lib/trpc'
-import { zCreateIdeaTrpcInput } from './input'
+import { trpcLoggedProcedure } from '../../../lib/trpc.js'
+import { zCreateIdeaTrpcInput } from './input.js'
 
 export const createIdeaTrpcRoute = trpcLoggedProcedure.input(zCreateIdeaTrpcInput).mutation(async ({ input, ctx }) => {
   if (!ctx.me) {

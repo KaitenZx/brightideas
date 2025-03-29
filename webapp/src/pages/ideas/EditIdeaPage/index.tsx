@@ -1,6 +1,6 @@
 import { zUpdateIdeaTrpcInput } from '@brightideas/backend/src/router/ideas/updateIdea/input'
 import { canEditIdea } from '@brightideas/backend/src/utils/can'
-import { pick } from '@brightideas/shared/src/pick'
+import { pick } from '@brightideas/shared'
 import { useNavigate } from 'react-router-dom'
 import { Alert } from '../../../components/Alert'
 import { Button } from '../../../components/Button'

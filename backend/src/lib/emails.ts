@@ -1,12 +1,16 @@
 import { promises as fs } from 'fs'
 import path from 'path'
-import { newIdeaPath, viewIdeaPath } from '@brightideas/shared/src/routes'
+import { fileURLToPath } from 'url' // Импортируем fileURLToPath
+import { newIdeaPath, viewIdeaPath } from '@brightideas/shared'
 import type { Idea, User } from '@prisma/client'
 import fg from 'fast-glob'
 import Handlebars from 'handlebars'
 import _ from 'lodash'
-import { env } from './env'
-import { logger } from './logger'
+import { env } from './env.js'
+import { logger } from './logger.js'
+
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = path.dirname(__filename)
 
 const getHbrTemplates = _.memoize(async () => {
   const htmlPathsPattern = path.resolve(__dirname, '../emails/dist/**/*.html')

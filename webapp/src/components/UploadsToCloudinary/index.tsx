@@ -2,7 +2,7 @@ import {
   type CloudinaryUploadPresetName,
   type CloudinaryUploadTypeName,
   getCloudinaryUploadUrl,
-} from '@brightideas/shared/src/cloudinary'
+} from '@brightideas/shared'
 import cn from 'classnames'
 import { type FormikProps } from 'formik'
 import { useRef, useState } from 'react'

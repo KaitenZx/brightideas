@@ -1,5 +1,5 @@
-import { cloudinaryUploadTypes } from '@brightideas/shared/src/cloudinary'
-import { getKeysAsArray } from '@brightideas/shared/src/getKeysAsArray'
+import { cloudinaryUploadTypes } from '@brightideas/shared'
+import { getKeysAsArray } from '@brightideas/shared'
 import { z } from 'zod'
 
 export const zPrepareCloudinaryUploadTrpcInput = z.object({
