@@ -11,8 +11,9 @@ COPY . .
 RUN pnpm install --offline --ignore-scripts --frozen-lockfile
 
 ARG NODE_ENV=production
-ARG SENTRY_AUTH_TOKEN
+#ARG SENTRY_AUTH_TOKEN
 ARG SOURCE_VERSION
+ENV NODE_ENV=${NODE_ENV} 
 
 RUN pnpm sh build
 
@@ -21,6 +22,13 @@ RUN pnpm b prepare
 RUN pnpm b build
 RUN pnpm b sentry
 RUN pnpm w build
+
+RUN --mount=type=secret,id=SENTRY_AUTH_TOKEN \
+    export SENTRY_AUTH_TOKEN=$(cat /run/secrets/SENTRY_AUTH_TOKEN) && \
+    export SOURCE_VERSION=${SOURCE_VERSION} && \
+    echo "Running Sentry script for version ${SOURCE_VERSION}..." && \
+    pnpm --filter @brightideas/backend run sentry
+
 
 
 FROM node:22.13.1-alpine
@@ -42,11 +50,10 @@ WORKDIR /app
 RUN npm install -g pnpm@10.7.0
 RUN pnpm install --ignore-scripts --frozen-lockfile --prod
 
-RUN pnpm b pgc
+RUN pnpm --filter @brightideas/backend exec prisma generate
 
 ARG SOURCE_VERSION
-ENV SOURCE_VERSION=$SOURCE_VERSION
-ENV SOURCE_VERSION=$SOURCE_VERSION
+ENV SOURCE_VERSION=${SOURCE_VERSION}
 
 
 
