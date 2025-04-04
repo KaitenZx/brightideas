@@ -6,10 +6,6 @@
     "experimentalResolver": true
   },
   "compilerOptions": {
-    "paths": {
-      "@brightideas/webapp/*": ["../webapp/*"]
-      //"@brightideas/shared/*": ["../shared/*"]
-    },
     "composite": true,
     "declaration": true,
     "declarationMap": true,

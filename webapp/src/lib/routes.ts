@@ -10,16 +10,6 @@ import {
 } from '@brightideas/shared'
 import { pgr } from '../utils/pumpGetRoute'
 
-// Импортируем из shared!
-
-/**
- * Здесь мы оборачиваем "чистые" функции из shared в pgr,
- * чтобы фронтенд мог пользоваться:
- *   - placeholders
- *   - abs
- *   - useParams
- */
-
 export const getSignUpRoute = pgr(() => signUpPath())
 export const getSignInRoute = pgr(() => signInPath())
 export const getSignOutRoute = pgr(() => signOutPath())

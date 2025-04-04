@@ -74,7 +74,7 @@ const zEnv = z.object({
   PASSWORD_SALT: zEnvNonemptyTrimmed,
   WEBAPP_URL: zEnvNonemptyTrimmed,
   INITIAL_ADMIN_PASSWORD: zEnvNonemptyTrimmed,
-  BREVO_API_KEY: zEnvNonemptyTrimmedRequiredOnNotLocal,
+  //BREVO_API_KEY: zEnvNonemptyTrimmedRequiredOnNotLocal,
   //FROM_EMAIL_NAME: zEnvNonemptyTrimmed,
   //FROM_EMAIL_ADDRESS: zEnvNonemptyTrimmed,
   DEBUG: z

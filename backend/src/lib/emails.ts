@@ -53,6 +53,7 @@ const sendEmail = async ({
       to,
       templateName,
       templateVariables,
+      html,
     })
     return { ok: true }
   } catch (error) {

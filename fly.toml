@@ -1,50 +1,68 @@
-# fly.toml app configuration file generated for brightideas on 2025-03-28T23:45:34+04:00
-#
-# See https://fly.io/docs/reference/configuration/ for information about how to use this file.
-#
-
+# fly.toml app configuration file
 app = 'brightideas'
-primary_region = 'ams'
+primary_region = 'ams' # Убедись, что твоя БД тоже в этом или близком регионе
 
+# --- Секция сборки ---
 [build]
   dockerfile = "Dockerfile"
-[build.args]
-  NODE_ENV = "production"
+  # Build arguments передаются в Dockerfile во время сборки
+  [build.args]
+    NODE_ENV = "production"
+    # SOURCE_VERSION будет передан при запуске `fly deploy`
+    # Пример значения по умолчанию, если не передано:
+    SOURCE_VERSION = "unknown" 
+
+  # Build secrets доступны только во время сборки (безопасно для токенов)
+  [build.secrets]
+    SENTRY_AUTH_TOKEN =""
+
+# --- Переменные окружения для запущенного приложения ---
+# Секреты (DATABASE_URL, JWT_SECRET и т.д.) будут добавлены автоматически из Fly Secrets.
+# Здесь указываем только НЕ-секретные переменные.
 [env]
-  PORT = "3000" 
-  HOST_ENV = "production" 
-  WEBAPP_URL = "https://brightideas.fly.dev" 
+  PORT = "3000"
+  HOST_ENV = "production"
+  NODE_ENV = "production" # Часто полезно явно указать и здесь
+  # WEBAPP_URL нужен бэкенду для генерации ссылок и т.п.
+  WEBAPP_URL = "https://brightideas.fly.dev" # Замени, если у тебя кастомный домен
+
+# --- Команда, выполняемая после успешной сборки и перед запуском новой версии ---
 [deploy]
-  release_command = "pnpm --filter @brightideas/backend run pmp" 
-[[services]]
-  protocol = "tcp"
-  internal_port = 3000 # Порт, который слушает твой backend (из [env].PORT)
-  processes = ["app"] # соответствует процессу по умолчанию
+  release_command = "pnpm --filter @brightideas/backend exec prisma migrate deploy"
 
-  [[services.ports]]
-    port = 80 # HTTP
-    handlers = ["http"]
-    force_https = true # Автоматически перенаправлять HTTP на HTTPS
+# --- Настройки веб-сервиса ---
+[http_service]
+  internal_port = 3000 # Порт, который слушает твое приложение внутри контейнера
+  force_https = true   # Автоматически перенаправлять HTTP на HTTPS
+  auto_stop_machines = true  # Останавливать машину при неактивности (экономия)
+  auto_start_machines = true # Запускать машину при первом запросе (возможен холодный старт)
+  min_machines_running = 0   # Минимум работающих машин (0 для scale-to-zero)
+  # Если хочешь, чтобы хотя бы одна машина всегда работала (убирает холодный старт):
+  # min_machines_running = 1
+  processes = ["app"] # Связь с процессом по умолчанию в Dockerfile (CMD)
 
-  [[services.ports]]
-    port = 443 # HTTPS
-    handlers = ["tls", "http"]
-
-  # Health Checks - проверки работоспособности твоего приложения
-  # Замени /healthz на реальный эндпоинт, если он есть, или оставь TCP-проверку
-  [[services.tcp_checks]]
+# --- Проверка состояния приложения ---
+[checks]
+  [checks.alive]
+    type = "tcp" # Простая проверка, что порт открыт
+    port = 3000
     interval = "15s"
     timeout = "2s"
-    grace_period = "1s"
-    
-[http_service]
-  internal_port = 8080
-  force_https = true
-  auto_stop_machines = 'stop'
-  auto_start_machines = true
-  min_machines_running = 0
-  processes = ['app']
+    grace_period = "30s" # Время на запуск приложения перед началом проверок
 
+  # Альтернатива: HTTP проверка (лучше, т.к. проверяет ответ приложения)
+  # Раскомментируй этот блок и закомментируй TCP выше, если хочешь использовать
+  # [checks.alive]
+  #   type = "http"
+  #   port = 3000       # Порт внутри контейнера
+  #   path = "/ping"    # Твой эндпоинт для проверки живости
+  #   interval = "15s"  # Как часто проверять
+  #   timeout = "2s"    # Сколько ждать ответа
+  #   grace_period = "10s" # Больше времени на первый запуск
+  #   method = "get"
+  #   protocol = "http" # Проверка идет внутри сети Fly
+
+# --- Ресурсы виртуальной машины ---
 [[vm]]
   memory = '1gb'
   cpu_kind = 'shared'
