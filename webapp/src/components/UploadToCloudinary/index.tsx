@@ -1,12 +1,9 @@
-import {
-  type CloudinaryUploadPresetName,
-  type CloudinaryUploadTypeName,
-  getCloudinaryUploadUrl,
-} from '@brightideas/shared'
+import { type CloudinaryUploadPresetName, type CloudinaryUploadTypeName } from '@brightideas/shared'
 import cn from 'classnames'
 import { type FormikProps } from 'formik'
 import memoize from 'lodash/memoize'
 import { useCallback, useRef, useState } from 'react'
+import { getCloudinaryUploadUrl } from '../../lib/cloudinary'
 import { trpc } from '../../lib/trpc'
 import { Button, Buttons } from '../Button'
 import css from './index.module.scss'

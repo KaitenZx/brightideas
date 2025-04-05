@@ -1,7 +1,7 @@
-import { getS3UploadUrl, getS3UploadName } from '@brightideas/shared'
 import cn from 'classnames'
 import { type FormikProps } from 'formik'
 import { useRef, useState } from 'react'
+import { getS3UploadName, getS3UploadUrl } from '../../lib/s3'
 import { trpc } from '../../lib/trpc'
 import { Button, Buttons } from '../Button'
 import css from './index.module.scss'

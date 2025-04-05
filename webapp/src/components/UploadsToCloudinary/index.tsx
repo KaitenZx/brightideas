@@ -1,11 +1,8 @@
-import {
-  type CloudinaryUploadPresetName,
-  type CloudinaryUploadTypeName,
-  getCloudinaryUploadUrl,
-} from '@brightideas/shared'
+import { type CloudinaryUploadPresetName, type CloudinaryUploadTypeName } from '@brightideas/shared'
 import cn from 'classnames'
 import { type FormikProps } from 'formik'
 import { useRef, useState } from 'react'
+import { getCloudinaryUploadUrl } from '../../lib/cloudinary'
 import { Button } from '../Button'
 import { Icon } from '../Icon'
 import { useUploadToCloudinary } from '../UploadToCloudinary'

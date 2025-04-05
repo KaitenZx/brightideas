@@ -1,4 +1,4 @@
-import { getSharedEnv } from './env.js'
+import { getWebAppEnv } from './env'
 
 export const getS3UploadName = (path: string) => {
   const filename = path.replace(/^.*[\\/]/, '')
@@ -8,6 +8,6 @@ export const getS3UploadName = (path: string) => {
 }
 
 export const getS3UploadUrl = (s3Key: string) => {
-  const sharedEnvInstance = getSharedEnv()
-  return `${sharedEnvInstance.S3_URL}/${s3Key}`
+  const sharedEnvInstance = getWebAppEnv()
+  return `${sharedEnvInstance.VITE_S3_URL}/${s3Key}`
 }

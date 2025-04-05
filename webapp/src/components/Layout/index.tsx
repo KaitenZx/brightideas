@@ -1,6 +1,6 @@
 import { createRef } from 'react'
 import { Link, Outlet } from 'react-router-dom'
-//import { ReactComponent as Logo } from '../../assets/images/logo.svg?svgr'
+//import { ReactComponent as Logo } from '../../assets/images/logo.svg'
 
 import { useMe } from '../../lib/ctx'
 import {

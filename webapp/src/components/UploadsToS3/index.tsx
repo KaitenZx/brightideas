@@ -1,7 +1,7 @@
-import { getS3UploadName, getS3UploadUrl } from '@brightideas/shared'
 import cn from 'classnames'
 import { type FormikProps } from 'formik'
 import { useRef, useState } from 'react'
+import { getS3UploadName, getS3UploadUrl } from '../../lib/s3'
 import { Button } from '../Button'
 import { Icon } from '../Icon'
 import { useUploadToS3 } from '../UploadToS3'

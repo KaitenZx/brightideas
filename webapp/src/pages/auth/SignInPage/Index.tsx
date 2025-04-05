@@ -7,10 +7,10 @@ import { FormItems } from '../../../components/FormItems'
 import { Input } from '../../../components/Input'
 import { Segment } from '../../../components/Segment'
 import { useForm } from '../../../lib/form'
+import { mixpanelIdentify, mixpanelTrackSignIn } from '../../../lib/mixpanel'
 import { withPageWrapper } from '../../../lib/pageWrapper'
 import { getAllIdeasRoute } from '../../../lib/routes'
 import { trpc } from '../../../lib/trpc'
-import { mixpanelIdentify, mixpanelTrackSignIn } from '../../../lib/mixpanel'
 
 export const SignInPage = withPageWrapper({
   redirectAuthorized: true,
