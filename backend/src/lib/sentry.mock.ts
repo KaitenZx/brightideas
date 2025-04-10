@@ -1,3 +1,6 @@
-jest.mock('./sentry', () => {
-  return jest.createMockFromModule('./sentry')
-})
+import { vi } from 'vitest' // <-- Импортируем vi
+
+vi.mock('./sentry', () => ({
+  initSentry: vi.fn(),
+  sentryCaptureException: vi.fn(),
+}))

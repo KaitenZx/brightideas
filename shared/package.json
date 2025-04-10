@@ -7,7 +7,6 @@
   "types": "./dist/index.d.ts",
   "scripts": {
     "build": "tsc --build ./tsconfig.json",
-    "test": "jest",
     "types": "rimraf ./dist ./tsconfig.tsbuildinfo && tsc --build ./tsconfig.json",
     "lint": "eslint --cache --cache-location ./node_modules/.cache/.eslintcache --ext .ts .",
     "prettify": "prettier --log-level warn --cache --write '{src/**/*,*}.{ts,tsx,js,json,yml,scss}' '!**/{node_modules,dist}/**/*'"

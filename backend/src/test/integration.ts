@@ -3,6 +3,7 @@ import '../lib/sentry.mock'
 import { omit } from '@brightideas/shared'
 import { type Idea, type User } from '@prisma/client'
 import _ from 'lodash'
+import { afterAll, afterEach, beforeEach } from 'vitest'
 import { createAppContext } from '../lib/ctx.js'
 import { env } from '../lib/env.js'
 import { getTrpcContext } from '../lib/trpc.js'
@@ -20,6 +21,12 @@ export const appContext = createAppContext()
 afterAll(appContext.stop)
 
 beforeEach(async () => {
+  await appContext.prisma.ideaLike.deleteMany()
+  await appContext.prisma.idea.deleteMany()
+  await appContext.prisma.user.deleteMany()
+})
+
+afterEach(async () => {
   await appContext.prisma.ideaLike.deleteMany()
   await appContext.prisma.idea.deleteMany()
   await appContext.prisma.user.deleteMany()
