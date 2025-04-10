@@ -94,6 +94,10 @@ const zEnv = z.object({
   S3_BUCKET_NAME: zEnvNonemptyTrimmedRequiredOnNotLocal,
   S3_REGION: zEnvNonemptyTrimmedRequiredOnNotLocal,
   S3_URL: zEnvNonemptyTrimmed,
+  DATADOG_API_KEY: zEnvNonemptyTrimmedRequiredOnNotLocal, // Обязателен НЕ в local
+  DATADOG_SITE: z.string().trim().min(1).optional(), // Сайт Datadog (datadoghq.eu, datadoghq.com) - необязательно, по умолчанию .eu
+  DD_SERVICE: z.string().trim().min(1).optional(), // Имя сервиса - необязательно, по умолчанию 'brightideas-backend'
+  DD_ENV: z.string().trim().min(1).optional(), // Окружение (production, staging) - необязательно, по умолчанию NODE_ENV
 })
 
 let validatedEnv

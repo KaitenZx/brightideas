@@ -24,7 +24,10 @@ primary_region = 'ams' # Убедись, что твоя БД тоже в это
   HOST_ENV = "production"
   NODE_ENV = "production" # Часто полезно явно указать и здесь
   # WEBAPP_URL нужен бэкенду для генерации ссылок и т.п.
-  WEBAPP_URL = "https://brightideas.fly.dev" # Замени, если у тебя кастомный домен
+  WEBAPP_URL = "https://brightideas.fly.dev" 
+  DATADOG_SITE = "datadoghq.eu"  # Или datadoghq.com, если твой аккаунт Datadog в US
+  DD_SERVICE = "brightideas-backend" # Имя твоего сервиса
+  DD_ENV = "production"
 
 # --- Команда, выполняемая после успешной сборки и перед запуском новой версии ---
 [deploy]
