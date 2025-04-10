@@ -6,9 +6,9 @@
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "scripts": {
-    "build": "rimraf ./dist ./tsconfig.tsbuildinfo && tsc --build ./tsconfig.json",
+    "build": "tsc --build ./tsconfig.json",
     "test": "jest",
-    "types": "tsc --noEmit -p ./tsconfig.json",
+    "types": "rimraf ./dist ./tsconfig.tsbuildinfo && tsc --build ./tsconfig.json",
     "lint": "eslint --cache --cache-location ./node_modules/.cache/.eslintcache --ext .ts .",
     "prettify": "prettier --log-level warn --cache --write '{src/**/*,*}.{ts,tsx,js,json,yml,scss}' '!**/{node_modules,dist}/**/*'"
   },

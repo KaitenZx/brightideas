@@ -6,6 +6,7 @@ import { getSignInRoute } from '../../../lib/routes'
 import { trpc } from '../../../lib/trpc'
 
 export const SignOutPage = () => {
+  // This page is used to sign out the user
   const navigate = useNavigate()
   const trpcUtils = trpc.useUtils()
   useEffect(() => {

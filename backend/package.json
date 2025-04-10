@@ -9,7 +9,7 @@
     "build-emails": "rimraf ./src/emails/dist && mkdir ./src/emails/dist && mjml ./src/emails/[!_]*.mjml -o ./src/emails/dist",
     "watch-emails": "mjml -w ./src/emails/[!_]*.mjml -o ./src/emails/dist",
     "copy-emails": "copyfiles ./src/emails/dist/*.html ./dist/backend",
-    "build-ts": "rimraf ./dist && tsc --build ./tsconfig.build.json",
+    "build-ts": "tsc --build ./tsconfig.build.json",
     "build": "pnpm build-ts && pnpm build-emails && pnpm copy-emails",
     "sentry-release": "dotenv -- bash -c 'sentry-cli releases new ${SOURCE_VERSION} --finalize --org brightideas --project backend --auth-token ${SENTRY_AUTH_TOKEN}'",
     "sentry-sourcemaps": "dotenv -- bash -c 'sentry-cli releases files ${SOURCE_VERSION} upload-sourcemaps ./dist --org brightideas --project backend'",
@@ -19,7 +19,7 @@
     "pmt": "dotenv -e ./.env.test prisma migrate deploy",
     "pmp": "dotenv -e ./.env.production prisma migrate deploy",
     "pgc": "prisma generate",
-    "types": "tsc --noEmit -p ./tsconfig.json",
+    "types": "rimraf ./dist ./tsconfig.build.tsbuildinfo && tsc --build ./tsconfig.build.json",
     "lint": "eslint  --cache --cache-location ./node_modules/.cache/.eslintcache .",
     "prettify": "prettier --log-level warn --cache --write \"{src/**/*.{ts,tsx,js,json,yml,scss},!**/{node_modules,dist}/**/*}\"",
     "prepare": "pnpm pgc"

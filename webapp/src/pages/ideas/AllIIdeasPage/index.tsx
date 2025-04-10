@@ -39,7 +39,7 @@ export const AllIdeasPage = withPageWrapper({
   return (
     <Segment title="All Ideas">
       <div className={css.filter}>
-        <Input maxWidth={'100%'} label="Search" name="search" formik={formik} />
+        <Input maxWidth={'70%'} label="Search" name="search" formik={formik} />
       </div>
       {isLoading || isRefetching ? (
         <Loader type="section" />

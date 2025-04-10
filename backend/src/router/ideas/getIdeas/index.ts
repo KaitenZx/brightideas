@@ -4,8 +4,17 @@ import { trpcLoggedProcedure } from '../../../lib/trpc.js'
 import { zGetIdeasTrpcInput } from './input.js'
 
 export const getIdeasTrpcRoute = trpcLoggedProcedure.input(zGetIdeasTrpcInput).query(async ({ ctx, input }) => {
-  // const normalizedSearch = input.search ? input.search.trim().replace(/[\s\n\t]/g, '_') : undefined
-  const normalizedSearch = input.search ? input.search.trim().replace(/[\s\n\t]/g, ' & ') : undefined
+  const preparedSearchQuery = input.search
+    ? input.search
+        .trim() // Убрать пробелы с краев
+        .split(/[\s\n\t]+/) // Разбить на слова по пробелам
+        .filter((term) => term.length > 0) // Убрать пустые слова
+        .map((term) => term + ':*') // Добавить суффикс префикса к каждому слову
+        .join(' & ') // Соединить через AND
+    : undefined
+
+  const searchQuery = preparedSearchQuery && preparedSearchQuery.length > 0 ? preparedSearchQuery : undefined
+
   const rawIdeas = await ctx.prisma.idea.findMany({
     select: {
       id: true,
@@ -21,23 +30,23 @@ export const getIdeasTrpcRoute = trpcLoggedProcedure.input(zGetIdeasTrpcInput).q
     },
     where: {
       blockedAt: null,
-      ...(!normalizedSearch
+      ...(!searchQuery
         ? {}
         : {
             OR: [
               {
                 name: {
-                  search: normalizedSearch,
+                  search: searchQuery,
                 },
               },
               {
                 description: {
-                  search: normalizedSearch,
+                  search: searchQuery,
                 },
               },
               {
                 text: {
-                  search: normalizedSearch,
+                  search: searchQuery,
                 },
               },
             ],
