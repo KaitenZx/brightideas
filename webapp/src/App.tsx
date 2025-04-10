@@ -18,7 +18,7 @@ import { EditIdeaPage } from './pages/ideas/EditIdeaPage'
 import { NewIdeaPage } from './pages/ideas/NewIdeaPage'
 import { ViewIdeaPage } from './pages/ideas/ViewIdeaPage'
 import { NotFoundPage } from './pages/other/NotFoundPage'
-
+//commented out for now
 export const App = () => {
   return (
     <HelmetProvider>

@@ -1,5 +1,6 @@
 import _ from 'lodash'
 import { deepMap } from './deepMap.js'
+import { describe, expect, it } from 'vitest'
 
 describe('deepMap', () => {
   it('should map object', () => {

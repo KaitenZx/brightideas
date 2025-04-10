@@ -4,8 +4,7 @@ import love from 'eslint-config-love'
 import prettier from 'eslint-config-prettier'
 import importPlugin from 'eslint-plugin-import';
 import nodePlugin from 'eslint-plugin-node';
-import jestPlugin from 'eslint-plugin-jest';
-
+import vitestPlugin from 'eslint-plugin-vitest';
 import reactPlugin from 'eslint-plugin-react';
 import hooksPlugin from 'eslint-plugin-react-hooks';
 import jsxA11yPlugin from 'eslint-plugin-jsx-a11y';
@@ -247,9 +246,11 @@ export default [
 
   {
     files: ['**/*.test.ts', '**/*.test.tsx', '**/*.spec.ts', '**/*.spec.tsx'],
-    ...jestPlugin.configs['flat/recommended'],
+    // Используем рекомендуемые правила для Vitest
+    ...vitestPlugin.configs.recommended,
     plugins: {
-      jest: jestPlugin,
+      // Регистрируем плагин под именем 'vitest' (или как тебе удобнее)
+      vitest: vitestPlugin,
     },
   }
 

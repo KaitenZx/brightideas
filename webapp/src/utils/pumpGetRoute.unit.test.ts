@@ -1,5 +1,6 @@
 import { webAppEnvSchema } from '../lib/env'
 import { pgr } from './pumpGetRoute'
+import { describe, it, expect, vi } from 'vitest'
 
 const mockEnvRaw = {
   NODE_ENV: 'development',
@@ -8,31 +9,27 @@ const mockEnvRaw = {
   VITE_WEBAPP_URL: 'https://test.example.com', // <-- Важно для теста abs
   VITE_CLOUDINARY_CLOUD_NAME: 'mock-cloud',
   VITE_S3_URL: 'https://mock.s3.amazonaws.com',
-  // Остальные опциональны при HOST_ENV=local
 }
 
-// 3. Валидируем моковые данные ОДИН РАЗ перед тестами
-//    Это гарантирует, что наш мок соответствует контракту схемы
 let validMockEnv: ReturnType<typeof webAppEnvSchema.parse>
+
 try {
   validMockEnv = webAppEnvSchema.parse(mockEnvRaw)
 } catch (error) {
   console.error('FATAL: Mock environment data failed validation!', error)
-  // Прерываем тесты, если мок невалиден
   throw new Error('Invalid mock environment data for tests.')
 }
 
-// 4. Мокируем модуль ../config/env ЦЕЛИКОМ
-jest.mock('../config/env', () => ({
-  // Мокируем ТОЛЬКО функцию getWebAppEnv
-  // Мы не хотим вызывать настоящую initializeWebAppEnv в тестах
-  getWebAppEnv: () => validMockEnv, // Возвращаем УЖЕ провалидированные моковые данные
-  // initializeWebAppEnv здесь не мокируем, она не должна вызываться
-}))
+vi.mock('../lib/env', async (importOriginal) => {
+  const actual = await importOriginal<typeof import('../lib/env')>()
+
+  return {
+    ...actual,
+    getWebAppEnv: () => validMockEnv,
+  }
+})
 
 describe('pgr', () => {
-  // beforeAll и beforeEach для инициализации больше не нужны, т.к. мы используем jest.mock
-
   it('return simple route', () => {
     const getSimpleRoute = pgr(() => '/simple')
     expect(getSimpleRoute()).toBe('/simple')
@@ -55,7 +52,6 @@ describe('pgr', () => {
 
   it('return absolute route', () => {
     const getSimpleRoute = pgr(() => '/simple')
-    // Проверяем, что используется VITE_WEBAPP_URL из мока (validMockEnv)
     expect(getSimpleRoute({ abs: true })).toBe('https://test.example.com/simple')
   })
 

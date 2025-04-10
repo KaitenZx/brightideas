@@ -41,5 +41,18 @@ export default defineConfig(({ mode }) => {
     define: {
       'process.env': publicEnv,
     },
+    test: {
+      name: 'webapp', // Имя окружения
+      globals: true, // describe, it, expect и т.д. без импорта vi
+      environment: 'jsdom', // Обязательно для тестов, которым нужен DOM/браузерные API
+      include: ['src/**/*.{test,spec}.?(c|m)[jt]s?(x)'],
+
+      // --- Очистка моков ---
+      mockReset: true, // Сбрасывает моки до пустой функции (без реализации)
+
+      // --- Таймауты ---
+      testTimeout: 5000, // Стандартный таймаут
+      hookTimeout: 10000,
+    },
   }
 })

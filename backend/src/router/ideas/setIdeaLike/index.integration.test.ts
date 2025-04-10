@@ -1,3 +1,4 @@
+import { describe, it, expect } from 'vitest'
 import { appContext, createIdeaWithAuthor, createUser, getTrpcCaller } from '../../../test/integration.js'
 
 describe('setIdeaLike', () => {
@@ -24,8 +25,8 @@ describe('setIdeaLike', () => {
   })
 
   it('remove like', async () => {
-    const { idea } = await createIdeaWithAuthor({ number: 1 })
-    const liker = await createUser({ number: 2 })
+    const { idea } = await createIdeaWithAuthor({ number: 3 })
+    const liker = await createUser({ number: 4 })
     const trpcCallerForLiker = getTrpcCaller(liker)
     const result1 = await trpcCallerForLiker.setIdeaLike({
       ideaId: idea.id,
@@ -47,7 +48,16 @@ describe('setIdeaLike', () => {
         likesCount: 0,
       },
     })
-    const ideaLikes = await appContext.prisma.ideaLike.findMany()
-    expect(ideaLikes).toHaveLength(0)
+
+    const specificLike = await appContext.prisma.ideaLike.findUnique({
+      where: {
+        ideaId_userId: {
+          ideaId: idea.id, // Идея из ЭТОГО теста
+          userId: liker.id, // Пользователь из ЭТОГО теста
+        },
+      },
+    })
+    // Ожидаем, что findUnique не найдет запись (вернет null)
+    expect(specificLike).toBeNull()
   })
 })
