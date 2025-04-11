@@ -1,4 +1,4 @@
-import { isNumber, isString } from 'lodash'
+import _ from 'lodash'
 import { describe, expect, it } from 'vitest'
 import { deepMap } from './deepMap.js'
 
@@ -50,7 +50,7 @@ describe('deepMap', () => {
         return 'me was an object'
       }
 
-      if (isString(value) || isNumber(value)) {
+      if (_.isString(value) || _.isNumber(value)) {
         return `${value}` + 'XXX'
       }
       return value

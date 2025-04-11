@@ -1,5 +1,5 @@
 # syntax=docker/dockerfile:1.4
-FROM node:22.13.1
+FROM node:22.14.0
 
 RUN npm install -g pnpm@10.7.0
 
@@ -29,7 +29,7 @@ RUN --mount=type=secret,id=SENTRY_AUTH_TOKEN \
     "
 
 
-FROM node:22.13.1-alpine
+FROM node:22.14.0-alpine
 
 COPY --from=0 /app/package.json /app/package.json
 COPY --from=0 /app/pnpm-lock.yaml /app/pnpm-lock.yaml

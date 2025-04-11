@@ -2,7 +2,7 @@ import '../lib/sentry.mock'
 
 import { omit } from '@brightideas/shared'
 import { type Idea, type User } from '@prisma/client'
-import { entries, isArray, isObject } from 'lodash'
+import _ from 'lodash'
 import { afterAll, afterEach, beforeEach } from 'vitest'
 import { createAppContext } from '../lib/ctx.js'
 import { env } from '../lib/env.js'
@@ -39,8 +39,8 @@ export const getTrpcCaller = (user?: User) => {
 
 export const withoutNoize = (input: any): any => {
   return deepMap(input, ({ value }) => {
-    if (isObject(value) && !isArray(value)) {
-      return entries(value).reduce((acc, [objectKey, objectValue]: [string, any]) => {
+    if (_.isObject(value) && !_.isArray(value)) {
+      return _.entries(value).reduce((acc, [objectKey, objectValue]: [string, any]) => {
         if ([/^id$/, /Id$/, /At$/, /^url$/].some((regex) => regex.test(objectKey))) {
           return acc
         }
