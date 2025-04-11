@@ -77,7 +77,7 @@ const BlockIdea = ({ idea }: { idea: NonNullable<TrpcRouterOutput['getIdea']['id
   )
 }
 
-export const ViewIdeaPage = withPageWrapper({
+const ViewIdeaPage = withPageWrapper({
   useQuery: () => {
     const { ideaNick } = getViewIdeaRoute.useParams()
     return trpc.getIdea.useQuery({
@@ -157,3 +157,5 @@ export const ViewIdeaPage = withPageWrapper({
     )}
   </Segment>
 ))
+
+export default ViewIdeaPage

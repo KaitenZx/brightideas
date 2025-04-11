@@ -12,7 +12,7 @@ import { withPageWrapper } from '../../../lib/pageWrapper'
 import { getAllIdeasRoute } from '../../../lib/routes'
 import { trpc } from '../../../lib/trpc'
 
-export const SignInPage = withPageWrapper({
+const SignInPage = withPageWrapper({
   redirectAuthorized: true,
   title: 'Sign In',
 })(() => {
@@ -48,3 +48,5 @@ export const SignInPage = withPageWrapper({
     </Segment>
   )
 })
+
+export default SignInPage

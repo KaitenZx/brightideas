@@ -55,6 +55,7 @@
     "@types/react-image-gallery": "^1.2.4",
     "@types/react-infinite-scroller": "^1.2.5",
     "@vitejs/plugin-react": "^4.3.4",
+    "autoprefixer": "^10.4.21",
     "globals": "^15.14.0",
     "prettier": "^3.4.2",
     "sass-migrator": "^2.3.0",

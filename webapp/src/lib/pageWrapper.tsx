@@ -6,10 +6,10 @@ import { useNavigate } from 'react-router-dom'
 import { ErrorPageComponent } from '../components/ErrorPageComponent'
 import { Loader } from '../components/Loader'
 import { lastVisistedNotAuthRouteStore } from '../components/NotAuthRouteTracker'
-import { NotFoundPage } from '../pages/other/NotFoundPage'
+import NotFoundPage from '../pages/other/NotFoundPage'
 import { useAppContext, type AppContext } from './ctx'
 
-class CheckExistsError extends Error { }
+class CheckExistsError extends Error {}
 const checkExistsFn = <T,>(value: T, message?: string): NonNullable<T> => {
   if (!value) {
     throw new CheckExistsError(message)
@@ -17,14 +17,14 @@ const checkExistsFn = <T,>(value: T, message?: string): NonNullable<T> => {
   return value
 }
 
-class CheckAccessError extends Error { }
+class CheckAccessError extends Error {}
 const checkAccessFn = <T,>(value: T, message?: string): void => {
   if (!value) {
     throw new CheckAccessError(message)
   }
 }
 
-class GetAuthorizedMeError extends Error { }
+class GetAuthorizedMeError extends Error {}
 
 type Props = Record<string, any>
 type QueryResult = UseTRPCQueryResult<any, any>
@@ -163,10 +163,17 @@ const PageWrapper = <TProps extends Props = {}, TQueryResult extends QueryResult
   }
 }
 
+PageWrapper.displayName = 'PageWrapper'
+
 export const withPageWrapper = <TProps extends Props = {}, TQueryResult extends QueryResult | undefined = undefined>(
   pageWrapperProps: Omit<PageWrapperProps<TProps, TQueryResult>, 'Page'>
 ) => {
+  // Возвращаем HOC
   return (Page: PageWrapperProps<TProps, TQueryResult>['Page']) => {
-    return () => <PageWrapper {...pageWrapperProps} Page={Page} />
+    // Создаем компонент-обертку
+    const WrappedComponent = () => <PageWrapper {...pageWrapperProps} Page={Page} />
+    // Задаем ему displayName
+    WrappedComponent.displayName = `withPageWrapper(${Page.displayName || Page.name || 'Component'})`
+    return WrappedComponent
   }
 }

@@ -1,5 +1,4 @@
 import { omit } from '@brightideas/shared'
-import _ from 'lodash'
 import { trpcLoggedProcedure } from '../../../lib/trpc.js'
 import { zGetIdeasTrpcInput } from './input.js'
 

@@ -5,14 +5,14 @@ import { newIdeaPath, viewIdeaPath } from '@brightideas/shared'
 import type { Idea, User } from '@prisma/client'
 import fg from 'fast-glob'
 import Handlebars from 'handlebars'
-import _ from 'lodash'
+import { memoize } from 'lodash'
 import { env } from './env.js'
 import { logger } from './logger.js'
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
 
-const getHbrTemplates = _.memoize(async () => {
+const getHbrTemplates = memoize(async () => {
   const htmlPathsPattern = path.resolve(__dirname, '../emails/dist/**/*.html')
   const htmlPaths = fg.sync(htmlPathsPattern)
   const hbrTemplates: Record<string, HandlebarsTemplateDelegate> = {}

@@ -12,7 +12,7 @@ import { useForm } from '../../../lib/form'
 import { withPageWrapper } from '../../../lib/pageWrapper'
 import { trpc } from '../../../lib/trpc'
 
-export const NewIdeaPage = withPageWrapper({
+const NewIdeaPage = withPageWrapper({
   title: 'New Idea',
   authorizedOnly: true,
 })(() => {
@@ -57,3 +57,5 @@ export const NewIdeaPage = withPageWrapper({
     </Segment>
   )
 })
+
+export default NewIdeaPage

@@ -13,7 +13,7 @@ import { getViewIdeaRoute } from '../../../lib/routes'
 import { trpc } from '../../../lib/trpc'
 import css from './index.module.scss'
 
-export const AllIdeasPage = withPageWrapper({
+const AllIdeasPage = withPageWrapper({
   title: 'BrightIdeas',
   isTitleExact: true,
 })(() => {
@@ -88,3 +88,5 @@ export const AllIdeasPage = withPageWrapper({
     </Segment>
   )
 })
+
+export default AllIdeasPage

@@ -16,7 +16,7 @@ import { withPageWrapper } from '../../../lib/pageWrapper'
 import { getEditIdeaRoute, getViewIdeaRoute } from '../../../lib/routes'
 import { trpc } from '../../../lib/trpc'
 
-export const EditIdeaPage = withPageWrapper({
+const EditIdeaPage = withPageWrapper({
   authorizedOnly: true,
   useQuery: () => {
     const { ideaNick } = getEditIdeaRoute.useParams()
@@ -66,3 +66,5 @@ export const EditIdeaPage = withPageWrapper({
     </Segment>
   )
 })
+
+export default EditIdeaPage

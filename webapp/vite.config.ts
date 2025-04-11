@@ -1,6 +1,8 @@
 import { parsePublicEnv } from '@brightideas/shared'
 import { sentryVitePlugin } from '@sentry/vite-plugin'
 import react from '@vitejs/plugin-react'
+import autoprefixer from 'autoprefixer'
+import { visualizer } from 'rollup-plugin-visualizer'
 import { defineConfig, loadEnv } from 'vite'
 
 export default defineConfig(({ mode }) => {
@@ -19,15 +21,28 @@ export default defineConfig(({ mode }) => {
   return {
     plugins: [
       react(),
-      !env.SENTRY_AUTH_TOKEN
-        ? undefined
-        : sentryVitePlugin({
+      // Твой плагин Sentry (убедись, что он определен корректно)
+      env.SENTRY_AUTH_TOKEN && env.SOURCE_VERSION
+        ? sentryVitePlugin({
             org: 'brightideas',
             project: 'webapp',
             authToken: env.SENTRY_AUTH_TOKEN,
             release: { name: env.SOURCE_VERSION },
-          }),
-    ],
+          })
+        : undefined,
+
+      visualizer({
+        open: true, // Автоматически открыть отчет в браузере
+        gzipSize: true, // Показать размер после gzip
+        filename: 'dist/stats.html',
+      }),
+    ].filter(Boolean),
+
+    css: {
+      postcss: {
+        plugins: [autoprefixer({})],
+      },
+    },
 
     build: {
       sourcemap: true,

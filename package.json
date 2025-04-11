@@ -41,6 +41,7 @@
     "lint-staged": "^15.4.3",
     "prettier": "^3.5.0",
     "rimraf": "^6.0.1",
+    "rollup-plugin-visualizer": "^5.14.0",
     "stylelint": "^16.13.2",
     "ts-patch": "^3.3.0",
     "tsx": "^4.19.3",
@@ -50,5 +51,10 @@
   },
   "engines": {
     "node": ">=16.0.0 <23.0.0"
+  },
+  "pnpm": {
+    "overrides": {
+      "postcss": "^8.5.3"
+    }
   }
 }

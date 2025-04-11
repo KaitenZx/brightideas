@@ -75,7 +75,7 @@ const Password = () => {
   )
 }
 
-export const EditProfilePage = withPageWrapper({
+const EditProfilePage = withPageWrapper({
   authorizedOnly: true,
   setProps: ({ getAuthorizedMe }) => ({
     me: getAuthorizedMe(),
@@ -93,3 +93,5 @@ export const EditProfilePage = withPageWrapper({
     </Segment>
   )
 })
+
+export default EditProfilePage

@@ -1,4 +1,4 @@
-import _ from 'lodash'
+import { cloneDeep, isArray, isObject } from 'lodash'
 
 type ReplaceFn = ({ path, key, value }: { path: string; key: string; value: Value }) => Value
 type Value = Object | number | string | boolean | null | undefined | Function | Symbol | any[]
@@ -27,7 +27,7 @@ const recursion = ({
   if (!result) {
     return result
   }
-  if (_.isArray(result)) {
+  if (isArray(result)) {
     return result.map((item, index) =>
       recursion({
         input: item,
@@ -38,7 +38,7 @@ const recursion = ({
       })
     )
   }
-  if (_.isObject(result)) {
+  if (isObject(result)) {
     const object: any = {}
     for (const [key, value] of Object.entries(result)) {
       object[key] = recursion({
@@ -57,6 +57,6 @@ const recursion = ({
 export const deepMap = <T = Value>(input: Value, replaceFn: ReplaceFn): T => {
   const seen = new WeakSet()
   const mappedObject = recursion({ input, replaceFn, seen, pathStartsWith: '', parentKey: '' })
-  const clonedMappedObject = _.cloneDeep(mappedObject)
+  const clonedMappedObject = cloneDeep(mappedObject)
   return clonedMappedObject as T
 }
