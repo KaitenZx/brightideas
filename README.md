@@ -2,7 +2,7 @@
 
 **Short description:** A modern fullstack web application built from the ground up to showcase the transition from frontend specialization to fullstack development. This project features end-to-end type safety with TypeScript, React, Node.js, tRPC, Prisma, PostgreSQL, along with best practices in CI/CD, logging, monitoring, and code quality automation.
 
-[![Build Status](https://img.shields.io/github/actions/workflow/status/KaitenZx/BrightIdeas/fly-deploy.yml?branch=main&style=flat-square)](https://github.com/KaitenZx/BrightIdeas/actions/workflows/fly-deploy.yml) [![TypeScript](https://img.shields.io/badge/TypeScript-Strict-blue?style=flat-square)](https://www.typescriptlang.org/) [![React](https://img.shields.io/badge/React-18-blue?style=flat-square)](https://reactjs.org/) [![Node.js](https://img.shields.io/badge/Node.js-22-green?style=flat-square)](https://nodejs.org/) [![tRPC](https://img.shields.io/badge/tRPC-10-orange?style=flat-square)](https://trpc.io/) [![Prisma](https://img.shields.io/badge/Prisma-6-purple?style=flat-square)](https://www.prisma.io/) [![Code Style](https://img.shields.io/badge/code_style-prettier-ff69b4.svg?style=flat-square)](https://prettier.io) [![Tested with](https://img.shields.io/badge/tested_with-Vitest-6D932B?style=flat-square)](https://vitest.dev/) [![Docker](https://img.shields.io/badge/Docker-ready-blue?style=flat-square&logo=docker)](https://www.docker.com/)
+[![Build Status](https://img.shields.io/github/actions/workflow/status/KaitenZx/BrightIdeas/fly-deploy.yml?branch=master&style=flat-square)](https://github.com/KaitenZx/BrightIdeas/actions/workflows/fly-deploy.yml) [![TypeScript](https://img.shields.io/badge/TypeScript-Strict-blue?style=flat-square)](https://www.typescriptlang.org/) [![React](https://img.shields.io/badge/React-18-blue?style=flat-square)](https://reactjs.org/) [![Node.js](https://img.shields.io/badge/Node.js-22-green?style=flat-square)](https://nodejs.org/) [![tRPC](https://img.shields.io/badge/tRPC-10-orange?style=flat-square)](https://trpc.io/) [![Prisma](https://img.shields.io/badge/Prisma-6-purple?style=flat-square)](https://www.prisma.io/) [![Code Style](https://img.shields.io/badge/code_style-prettier-ff69b4.svg?style=flat-square)](https://prettier.io) [![Tested with](https://img.shields.io/badge/tested_with-Vitest-6D932B?style=flat-square)](https://vitest.dev/) [![Docker](https://img.shields.io/badge/Docker-ready-blue?style=flat-square&logo=docker)](https://www.docker.com/)
 
 ---
 
@@ -18,7 +18,7 @@
 
 *[FILL ME IN: Add several screenshots or GIFs here demonstrating key screens and features of the application.]*
 
----
+---c
 
 ## 🎯 Project Goal
 
@@ -133,7 +133,7 @@ The project is implemented as a **monorepo** using `pnpm workspaces`.
 
 1.  **Clone the repository:**
     ```bash
-    git clone https://github.com/YOUR_USERNAME/BrightIdeas.git
+    git clone https://github.com/KaitenZx/BrightIdeas.git
     cd BrightIdeas
     ```
 
