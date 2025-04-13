@@ -1,5 +1,5 @@
-import css from './index.module.scss'
+import { Stack } from '@mantine/core'
 
 export const FormItems = ({ children }: { children: React.ReactNode }) => {
-	return <div className={css.formItems}>{children}</div>
+  return <Stack gap="sm">{children}</Stack>
 }

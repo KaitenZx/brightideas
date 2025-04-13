@@ -1,12 +1,11 @@
 import { type CloudinaryUploadPresetName, type CloudinaryUploadTypeName } from '@brightideas/shared'
-import cn from 'classnames'
+import { FileInput, Image, Stack, Box, LoadingOverlay } from '@mantine/core'
 import { type FormikProps } from 'formik'
 import memoize from 'lodash/memoize'
-import { useCallback, useRef, useState } from 'react'
+import { useCallback, useState } from 'react'
 import { getCloudinaryUploadUrl } from '../../lib/cloudinary'
 import { trpc } from '../../lib/trpc'
-import { Button, Buttons } from '../Button'
-import css from './index.module.scss'
+import { Button } from '../Button'
 
 export const useUploadToCloudinary = (type: CloudinaryUploadTypeName) => {
   const prepareCloudinaryUpload = trpc.prepareCloudinaryUpload.useMutation()
@@ -69,83 +68,76 @@ export const UploadToCloudinary = <TTypeName extends CloudinaryUploadTypeName>({
   type: TTypeName
   preset: CloudinaryUploadPresetName<TTypeName>
 }) => {
-  const value = formik.values[name]
-  const error = formik.errors[name] as string | undefined
-  const touched = formik.touched[name] as boolean
-  const invalid = touched && !!error
+  const value = formik.values[name] as string | undefined
+  const error = formik.touched[name] && formik.errors[name] ? (formik.errors[name] as string) : undefined
   const disabled = formik.isSubmitting
 
-  const inputEl = useRef<HTMLInputElement>(null)
+  const [selectedFile, setSelectedFile] = useState<File | null>(null)
   const [loading, setLoading] = useState(false)
 
   const { uploadToCloudinary } = useUploadToCloudinary(type)
 
+  const handleFileChange = async (file: File | null) => {
+    if (!file) {
+      setSelectedFile(null)
+      return
+    }
+
+    setSelectedFile(file)
+    setLoading(true)
+
+    try {
+      const { publicId } = await uploadToCloudinary(file)
+      formik.setFieldValue(name, publicId)
+    } catch (err: any) {
+      console.error(err)
+      formik.setFieldError(name, err.message)
+      formik.setFieldValue(name, undefined)
+    } finally {
+      formik.setFieldTouched(name, true, false)
+      setLoading(false)
+      setSelectedFile(null)
+    }
+  }
+
+  const handleRemoveImage = () => {
+    formik.setFieldValue(name, undefined)
+    formik.setFieldError(name, undefined)
+    formik.setFieldTouched(name, true)
+  }
+
   return (
-    <div className={cn({ [css.field]: true, [css.disabled]: disabled })}>
-      <input
-        className={css.fileInput}
-        type="file"
-        disabled={loading || disabled}
+    <Stack>
+      <FileInput
+        label={label}
+        placeholder={value ? 'Replace image...' : 'Pick image or drop here'}
         accept="image/*"
-        ref={inputEl}
-        onChange={({ target: { files } }) => {
-          void (async () => {
-            setLoading(true)
-            try {
-              if (files?.length) {
-                const file = files[0]
-                const { publicId } = await uploadToCloudinary(file)
-                void formik.setFieldValue(name, publicId)
-              }
-            } catch (err: any) {
-              console.error(err)
-              formik.setFieldError(name, err.message)
-            } finally {
-              void formik.setFieldTouched(name, true, false)
-              setLoading(false)
-              if (inputEl.current) {
-                inputEl.current.value = ''
-              }
-            }
-          })()
-        }}
+        value={selectedFile}
+        onChange={handleFileChange}
+        error={error}
+        disabled={loading || disabled}
+        clearable
       />
-      <label className={css.label} htmlFor={name}>
-        {label}
-      </label>
-      {!!value && !loading && (
-        <div className={css.previewPlace}>
-          <img className={css.preview} alt="" src={getCloudinaryUploadUrl(value, type, preset)} />
-        </div>
+
+      {value && (
+        <Box w={120} h={120} pos="relative">
+          <LoadingOverlay visible={loading} zIndex={1} overlayProps={{ radius: 'sm', blur: 1 }} />
+          <Image
+            src={getCloudinaryUploadUrl(value, type, preset)}
+            alt="Uploaded image preview"
+            width={120}
+            height={120}
+            fit="contain"
+            radius="sm"
+          />
+        </Box>
       )}
-      <div className={css.buttons}>
-        <Buttons>
-          <Button
-            type="button"
-            onClick={() => inputEl.current?.click()}
-            loading={loading}
-            disabled={loading || disabled}
-            color="green"
-          >
-            {value ? 'Upload another' : 'Upload'}
-          </Button>
-          {!!value && !loading && (
-            <Button
-              type="button"
-              color="red"
-              onClick={() => {
-                void formik.setFieldValue(name, null)
-                formik.setFieldError(name, undefined)
-                void formik.setFieldTouched(name)
-              }}
-              disabled={disabled}
-            >
-              Remove
-            </Button>
-          )}
-        </Buttons>
-      </div>
-      {invalid && <div className={css.error}>{error}</div>}
-    </div>
+
+      {value && !loading && (
+        <Button color="red" onClick={handleRemoveImage} disabled={disabled}>
+          Remove
+        </Button>
+      )}
+    </Stack>
   )
 }

@@ -1,10 +1,9 @@
-import cn from 'classnames'
-import css from './index.module.scss'
+import { Alert as MantineAlert } from '@mantine/core'
 
-export type AlertProps = { color: 'red' | 'green' | 'brown'; hidden?: boolean; children: React.ReactNode }
+export type AlertProps = { color: 'red' | 'green' | 'orange'; hidden?: boolean; children: React.ReactNode }
 export const Alert = ({ color, hidden, children }: AlertProps) => {
   if (hidden) {
     return null
   }
-  return <div className={cn({ [css.alert]: true, [css[color]]: true })}>{children}</div>
+  return <MantineAlert color={color}>{children}</MantineAlert>
 }

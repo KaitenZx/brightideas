@@ -1,8 +1,9 @@
-import cn from 'classnames'
+import { Button as MantineButton, Group } from '@mantine/core'
 import { Link } from 'react-router-dom'
-import css from './index.module.scss'
 
+// Keep the custom ButtonColor for now, map it to Mantine colors
 type ButtonColor = 'red' | 'green'
+
 export type ButtonProps = {
   children: React.ReactNode
   loading?: boolean
@@ -21,19 +22,9 @@ export const Button = ({
   onClick,
 }: ButtonProps) => {
   return (
-    <button
-      className={cn({
-        [css.button]: true,
-        [css[`color-${color}`]]: true,
-        [css.disabled]: disabled || loading,
-        [css.loading]: loading,
-      })}
-      type={type}
-      disabled={loading || disabled}
-      onClick={onClick}
-    >
-      <span className={css.text}>{children}</span>
-    </button>
+    <MantineButton color={color} loading={loading} type={type} disabled={disabled} onClick={onClick}>
+      {children}
+    </MantineButton>
   )
 }
 
@@ -47,12 +38,12 @@ export const LinkButton = ({
   color?: ButtonColor
 }) => {
   return (
-    <Link className={cn({ [css.button]: true, [css[`color-${color}`]]: true })} to={to}>
+    <MantineButton component={Link} to={to} color={color}>
       {children}
-    </Link>
+    </MantineButton>
   )
 }
 
 export const Buttons = ({ children }: { children: React.ReactNode }) => {
-  return <div className={css.buttons}>{children}</div>
+  return <Group>{children}</Group>
 }

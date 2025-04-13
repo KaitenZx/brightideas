@@ -1,45 +1,35 @@
- 
-import cn from 'classnames'
+import { Textarea as MantineTextarea } from '@mantine/core'
 import type { FormikProps } from 'formik'
-import css from './index.module.scss'
 
 export const Textarea = <TValues extends Record<string, any>>({
-	name,
-	label,
-	formik,
+  name,
+  label,
+  formik,
 }: {
-	name: string
-	label: string
-	formik: FormikProps<TValues>
+  name: string
+  label: string
+  formik: FormikProps<TValues>
 }) => {
+  const value = formik.values[name] ?? ''
+  const error = formik.touched[name] && formik.errors[name] ? (formik.errors[name] as string) : undefined
+  const disabled = formik.isSubmitting
 
-	const value = formik.values[name]
-	const error = formik.errors[name] as string | undefined
-	const touched = formik.touched[name]
-	const invalid = !!touched && !!error
-	const disabled = formik.isSubmitting
-
-	return (
-		<div className={cn({ [css.field]: true, [css.disabled]: disabled })}>
-			<label className={css.label} htmlFor={name}>
-				{label}
-			</label>
-			<textarea
-				className={cn({
-					[css.input]: true,
-					[css.invalid]: invalid,
-				})}
-				onChange={(e) => {
-					void formik.setFieldValue(name, e.target.value)
-				}}
-				onBlur={() => {
-					void formik.setFieldTouched(name)
-				}}
-				value={value}
-				name={name}
-				id={name}
-			/>
-			{invalid && <div className={css.error}>{error}</div>}
-		</div>
-	)
+  // Map props to Mantine Textarea
+  return (
+    <MantineTextarea
+      label={label}
+      name={name}
+      value={value}
+      error={error}
+      disabled={disabled}
+      onChange={(event: React.ChangeEvent<HTMLTextAreaElement>) => {
+        formik.setFieldValue(name, event.currentTarget.value)
+      }}
+      onBlur={() => {
+        formik.setFieldTouched(name, true)
+      }}
+      autosize // Enable autosize by default, can be overridden via props if needed later
+      minRows={4} // Set a reasonable default minRows
+    />
+  )
 }

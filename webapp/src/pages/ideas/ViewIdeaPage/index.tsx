@@ -1,7 +1,7 @@
 import type { TrpcRouterOutput } from '@brightideas/backend/src/router'
 import { canBlockIdeas, canEditIdea } from '@brightideas/backend/src/utils/can'
+import { Avatar, Box, Group, Stack, Text, ActionIcon, Anchor } from '@mantine/core'
 import { format } from 'date-fns/format'
-import { Fragment } from 'react'
 import ImageGallery from 'react-image-gallery'
 import { Alert } from '../../../components/Alert'
 import { Button, LinkButton } from '../../../components/Button'
@@ -15,7 +15,6 @@ import { withPageWrapper } from '../../../lib/pageWrapper'
 import { getEditIdeaRoute, getViewIdeaRoute } from '../../../lib/routes'
 import { getS3UploadName, getS3UploadUrl } from '../../../lib/s3'
 import { trpc } from '../../../lib/trpc'
-import css from './index.module.scss'
 
 const LikeButton = ({ idea }: { idea: NonNullable<TrpcRouterOutput['getIdea']['idea']> }) => {
   const trpcUtils = trpc.useUtils()
@@ -39,8 +38,8 @@ const LikeButton = ({ idea }: { idea: NonNullable<TrpcRouterOutput['getIdea']['i
     },
   })
   return (
-    <button
-      className={css.likeButton}
+    <ActionIcon
+      variant="subtle"
       onClick={() => {
         void setIdeaLike
           .mutateAsync({ ideaId: idea.id, isLikedByMe: !idea.isLikedByMe })
@@ -50,9 +49,10 @@ const LikeButton = ({ idea }: { idea: NonNullable<TrpcRouterOutput['getIdea']['i
             }
           })
       }}
+      aria-label={idea.isLikedByMe ? 'Unlike idea' : 'Like idea'}
     >
-      <Icon size={32} className={css.likeIcon} name={idea.isLikedByMe ? 'likeFilled' : 'likeEmpty'} />
-    </button>
+      <Icon size={32} name={idea.isLikedByMe ? 'likeFilled' : 'likeEmpty'} />
+    </ActionIcon>
   )
 }
 
@@ -92,69 +92,74 @@ const ViewIdeaPage = withPageWrapper({
   title: ({ idea }) => idea.name,
 })(({ idea, me }) => (
   <Segment title={idea.name} description={idea.description}>
-    <div className={css.createdAt}>Created At: {format(idea.createdAt, 'yyyy-MM-dd')}</div>
-    <div className={css.author}>
-      <img className={css.avatar} alt="" src={getAvatarUrl(idea.author.avatar, 'small')} />
-      <div className={css.name}>
-        Author:
-        <br />
-        {idea.author.nick}
-        {idea.author.name ? ` (${idea.author.name})` : ''}
-      </div>
-    </div>
-    {!!idea.images.length && (
-      <div className={css.gallery}>
-        <ImageGallery
-          showPlayButton={false}
-          showFullscreenButton={false}
-          items={idea.images.map((image) => ({
-            original: getCloudinaryUploadUrl(image, 'image', 'large'),
-            thumbnail: getCloudinaryUploadUrl(image, 'image', 'preview'),
-          }))}
-        />
-      </div>
-    )}
-    {idea.certificate && (
-      <div className={css.certificate}>
-        Certificate:{' '}
-        <a className={css.certificateLink} target="_blank" href={getS3UploadUrl(idea.certificate)} rel="noreferrer">
-          {getS3UploadName(idea.certificate)}
-        </a>
-      </div>
-    )}
-    {!!idea.documents.length && (
-      <div className={css.documents}>
-        Documents:{' '}
-        {idea.documents.map((document) => (
-          <Fragment key={document}>
-            <br />
-            <a className={css.documentLink} target="_blank" href={getS3UploadUrl(document)} rel="noreferrer">
-              {getS3UploadName(document)}
-            </a>
-          </Fragment>
-        ))}
-      </div>
-    )}
-    <div className={css.text} dangerouslySetInnerHTML={{ __html: idea.text }} />
-    <div className={css.likes}>
-      Likes: {idea.likesCount}
-      {me && (
-        <>
-          <br />
-          <LikeButton idea={idea} />
-        </>
+    <Stack gap="md">
+      <Text size="xs">Created At: {format(idea.createdAt, 'yyyy-MM-dd')}</Text>
+
+      <Group align="center">
+        <Avatar src={getAvatarUrl(idea.author.avatar, 'small')} size="lg" radius="xl" />
+        <Stack gap={0}>
+          <Text fw={500}>Author:</Text>
+          <Text size="sm">
+            {idea.author.nick}
+            {idea.author.name ? ` (${idea.author.name})` : ''}
+          </Text>
+        </Stack>
+      </Group>
+
+      {!!idea.images.length && (
+        <Box my="md">
+          <ImageGallery
+            showPlayButton={false}
+            showFullscreenButton={false}
+            items={idea.images.map((image) => ({
+              original: getCloudinaryUploadUrl(image, 'image', 'large'),
+              thumbnail: getCloudinaryUploadUrl(image, 'image', 'preview'),
+            }))}
+          />
+        </Box>
       )}
-    </div>
-    {canEditIdea(me, idea) && (
-      <div className={css.editButton}>
-        <LinkButton to={getEditIdeaRoute({ ideaNick: idea.nick })}>Edit Idea</LinkButton>
-      </div>
-    )}
-    {canBlockIdeas(me) && (
-      <div className={css.blockIdea}>
-        <BlockIdea idea={idea} />
-      </div>
-    )}
+
+      {idea.certificate && (
+        <Box my="md">
+          <Text component="span">Certificate: </Text>
+          <Anchor href={getS3UploadUrl(idea.certificate)} target="_blank" size="sm">
+            {getS3UploadName(idea.certificate)}
+          </Anchor>
+        </Box>
+      )}
+
+      {!!idea.documents.length && (
+        <Box my="md">
+          <Text>Documents:</Text>
+          <Stack gap="xs" mt={5}>
+            {idea.documents.map((document) => (
+              <Anchor key={document} href={getS3UploadUrl(document)} target="_blank" size="sm">
+                {getS3UploadName(document)}
+              </Anchor>
+            ))}
+          </Stack>
+        </Box>
+      )}
+
+      <Box maw={800} dangerouslySetInnerHTML={{ __html: idea.text }} />
+
+      <Group align="center">
+        <Text>Likes: {idea.likesCount}</Text>
+        {me && <LikeButton idea={idea} />}
+      </Group>
+
+      {canEditIdea(me, idea) && (
+        <Box mt="lg">
+          <LinkButton to={getEditIdeaRoute({ ideaNick: idea.nick })}>Edit Idea</LinkButton>
+        </Box>
+      )}
+
+      {canBlockIdeas(me) && (
+        <Box mt="lg">
+          <BlockIdea idea={idea} />
+        </Box>
+      )}
+    </Stack>
   </Segment>
 ))
 

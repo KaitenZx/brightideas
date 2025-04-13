@@ -6,8 +6,8 @@ import { Alert } from '../../../components/Alert'
 import { Button } from '../../../components/Button'
 import { FormItems } from '../../../components/FormItems'
 import { Input } from '../../../components/Input'
+import { RichTextEditorInput } from '../../../components/RichTextEditorInput'
 import { Segment } from '../../../components/Segment'
-import { Textarea } from '../../../components/Textarea'
 import { UploadToS3 } from '../../../components/UploadToS3'
 import { UploadsToCloudinary } from '../../../components/UploadsToCloudinary'
 import { UploadsToS3 } from '../../../components/UploadsToS3'
@@ -55,7 +55,7 @@ const EditIdeaPage = withPageWrapper({
           <Input label="Name" name="name" formik={formik} />
           <Input label="Nick" name="nick" formik={formik} />
           <Input label="Description" name="description" maxWidth={500} formik={formik} />
-          <Textarea label="Text" name="text" formik={formik} />
+          <RichTextEditorInput name="text" label="Text" required formik={formik} />
           <UploadsToCloudinary label="Images" name="images" type="image" preset="preview" formik={formik} />
           <UploadToS3 label="Certificate" name="certificate" formik={formik} />
           <UploadsToS3 label="Documents" name="documents" formik={formik} />

@@ -3,8 +3,8 @@ import { Alert } from '../../../components/Alert'
 import { Button } from '../../../components/Button'
 import { FormItems } from '../../../components/FormItems'
 import { Input } from '../../../components/Input'
+import { RichTextEditorInput } from '../../../components/RichTextEditorInput'
 import { Segment } from '../../../components/Segment'
-import { Textarea } from '../../../components/Textarea'
 import { UploadToS3 } from '../../../components/UploadToS3'
 import { UploadsToCloudinary } from '../../../components/UploadsToCloudinary'
 import { UploadsToS3 } from '../../../components/UploadsToS3'
@@ -22,7 +22,7 @@ const NewIdeaPage = withPageWrapper({
       name: '',
       nick: '',
       description: '',
-      text: '',
+      text: '<p></p>',
       images: [],
       certificate: '',
       documents: [],
@@ -46,7 +46,7 @@ const NewIdeaPage = withPageWrapper({
           <Input name="name" label="Name" formik={formik} />
           <Input name="nick" label="Nick" formik={formik} />
           <Input name="description" label="Description" formik={formik} maxWidth={500} />
-          <Textarea name="text" label="Text" formik={formik} />
+          <RichTextEditorInput name="text" label="Text" required formik={formik} />
           <UploadsToCloudinary label="Images" name="images" type="image" preset="preview" formik={formik} />
           <UploadToS3 label="Certificate" name="certificate" formik={formik} />
           <UploadsToS3 label="Documents" name="documents" formik={formik} />
