@@ -1,10 +1,9 @@
-import cn from 'classnames'
+import { FileInput, Stack, Anchor, Box, LoadingOverlay, ActionIcon, Group } from '@mantine/core'
+import { IconUpload, IconTrash } from '@tabler/icons-react'
 import { type FormikProps } from 'formik'
-import { useRef, useState } from 'react'
+import { useState } from 'react'
 import { getS3UploadName, getS3UploadUrl } from '../../lib/s3'
 import { trpc } from '../../lib/trpc'
-import { Button, Buttons } from '../Button'
-import css from './index.module.scss'
 
 export const useUploadToS3 = () => {
   const prepareS3Upload = trpc.prepareS3Upload.useMutation()
@@ -19,100 +18,93 @@ export const useUploadToS3 = () => {
     return await fetch(signedUrl, {
       method: 'PUT',
       body: file,
+    }).then(async (rawRes) => {
+      if (!rawRes.ok) {
+        const errorText = await rawRes.text()
+        throw new Error(`S3 upload failed: ${rawRes.status} ${errorText}`)
+      }
+      return { s3Key }
     })
-      .then(async (rawRes) => {
-        return await rawRes.text()
-      })
-      .then((res) => {
-        return { s3Key, res }
-      })
   }
 
   return { uploadToS3 }
 }
 
 export const UploadToS3 = ({ label, name, formik }: { label: string; name: string; formik: FormikProps<any> }) => {
-  const value = formik.values[name]
-  const error = formik.errors[name] as string | undefined
-  const touched = formik.touched[name] as boolean
-  const invalid = touched && !!error
+  const value = formik.values[name] as string | undefined
+  const error = formik.touched[name] && formik.errors[name] ? (formik.errors[name] as string) : undefined
   const disabled = formik.isSubmitting
 
-  const inputEl = useRef<HTMLInputElement>(null)
+  const [selectedFile, setSelectedFile] = useState<File | null>(null)
   const [loading, setLoading] = useState(false)
 
   const { uploadToS3 } = useUploadToS3()
 
+  const handleFileChange = async (file: File | null) => {
+    if (!file) {
+      setSelectedFile(null)
+      return
+    }
+
+    setSelectedFile(file)
+    setLoading(true)
+
+    try {
+      const { s3Key } = await uploadToS3(file)
+      formik.setFieldValue(name, s3Key)
+    } catch (err: any) {
+      console.error(err)
+      formik.setFieldError(name, err.message)
+      formik.setFieldValue(name, undefined)
+    } finally {
+      formik.setFieldTouched(name, true, false)
+      setLoading(false)
+      setSelectedFile(null)
+    }
+  }
+
+  const handleRemoveFile = () => {
+    formik.setFieldValue(name, undefined)
+    formik.setFieldError(name, undefined)
+    formik.setFieldTouched(name, true)
+  }
+
   return (
-    <div className={cn({ [css.field]: true, [css.disabled]: disabled })}>
-      <input
-        className={css.fileInput}
-        type="file"
-        disabled={loading || disabled}
-        accept="*"
-        ref={inputEl}
-        onChange={({ target: { files } }) => {
-          void (async () => {
-            setLoading(true)
-            try {
-              if (files?.length) {
-                const file = files[0]
-                const { s3Key } = await uploadToS3(file)
-                void formik.setFieldValue(name, s3Key)
-              }
-            } catch (err: any) {
-              console.error(err)
-              formik.setFieldError(name, err.message)
-            } finally {
-              void formik.setFieldTouched(name, true, false)
-              setLoading(false)
-              if (inputEl.current) {
-                inputEl.current.value = ''
-              }
-            }
-          })()
-        }}
-      />
-      <label className={css.label} htmlFor={name}>
-        {label}
-      </label>
-      {!!value && !loading && (
-        <div className={css.uploads}>
-          <div className={css.upload}>
-            <a className={css.uploadLink} target="_blank" href={getS3UploadUrl(value)} rel="noreferrer">
-              {getS3UploadName(value)}
-            </a>
-          </div>
-        </div>
-      )}
-      <div className={css.buttons}>
-        <Buttons>
-          <Button
-            type="button"
-            onClick={() => inputEl.current?.click()}
-            loading={loading}
-            disabled={loading || disabled}
-            color="green"
+    <Stack>
+      <Box pos="relative">
+        <LoadingOverlay visible={loading} zIndex={1} overlayProps={{ radius: 'md', blur: 1 }} />
+        <FileInput
+          label={label}
+          placeholder={value ? 'Replace file...' : 'Pick file or drop here'}
+          accept="*"
+          value={selectedFile}
+          onChange={handleFileChange}
+          error={error}
+          disabled={loading || disabled}
+          clearable
+          leftSection={<IconUpload size=".9rem" stroke={1.5} />}
+          radius="md"
+        />
+      </Box>
+
+      {value && !loading && (
+        <Group justify="space-between" mt="xs">
+          <Anchor href={getS3UploadUrl(value)} target="_blank" size="sm">
+            {getS3UploadName(value)}
+          </Anchor>
+          <ActionIcon
+            variant="light"
+            color="red"
+            radius="md"
+            size="lg"
+            onClick={handleRemoveFile}
+            disabled={disabled}
+            aria-label={`Remove file ${getS3UploadName(value)}`}
           >
-            {value ? 'Upload another' : 'Upload'}
-          </Button>
-          {!!value && !loading && (
-            <Button
-              type="button"
-              color="red"
-              onClick={() => {
-                void formik.setFieldValue(name, null)
-                formik.setFieldError(name, undefined)
-                void formik.setFieldTouched(name)
-              }}
-              disabled={disabled}
-            >
-              Remove
-            </Button>
-          )}
-        </Buttons>
-      </div>
-      {invalid && <div className={css.error}>{error}</div>}
-    </div>
+            <IconTrash size="1rem" stroke={1.5} />
+          </ActionIcon>
+        </Group>
+      )}
+    </Stack>
   )
 }

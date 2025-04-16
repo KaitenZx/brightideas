@@ -1,17 +1,15 @@
 import { zGetIdeasTrpcInput } from '@brightideas/backend/src/router/ideas/getIdeas/input'
+import { Stack, Box, Title, SimpleGrid, Container } from '@mantine/core'
+import { IconSearch } from '@tabler/icons-react'
 import InfiniteScroll from 'react-infinite-scroller'
-import { Link } from 'react-router-dom'
 import { useDebounceValue } from 'usehooks-ts'
 import { Alert } from '../../../components/Alert'
+import { IdeaCard } from '../../../components/IdeaCard'
 import { Input } from '../../../components/Input'
-import { layoutContentElRef } from '../../../components/Layout'
 import { Loader } from '../../../components/Loader'
-import { Segment } from '../../../components/Segment'
 import { useForm } from '../../../lib/form'
 import { withPageWrapper } from '../../../lib/pageWrapper'
-import { getViewIdeaRoute } from '../../../lib/routes'
 import { trpc } from '../../../lib/trpc'
-import css from './index.module.scss'
 
 const AllIdeasPage = withPageWrapper({
   title: 'BrightIdeas',
@@ -37,55 +35,43 @@ const AllIdeasPage = withPageWrapper({
     )
 
   return (
-    <Segment title="All Ideas">
-      <div className={css.filter}>
-        <Input maxWidth={'70%'} label="Search" name="search" formik={formik} />
-      </div>
-      {isLoading || isRefetching ? (
-        <Loader type="section" />
-      ) : isError ? (
-        <Alert color="red">{error.message}</Alert>
-      ) : !data.pages[0].ideas.length ? (
-        <Alert color="brown">Nothing found by search</Alert>
-      ) : (
-        <div className={css.ideas}>
+    <Container size="lg" py="xl">
+      <Stack gap="lg">
+        <Title order={1} mb="lg">All Ideas</Title>
+
+        <Box mb="md">
+          <Input icon={<IconSearch size="1rem" />} name="search" formik={formik} />
+        </Box>
+
+        {isLoading || isRefetching ? (
+          <Loader type="section" />
+        ) : isError ? (
+          <Alert color="red">{error.message}</Alert>
+        ) : !data || !data.pages[0] || !data.pages[0].ideas.length ? (
+          <Alert color="orange">Nothing found by search</Alert>
+        ) : (
           <InfiniteScroll
-            threshold={250}
+            pageStart={0}
+            threshold={500}
             loadMore={() => {
               if (!isFetchingNextPage && hasNextPage) {
                 void fetchNextPage()
               }
             }}
             hasMore={hasNextPage}
-            loader={
-              <div className={css.more} key="loader">
-                <Loader type="section" />
-              </div>
-            }
-            getScrollParent={() => layoutContentElRef.current}
-            useWindow={(layoutContentElRef.current && getComputedStyle(layoutContentElRef.current).overflow) !== 'auto'}
+            loader={<Loader key="loader" type="section" />}
           >
-            {data.pages
-              .flatMap((page) => page.ideas)
-              .map((idea) => (
-                <div className={css.idea} key={idea.nick}>
-                  <Segment
-                    size={2}
-                    title={
-                      <Link className={css.ideaLink} to={getViewIdeaRoute({ ideaNick: idea.nick })}>
-                        {idea.name}
-                      </Link>
-                    }
-                    description={idea.description}
-                  >
-                    Likes: {idea.likesCount}
-                  </Segment>
-                </div>
-              ))}
+            <SimpleGrid cols={{ base: 1, sm: 2, lg: 3 }} spacing="lg">
+              {data.pages
+                .flatMap((page) => page.ideas)
+                .map((idea) => (
+                  <IdeaCard key={idea.nick} idea={idea} />
+                ))}
+            </SimpleGrid>
           </InfiniteScroll>
-        </div>
-      )}
-    </Segment>
+        )}
+      </Stack>
+    </Container>
   )
 })
 

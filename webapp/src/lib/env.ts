@@ -88,9 +88,7 @@ export function initializeWebAppEnv(): WebAppEnv | null {
     }
 
     console.info(`Initializing WebApp environment from ${sourceDescription}...`)
-    console.info('Raw env source:', envSource)
     validatedEnv = webAppEnvSchema.parse(envSource)
-    console.info('WebApp environment initialized successfully:', validatedEnv)
     return validatedEnv
   } catch (error) {
     console.error(`FATAL: Failed to initialize WebApp environment from ${sourceDescription}!`)

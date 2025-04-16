@@ -9,6 +9,11 @@ rules:
     - ^[a-z][a-zA-Z0-9]+$
     - message: Expected mixin to be camelCase
   selector-pseudo-element-colon-notation: 'single'
+  selector-pseudo-class-no-unknown:
+    - true
+    - ignorePseudoClasses:
+        - global
+        - local # Добавь, если используешь :local
   scss/dollar-variable-empty-line-before: null
   block-no-empty: null
   declaration-empty-line-before: null

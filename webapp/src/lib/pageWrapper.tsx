@@ -9,7 +9,7 @@ import { lastVisistedNotAuthRouteStore } from '../components/NotAuthRouteTracker
 import NotFoundPage from '../pages/other/NotFoundPage'
 import { useAppContext, type AppContext } from './ctx'
 
-class CheckExistsError extends Error {}
+class CheckExistsError extends Error { }
 const checkExistsFn = <T,>(value: T, message?: string): NonNullable<T> => {
   if (!value) {
     throw new CheckExistsError(message)
@@ -17,14 +17,14 @@ const checkExistsFn = <T,>(value: T, message?: string): NonNullable<T> => {
   return value
 }
 
-class CheckAccessError extends Error {}
+class CheckAccessError extends Error { }
 const checkAccessFn = <T,>(value: T, message?: string): void => {
   if (!value) {
     throw new CheckAccessError(message)
   }
 }
 
-class GetAuthorizedMeError extends Error {}
+class GetAuthorizedMeError extends Error { }
 
 type Props = Record<string, any>
 type QueryResult = UseTRPCQueryResult<any, any>
@@ -86,16 +86,18 @@ const PageWrapper = <TProps extends Props = {}, TQueryResult extends QueryResult
 }: PageWrapperProps<TProps, TQueryResult>) => {
   const lastVisistedNotAuthRoute = useStore(lastVisistedNotAuthRouteStore)
   const navigate = useNavigate()
-  const ctx = useAppContext()
+  const context = useAppContext()
   const queryResult = useQuery?.()
 
-  const redirectNeeded = redirectAuthorized && ctx.me
+  const redirectNeeded = redirectAuthorized && context.me
 
   useEffect(() => {
     if (redirectNeeded) {
       navigate(lastVisistedNotAuthRoute, { replace: true })
     }
   }, [redirectNeeded, navigate, lastVisistedNotAuthRoute])
+
+
 
   if (queryResult?.isLoading || (showLoaderOnFetching && queryResult?.isFetching) || redirectNeeded) {
     return <Loader type="page" />
@@ -105,11 +107,11 @@ const PageWrapper = <TProps extends Props = {}, TQueryResult extends QueryResult
     return <ErrorPageComponent message={queryResult.error.message} />
   }
 
-  if (authorizedOnly && !ctx.me) {
+  if (authorizedOnly && !context.me) {
     return <ErrorPageComponent title={authorizedOnlyTitle} message={authorizedOnlyMessage} />
   }
 
-  const helperProps = { ctx, queryResult: queryResult as never }
+  const helperProps = { ctx: context, queryResult: queryResult as never }
 
   if (checkAccess) {
     const accessDenied = !checkAccess(helperProps)
@@ -126,10 +128,10 @@ const PageWrapper = <TProps extends Props = {}, TQueryResult extends QueryResult
   }
 
   const getAuthorizedMe = (message?: string) => {
-    if (!ctx.me) {
+    if (!context.me) {
       throw new GetAuthorizedMeError(message)
     }
-    return ctx.me
+    return context.me
   }
 
   try {

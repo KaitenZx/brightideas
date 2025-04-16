@@ -10,6 +10,8 @@ import { blockIdeaTrpcRoute } from './ideas/blockIdea/index.js'
 import { createIdeaTrpcRoute } from './ideas/createIdea/index.js'
 import { getIdeaTrpcRoute } from './ideas/getIdea/index.js'
 import { getIdeasTrpcRoute } from './ideas/getIdeas/index.js'
+import { getLikedIdeasTrpcRoute } from './ideas/getLikedIdeas/index.js'
+import { getMyIdeasTrpcRoute } from './ideas/getMyIdeas/index.js'
 import { setIdeaLikeTrpcRoute } from './ideas/setIdeaLike/index.js'
 import { updateIdeaTrpcRoute } from './ideas/updateIdea/index.js'
 import { prepareCloudinaryUploadTrpcRoute } from './upload/prepareCloudinaryUpload/index.js'
@@ -31,6 +33,8 @@ export const trpcRouter = createTrpcRouter({
   updateIdea: updateIdeaTrpcRoute,
   prepareCloudinaryUpload: prepareCloudinaryUploadTrpcRoute,
   prepareS3Upload: prepareS3UploadTrpcRoute,
+  getLikedIdeas: getLikedIdeasTrpcRoute,
+  getMyIdeas: getMyIdeasTrpcRoute,
   // @endindex
 })
 

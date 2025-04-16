@@ -1,12 +1,11 @@
 import { type CloudinaryUploadPresetName, type CloudinaryUploadTypeName } from '@brightideas/shared'
-import cn from 'classnames'
+import { FileInput, SimpleGrid, Image, ActionIcon, Box, Stack } from '@mantine/core'
+import { IconUpload } from '@tabler/icons-react'
 import { type FormikProps } from 'formik'
-import { useRef, useState } from 'react'
+import { useState } from 'react'
 import { getCloudinaryUploadUrl } from '../../lib/cloudinary'
-import { Button } from '../Button'
 import { Icon } from '../Icon'
 import { useUploadToCloudinary } from '../UploadToCloudinary'
-import css from './index.module.scss'
 
 export const UploadsToCloudinary = <TTypeName extends CloudinaryUploadTypeName>({
   label,
@@ -21,90 +20,102 @@ export const UploadsToCloudinary = <TTypeName extends CloudinaryUploadTypeName>(
   type: TTypeName
   preset: CloudinaryUploadPresetName<TTypeName>
 }) => {
-  const value = formik.values[name] as string[]
-  const error = formik.errors[name] as string | undefined
-  const touched = formik.touched[name] as boolean
-  const invalid = touched && !!error
+  const value = (formik.values[name] as string[]) || []
+  const error = formik.touched[name] && formik.errors[name] ? (formik.errors[name] as string) : undefined
   const disabled = formik.isSubmitting
 
-  const inputEl = useRef<HTMLInputElement>(null)
+  const [selectedFiles, setSelectedFiles] = useState<File[] | undefined>(undefined)
   const [loading, setLoading] = useState(false)
 
   const { uploadToCloudinary } = useUploadToCloudinary(type)
 
+  const handleFileChange = async (files: File[] | null) => {
+    if (!files || files.length === 0) {
+      setSelectedFiles(undefined)
+      return
+    }
+
+    setSelectedFiles(files)
+    setLoading(true)
+    const currentValues = (formik.values[name] as string[]) || []
+    const newValue = [...currentValues]
+
+    try {
+      await Promise.all(
+        files.map(async (file) => {
+          const { publicId } = await uploadToCloudinary(file)
+          if (!currentValues.includes(publicId) && !newValue.includes(publicId)) {
+            newValue.push(publicId)
+          }
+        })
+      )
+      formik.setFieldValue(name, newValue)
+    } catch (err: any) {
+      console.error(err)
+      formik.setFieldError(name, err.message)
+    } finally {
+      formik.setFieldTouched(name, true, false)
+      setLoading(false)
+      setSelectedFiles(undefined)
+    }
+  }
+
+  const handleRemoveImage = (publicIdToRemove: string) => {
+    const currentValues = (formik.values[name] as string[]) || []
+    formik.setFieldValue(
+      name,
+      currentValues.filter((publicId) => publicId !== publicIdToRemove)
+    )
+    formik.setFieldTouched(name, true)
+  }
+
   return (
-    <div className={cn({ [css.field]: true, [css.disabled]: disabled })}>
-      <input
-        className={css.fileInput}
-        type="file"
-        disabled={loading || disabled}
-        accept="image/*"
+    <Stack>
+      <FileInput
+        label={label}
+        placeholder={value.length ? 'Upload more...' : 'Pick images or drop here'}
         multiple
-        ref={inputEl}
-        onChange={({ target: { files } }) => {
-          void (async () => {
-            setLoading(true)
-            try {
-              if (files?.length) {
-                const newValue = [...value]
-                await Promise.all(
-                  Array.from(files).map(async (file) => {
-                    await uploadToCloudinary(file).then(({ publicId }) => {
-                      newValue.push(publicId)
-                    })
-                  })
-                )
-                void formik.setFieldValue(name, newValue)
-              }
-            } catch (err: any) {
-              console.error(err)
-              formik.setFieldError(name, err.message)
-            } finally {
-              void formik.setFieldTouched(name, true, false)
-              setLoading(false)
-              if (inputEl.current) {
-                inputEl.current.value = ''
-              }
-            }
-          })()
-        }}
+        accept="image/*"
+        value={selectedFiles}
+        onChange={handleFileChange}
+        error={error}
+        disabled={loading || disabled}
+        clearable
+        leftSection={<IconUpload size=".9rem" stroke={1.5} />}
+        radius="md"
       />
-      <label className={css.label} htmlFor={name}>
-        {label}
-      </label>
-      {!!value?.length && (
-        <div className={css.previews}>
+
+      {value.length > 0 && (
+        <SimpleGrid cols={{ base: 2, sm: 3, md: 4 }} spacing="sm" mt="sm">
           {value.map((publicId) => (
-            <div key={publicId} className={css.previewPlace}>
-              <button
-                type="button"
-                className={css.delete}
-                onClick={() => {
-                  void formik.setFieldValue(
-                    name,
-                    value.filter((deletedPublicId) => deletedPublicId !== publicId)
-                  )
-                }}
+            <Box key={publicId} pos="relative">
+              <ActionIcon
+                variant="light"
+                color="red"
+                radius="md"
+                size="sm"
+                pos="absolute"
+                top={4}
+                right={4}
+                style={{ zIndex: 1 }}
+                onClick={() => handleRemoveImage(publicId)}
+                disabled={loading || disabled}
+                aria-label={`Remove image ${publicId}`}
               >
-                <Icon className={css.deleteIcon} name="delete" />
-              </button>
-              <img className={css.preview} alt="" src={getCloudinaryUploadUrl(publicId, type, preset)} />
-            </div>
+                <Icon name="delete" size={14} />
+              </ActionIcon>
+              <Image
+                src={getCloudinaryUploadUrl(publicId, type, preset)}
+                alt={`Uploaded image ${publicId}`}
+                height={100}
+                fit="cover"
+                radius="md"
+                style={{ opacity: loading ? 0.5 : 1 }}
+              />
+            </Box>
           ))}
-        </div>
+        </SimpleGrid>
       )}
-      <div className={css.buttons}>
-        <Button
-          type="button"
-          onClick={() => inputEl.current?.click()}
-          loading={loading}
-          disabled={loading || disabled}
-          color="green"
-        >
-          {value?.length ? 'Upload more' : 'Upload'}
-        </Button>
-      </div>
-      {invalid && <div className={css.error}>{error}</div>}
-    </div>
+    </Stack>
   )
 }

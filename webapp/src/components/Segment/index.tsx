@@ -1,4 +1,4 @@
-import css from './index.module.scss'
+import { Card, Title, Text } from '@mantine/core'
 
 export const Segment = ({
   title,
@@ -12,10 +12,14 @@ export const Segment = ({
   children?: React.ReactNode
 }) => {
   return (
-    <div className={css.segment}>
-      {size === 1 ? <h1 className={css.title}>{title}</h1> : <h2 className={css.title}>{title}</h2>}
-      {description && <p className={css.description}>{description}</p>}
-      {children && <div className={css.content}>{children}</div>}
-    </div>
+    <Card mb="xl" padding="0">
+      <Title order={size}>{title}</Title>
+      {description && (
+        <Text size="lg" mt="xs">
+          {description}
+        </Text>
+      )}
+      {children && <div style={{ marginTop: title || description ? 12 : 0 }}>{children}</div>}
+    </Card>
   )
 }

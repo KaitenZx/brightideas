@@ -1,74 +1,55 @@
-@use '../../../styles/vars';
-@use '../../../styles/mixins';
+/* webapp/src/pages/ideas/ViewIdeaPage/index.module.scss */
 
-.createdAt {
-  font-size: 12px;
-  margin-bottom: 10px;
+/* Limit the height of the main image slide area */
+.imageGalleryWrapper :global(.image-gallery-content .image-gallery-slide .image-gallery-image) {
+  max-height: 35vh;
+
+  /* Reduced height further */
+  object-fit: contain;
 }
 
-.author {
-  display: flex;
-  flex-flow: row nowrap;
-  margin: 10px 0;
-  align-items: center;
+/* Style for custom navigation arrows */
+.navButton {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 4;
+  border: none;
+  padding: 0;
 
-  .avatar {
-    flex: 0 0 100px;
-    width: 100px;
-    height: 100px;
-    border-radius: 50%;
-  }
+  /* Use theme variable for better dark/light mode */
+  background-color: var(--mantine-color-body-alpha-40);
 
-  .name {
-    flex: 1 1 100%;
-    font-weight: bold;
-    font-size: 16px;
-    margin-bottom: 20px;
-    margin-left: 10px;
-  }
+  /* 40% opacity of body bg */
+  color: var(--mantine-color-text);
+
+  /* Use default text color */
+  border-radius: var(--mantine-radius-md);
 }
 
-.gallery {
-  margin: 10px 0;
+.navButton:hover {
+  background-color: var(--mantine-color-body-alpha-60);
+
+  /* 60% opacity */
 }
 
-.certificate {
-  margin: 10px 0;
-
-  .certificateLink {
-    @include mixins.link;
-  }
+.navButton:disabled {
+  opacity: 0.4;
+  cursor: default;
+  background-color: var(--mantine-color-body-alpha-40);
 }
 
-.documents {
-  margin: 10px 0;
-
-  .documentLink {
-    @include mixins.link;
-  }
+.leftNav {
+  left: var(--mantine-spacing-sm);
 }
 
-
-.text {
-  font-size: 14px;
-
-  &>*:not(:first-child) {
-    margin-top: 10px;
-  }
+.rightNav {
+  right: var(--mantine-spacing-sm);
 }
 
-.likes {
-  margin-top: 20px;
-
-  .likeButton {
-    @include mixins.link;
-  }
-}
-
-.editButton {
-  margin-top: 20px;
-}
-
-.blockIdea {
-  margin-top: 20px;
+.navButton:focus-visible {
+  outline: none;
+  box-shadow:
+    0 0 0 2px var(--mantine-color-body),
+    0 0 0 4px var(--mantine-color-teal-5);
 }

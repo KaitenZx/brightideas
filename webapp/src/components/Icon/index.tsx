@@ -1,13 +1,17 @@
-import { createElement } from 'react'
-import type { IconBaseProps } from 'react-icons'
-import { AiFillCloseCircle, AiFillHeart, AiOutlineHeart } from 'react-icons/ai'
+import { IconCircleX, IconHeart, IconHeartFilled } from '@tabler/icons-react'
+import { createElement, SVGAttributes } from 'react'
 
 const icons = {
-  likeEmpty: AiOutlineHeart,
-  likeFilled: AiFillHeart,
-  delete: AiFillCloseCircle,
+  likeEmpty: IconHeart,
+  likeFilled: IconHeartFilled,
+  delete: IconCircleX,
 }
 
-export const Icon = ({ name, ...restProps }: { name: keyof typeof icons } & IconBaseProps) => {
-  return createElement(icons[name], restProps)
+type IconProps = {
+  name: keyof typeof icons
+  size?: string | number
+} & Omit<SVGAttributes<SVGSVGElement>, 'size'>
+
+export const Icon = ({ name, size, ...restProps }: IconProps) => {
+  return createElement(icons[name], { size, ...restProps })
 }
