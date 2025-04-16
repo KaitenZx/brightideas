@@ -1,13 +1,4 @@
-import {
-  Container,
-  Title,
-  SimpleGrid,
-  Stack,
-  Alert as MantineAlert,
-  Center,
-  Loader as MantineLoader,
-  Text,
-} from '@mantine/core'
+import { Container, Title, SimpleGrid, Stack, Alert as MantineAlert, Center, Text } from '@mantine/core'
 import InfiniteScroll from 'react-infinite-scroller'
 import { IdeaCard } from '../../../components/IdeaCard'
 import { Loader } from '../../../components/Loader'
@@ -51,7 +42,7 @@ const MyIdeasPage = withPageWrapper({
         {/* --- Логика отображения состояний как в AllIdeasPage --- */}
         {isLoading ? ( // Показываем лоадер только при САМОЙ ПЕРВОЙ загрузке
           <Center>
-            <Loader type="section" />
+            <Loader type="page" />
           </Center>
         ) : isError ? ( // Показываем ошибку, если она есть
           <MantineAlert color="red" title="Error loading ideas">
@@ -75,7 +66,7 @@ const MyIdeasPage = withPageWrapper({
             hasMore={!!hasNextPage} // !! для явного boolean
             loader={
               <Center mt="xl" key={0}>
-                <MantineLoader size="sm" />
+                <Loader type="section" />
               </Center>
             }
             useWindow={true}

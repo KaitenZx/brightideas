@@ -1,8 +1,18 @@
-import '@mantine/core/styles.css';
-import 'react-image-gallery/styles/css/image-gallery.css';
-import '@mantine/tiptap/styles.css';
+import '@mantine/core/styles.css'
+import 'react-image-gallery/styles/css/image-gallery.css'
+import '@mantine/tiptap/styles.css'
 
-import { MantineProvider, createTheme, type MantineTheme, Button, Paper, Input, NavLink, Textarea, InputWrapper } from '@mantine/core';
+import {
+  MantineProvider,
+  createTheme,
+  type MantineTheme,
+  Paper,
+  Input,
+  NavLink,
+  Textarea,
+  InputWrapper,
+  Center,
+} from '@mantine/core'
 import { Suspense, lazy } from 'react' // Добавляем Suspense и lazy
 import { HelmetProvider } from 'react-helmet-async'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
@@ -14,12 +24,12 @@ import { MixpanelUser } from './lib/mixpanel'
 import * as routes from './lib/routes'
 import { SentryUser } from './lib/sentry'
 import { TrpcProvider } from './lib/trpc'
-import SignInPage from './pages/auth/SignInPage/Index';
-import SignUpPage from './pages/auth/SignUpPage';
-import SignOutPage from './pages/auth/SingOutPage';
-import AllIdeasPage from './pages/ideas/AllIdeasPage';
-import ViewIdeaPage from './pages/ideas/ViewIdeaPage';
-import NotFoundPage from './pages/other/NotFoundPage';
+import SignInPage from './pages/auth/SignInPage/Index'
+import SignUpPage from './pages/auth/SignUpPage'
+import SignOutPage from './pages/auth/SingOutPage'
+import AllIdeasPage from './pages/ideas/AllIdeasPage'
+import ViewIdeaPage from './pages/ideas/ViewIdeaPage'
+import NotFoundPage from './pages/other/NotFoundPage'
 
 // --- Динамические импорты страниц ---
 const EditProfilePage = lazy(() => import('./pages/auth/EditProfilePage'))
@@ -55,28 +65,15 @@ const theme = createTheme({
   },
 
   components: {
-    Button: Button.extend({ // Extended Button styles
-      defaultProps: {
-        // radius: 'xl', // Example: Make buttons more rounded if desired
-      },
-      // Example: override filled variant styles
-      // styles: (theme, props) => ({
-      //   root: {
-      //     ...(props.variant === 'filled' && {
-      //       '&:hover': {
-      //         backgroundColor: theme.fn.darken(theme.colors[theme.primaryColor][6], 0.05),
-      //       },
-      //     }),
-      //   }
-      // })
-    }),
-    Paper: Paper.extend({ // Extended Paper styles
+    Paper: Paper.extend({
+      // Extended Paper styles
       defaultProps: {
         shadow: 'xs', // Add a subtle shadow by default
         withBorder: false, // Remove border by default, can be added explicitly
       },
     }),
-    NavLink: NavLink.extend({ // Extended NavLink styles
+    NavLink: NavLink.extend({
+      // Extended NavLink styles
       styles: (theme) => ({
         root: {
           borderRadius: theme.radius.sm, // Consistent radius with theme
@@ -86,15 +83,17 @@ const theme = createTheme({
         },
       }),
     }),
-    Input: Input.extend({ // Ensure inputs use default radius
+    Input: Input.extend({
+      // Ensure inputs use default radius
       defaultProps: {
         radius: 'md',
-      }
+      },
     }),
-    Textarea: Textarea.extend({ // Ensure textareas use default radius
+    Textarea: Textarea.extend({
+      // Ensure textareas use default radius
       defaultProps: {
         radius: 'md',
-      }
+      },
     }),
     InputWrapper: InputWrapper.extend({
       styles: (theme) => ({
@@ -104,14 +103,19 @@ const theme = createTheme({
         },
       }),
     }),
-    // Keep Anchor default props
     Anchor: {
       defaultProps: (theme: MantineTheme) => ({
         c: theme.primaryColor, // Use 'c' prop instead of 'color'
       }),
     },
   },
-});
+})
+
+const SuspenseLoaderWrapper = () => (
+  <Center style={{ height: '100vh', width: '100vw' }}>
+    <Loader type="page" />
+  </Center>
+)
 
 export const App = () => {
   return (
@@ -123,8 +127,7 @@ export const App = () => {
               <SentryUser />
               <MixpanelUser />
               <NotAuthRouteTracker />
-
-              <Suspense fallback={<Loader type="section" />}>
+              <Suspense fallback={<SuspenseLoaderWrapper />}>
                 <Routes>
                   <Route path={routes.getSignOutRoute.definition} element={<SignOutPage />} />
 
