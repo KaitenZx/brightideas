@@ -1,5 +1,6 @@
 import { type CloudinaryUploadPresetName, type CloudinaryUploadTypeName } from '@brightideas/shared'
 import { FileInput, SimpleGrid, Image, ActionIcon, Box, Stack } from '@mantine/core'
+import { IconUpload } from '@tabler/icons-react'
 import { type FormikProps } from 'formik'
 import { useState } from 'react'
 import { getCloudinaryUploadUrl } from '../../lib/cloudinary'
@@ -80,6 +81,8 @@ export const UploadsToCloudinary = <TTypeName extends CloudinaryUploadTypeName>(
         error={error}
         disabled={loading || disabled}
         clearable
+        leftSection={<IconUpload size=".9rem" stroke={1.5} />}
+        radius="md"
       />
 
       {value.length > 0 && (
@@ -87,9 +90,9 @@ export const UploadsToCloudinary = <TTypeName extends CloudinaryUploadTypeName>(
           {value.map((publicId) => (
             <Box key={publicId} pos="relative">
               <ActionIcon
-                variant="filled"
+                variant="light"
                 color="red"
-                radius="xl"
+                radius="md"
                 size="sm"
                 pos="absolute"
                 top={4}
@@ -106,7 +109,7 @@ export const UploadsToCloudinary = <TTypeName extends CloudinaryUploadTypeName>(
                 alt={`Uploaded image ${publicId}`}
                 height={100}
                 fit="cover"
-                radius="sm"
+                radius="md"
                 style={{ opacity: loading ? 0.5 : 1 }}
               />
             </Box>

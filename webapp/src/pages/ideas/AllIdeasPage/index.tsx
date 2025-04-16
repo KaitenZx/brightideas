@@ -1,15 +1,14 @@
 import { zGetIdeasTrpcInput } from '@brightideas/backend/src/router/ideas/getIdeas/input'
-import { Stack, Box } from '@mantine/core'
+import { Stack, Box, Title, SimpleGrid, Container } from '@mantine/core'
+import { IconSearch } from '@tabler/icons-react'
 import InfiniteScroll from 'react-infinite-scroller'
-import { Link } from 'react-router-dom'
 import { useDebounceValue } from 'usehooks-ts'
 import { Alert } from '../../../components/Alert'
+import { IdeaCard } from '../../../components/IdeaCard'
 import { Input } from '../../../components/Input'
 import { Loader } from '../../../components/Loader'
-import { Segment } from '../../../components/Segment'
 import { useForm } from '../../../lib/form'
 import { withPageWrapper } from '../../../lib/pageWrapper'
-import { getViewIdeaRoute } from '../../../lib/routes'
 import { trpc } from '../../../lib/trpc'
 
 const AllIdeasPage = withPageWrapper({
@@ -36,49 +35,43 @@ const AllIdeasPage = withPageWrapper({
     )
 
   return (
-    <Segment title="All Ideas" size={1}>
-      <Box mb="lg">
-        <Input maxWidth={'70%'} label="Search" name="search" formik={formik} />
-      </Box>
-      {isLoading || isRefetching ? (
-        <Loader type="section" />
-      ) : isError ? (
-        <Alert color="red">{error.message}</Alert>
-      ) : !data.pages[0].ideas.length ? (
-        <Alert color="orange">Nothing found by search</Alert>
-      ) : (
-        <InfiniteScroll
-          pageStart={0}
-          threshold={250}
-          loadMore={() => {
-            if (!isFetchingNextPage && hasNextPage) {
-              void fetchNextPage()
-            }
-          }}
-          hasMore={hasNextPage}
-          loader={<Loader key="loader" type="section" />}
-        >
-          <Stack gap="lg">
-            {data.pages
-              .flatMap((page) => page.ideas)
-              .map((idea) => (
-                <Segment
-                  key={idea.nick}
-                  size={2}
-                  title={
-                    <Link to={getViewIdeaRoute({ ideaNick: idea.nick })}>
-                      {idea.name}
-                    </Link>
-                  }
-                  description={idea.description}
-                >
-                  Likes: {idea.likesCount}
-                </Segment>
-              ))}
-          </Stack>
-        </InfiniteScroll>
-      )}
-    </Segment>
+    <Container size="lg" py="xl">
+      <Stack gap="lg">
+        <Title order={1} mb="lg">All Ideas</Title>
+
+        <Box mb="md">
+          <Input icon={<IconSearch size="1rem" />} name="search" formik={formik} />
+        </Box>
+
+        {isLoading || isRefetching ? (
+          <Loader type="section" />
+        ) : isError ? (
+          <Alert color="red">{error.message}</Alert>
+        ) : !data || !data.pages[0] || !data.pages[0].ideas.length ? (
+          <Alert color="orange">Nothing found by search</Alert>
+        ) : (
+          <InfiniteScroll
+            pageStart={0}
+            threshold={500}
+            loadMore={() => {
+              if (!isFetchingNextPage && hasNextPage) {
+                void fetchNextPage()
+              }
+            }}
+            hasMore={hasNextPage}
+            loader={<Loader key="loader" type="section" />}
+          >
+            <SimpleGrid cols={{ base: 1, sm: 2, lg: 3 }} spacing="lg">
+              {data.pages
+                .flatMap((page) => page.ideas)
+                .map((idea) => (
+                  <IdeaCard key={idea.nick} idea={idea} />
+                ))}
+            </SimpleGrid>
+          </InfiniteScroll>
+        )}
+      </Stack>
+    </Container>
   )
 })
 

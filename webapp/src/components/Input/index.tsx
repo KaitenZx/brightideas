@@ -1,22 +1,24 @@
-import { TextInput, PasswordInput } from '@mantine/core'
-import type { FormikProps } from 'formik'
+import { TextInput, PasswordInput } from '@mantine/core';
+import type { FormikProps } from "formik"
 
 export const Input = <TValues extends Record<string, any>>({
   name,
-  label,
+  label = '',
   formik,
   maxWidth,
   type = 'text',
+  icon,
 }: {
   name: string
-  label: string
+  label?: string
   formik: FormikProps<TValues>
   maxWidth?: number | string
   type?: 'text' | 'password'
+  icon?: React.ReactNode
 }) => {
-  const value = formik.values[name] ?? '' // Ensure value is not undefined/null
-  const error = formik.touched[name] && formik.errors[name] ? (formik.errors[name] as string) : undefined
-  const disabled = formik.isSubmitting
+  const value = formik.values[name] ?? ''; // Ensure value is not undefined/null
+  const error = formik.touched[name] && formik.errors[name] ? (formik.errors[name] as string) : undefined;
+  const disabled = formik.isSubmitting;
 
   const commonProps = {
     label,
@@ -26,16 +28,16 @@ export const Input = <TValues extends Record<string, any>>({
     disabled,
     style: { maxWidth },
     onChange: (event: React.ChangeEvent<HTMLInputElement>) => {
-      formik.setFieldValue(name, event.currentTarget.value)
+      formik.setFieldValue(name, event.currentTarget.value);
     },
     onBlur: () => {
-      formik.setFieldTouched(name, true)
+      formik.setFieldTouched(name, true);
     },
-  }
+  };
 
   if (type === 'password') {
-    return <PasswordInput {...commonProps} />
+    return <PasswordInput {...commonProps} />;
   }
 
-  return <TextInput {...commonProps} />
+  return <TextInput {...commonProps} leftSection={icon} />;
 }

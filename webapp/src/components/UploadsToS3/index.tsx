@@ -1,4 +1,5 @@
 import { FileInput, Stack, Anchor, ActionIcon, Group, Box, LoadingOverlay } from '@mantine/core'
+import { IconUpload } from '@tabler/icons-react'
 import { type FormikProps } from 'formik'
 import { useState } from 'react'
 import { getS3UploadName, getS3UploadUrl } from '../../lib/s3'
@@ -58,7 +59,7 @@ export const UploadsToS3 = ({ label, name, formik }: { label: string; name: stri
   return (
     <Stack>
       <Box pos="relative">
-        <LoadingOverlay visible={loading} zIndex={1} overlayProps={{ radius: 'sm', blur: 1 }} />
+        <LoadingOverlay visible={loading} zIndex={1} overlayProps={{ radius: 'md', blur: 1 }} />
         <FileInput
           label={label}
           placeholder={value.length ? 'Upload more...' : 'Pick files or drop here'}
@@ -69,6 +70,8 @@ export const UploadsToS3 = ({ label, name, formik }: { label: string; name: stri
           error={error}
           disabled={loading || disabled}
           clearable
+          leftSection={<IconUpload size=".9rem" stroke={1.5} />}
+          radius="md"
         />
       </Box>
 
@@ -87,6 +90,7 @@ export const UploadsToS3 = ({ label, name, formik }: { label: string; name: stri
               <ActionIcon
                 variant="subtle"
                 color="red"
+                radius="md"
                 size="sm"
                 onClick={() => handleRemoveFile(s3Key)}
                 disabled={loading || disabled}

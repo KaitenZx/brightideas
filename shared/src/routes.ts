@@ -31,6 +31,13 @@ export function newIdeaPath() {
   return '/ideas/new'
 }
 
+export function getMyIdeasPath() {
+  return '/my-ideas'
+}
+export function getLikedIdeasPath() {
+  return '/liked-ideas'
+}
+
 // С параметром:
 export function viewIdeaPath(ideaNick: string) {
   return `/ideas/${ideaNick}`

@@ -1,9 +1,9 @@
-import { FileInput, Stack, Anchor, Box, LoadingOverlay } from '@mantine/core'
+import { FileInput, Stack, Anchor, Box, LoadingOverlay, ActionIcon, Group } from '@mantine/core'
+import { IconUpload, IconTrash } from '@tabler/icons-react'
 import { type FormikProps } from 'formik'
 import { useState } from 'react'
 import { getS3UploadName, getS3UploadUrl } from '../../lib/s3'
 import { trpc } from '../../lib/trpc'
-import { Button } from '../Button'
 
 export const useUploadToS3 = () => {
   const prepareS3Upload = trpc.prepareS3Upload.useMutation()
@@ -72,7 +72,7 @@ export const UploadToS3 = ({ label, name, formik }: { label: string; name: strin
   return (
     <Stack>
       <Box pos="relative">
-        <LoadingOverlay visible={loading} zIndex={1} overlayProps={{ radius: 'sm', blur: 1 }} />
+        <LoadingOverlay visible={loading} zIndex={1} overlayProps={{ radius: 'md', blur: 1 }} />
         <FileInput
           label={label}
           placeholder={value ? 'Replace file...' : 'Pick file or drop here'}
@@ -82,19 +82,28 @@ export const UploadToS3 = ({ label, name, formik }: { label: string; name: strin
           error={error}
           disabled={loading || disabled}
           clearable
+          leftSection={<IconUpload size=".9rem" stroke={1.5} />}
+          radius="md"
         />
       </Box>
 
       {value && !loading && (
-        <Anchor href={getS3UploadUrl(value)} target="_blank" size="sm" mt="xs">
-          {getS3UploadName(value)}
-        </Anchor>
-      )}
-
-      {value && !loading && (
-        <Button color="red" onClick={handleRemoveFile} disabled={disabled}>
-          Remove
-        </Button>
+        <Group justify="space-between" mt="xs">
+          <Anchor href={getS3UploadUrl(value)} target="_blank" size="sm">
+            {getS3UploadName(value)}
+          </Anchor>
+          <ActionIcon
+            variant="light"
+            color="red"
+            radius="md"
+            size="lg"
+            onClick={handleRemoveFile}
+            disabled={disabled}
+            aria-label={`Remove file ${getS3UploadName(value)}`}
+          >
+            <IconTrash size="1rem" stroke={1.5} />
+          </ActionIcon>
+        </Group>
       )}
     </Stack>
   )

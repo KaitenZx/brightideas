@@ -1,5 +1,6 @@
 import { type CloudinaryUploadPresetName, type CloudinaryUploadTypeName } from '@brightideas/shared'
 import { FileInput, Image, Stack, Box, LoadingOverlay } from '@mantine/core'
+import { IconUpload } from '@tabler/icons-react'
 import { type FormikProps } from 'formik'
 import memoize from 'lodash/memoize'
 import { useCallback, useState } from 'react'
@@ -117,24 +118,26 @@ export const UploadToCloudinary = <TTypeName extends CloudinaryUploadTypeName>({
         error={error}
         disabled={loading || disabled}
         clearable
+        leftSection={<IconUpload size=".9rem" stroke={1.5} />}
+        radius="md"
       />
 
       {value && (
         <Box w={120} h={120} pos="relative">
-          <LoadingOverlay visible={loading} zIndex={1} overlayProps={{ radius: 'sm', blur: 1 }} />
+          <LoadingOverlay visible={loading} zIndex={1} overlayProps={{ radius: 'md', blur: 1 }} />
           <Image
             src={getCloudinaryUploadUrl(value, type, preset)}
             alt="Uploaded image preview"
             width={120}
             height={120}
             fit="contain"
-            radius="sm"
+            radius="md"
           />
         </Box>
       )}
 
       {value && !loading && (
-        <Button color="red" onClick={handleRemoveImage} disabled={disabled}>
+        <Button variant="light" color="red" onClick={handleRemoveImage} disabled={disabled}>
           Remove
         </Button>
       )}

@@ -2,11 +2,10 @@ import type { TrpcRouterOutput } from '@brightideas/backend/src/router'
 import { zUpdatePasswordTrpcInput } from '@brightideas/backend/src/router/auth/updatePassword/input'
 import { zUpdateProfileTrpcInput } from '@brightideas/backend/src/router/auth/updateProfile/input'
 import { zPasswordsMustBeTheSame, zStringRequired } from '@brightideas/shared'
+import { Container, Title, Stack, Paper, TextInput } from '@mantine/core'
 import { Alert } from '../../../components/Alert'
 import { Button } from '../../../components/Button'
-import { FormItems } from '../../../components/FormItems'
 import { Input } from '../../../components/Input'
-import { Segment } from '../../../components/Segment'
 import { UploadToCloudinary } from '../../../components/UploadToCloudinary'
 import { useForm } from '../../../lib/form'
 import { withPageWrapper } from '../../../lib/pageWrapper'
@@ -32,13 +31,13 @@ const General = ({ me }: { me: NonNullable<TrpcRouterOutput['getMe']['me']> }) =
 
   return (
     <form onSubmit={formik.handleSubmit}>
-      <FormItems>
-        <Input label="Nick" name="nick" formik={formik} />
+      <Stack gap="md">
+        <TextInput label="Nick" value={formik.values.nick} readOnly variant="filled" />
         <Input label="Name" name="name" formik={formik} />
         <UploadToCloudinary label="Avatar" name="avatar" type="avatar" preset="big" formik={formik} />
         <Alert {...alertProps} />
         <Button {...buttonProps}>Update Profile</Button>
-      </FormItems>
+      </Stack>
     </form>
   )
 }
@@ -64,13 +63,13 @@ const Password = () => {
 
   return (
     <form onSubmit={formik.handleSubmit}>
-      <FormItems>
+      <Stack gap="md">
         <Input label="Old password" name="oldPassword" type="password" formik={formik} />
         <Input label="New password" name="newPassword" type="password" formik={formik} />
         <Input label="New password again" name="newPasswordAgain" type="password" formik={formik} />
         <Alert {...alertProps} />
         <Button {...buttonProps}>Update Password</Button>
-      </FormItems>
+      </Stack>
     </form>
   )
 }
@@ -83,14 +82,25 @@ const EditProfilePage = withPageWrapper({
   title: 'Edit Profile',
 })(({ me }) => {
   return (
-    <Segment title="Edit Profile">
-      <Segment title="General" size={2}>
-        <General me={me} />
-      </Segment>
-      <Segment title="Password" size={2}>
-        <Password />
-      </Segment>
-    </Segment>
+    <Container size="md" py="xl">
+      <Stack gap="xl">
+        <Title order={1} mb="lg">Edit Profile</Title>
+
+        <Paper shadow="xs" p="lg" radius="md" withBorder>
+          <Stack gap="lg">
+            <Title order={2}>General</Title>
+            <General me={me} />
+          </Stack>
+        </Paper>
+
+        <Paper shadow="xs" p="lg" radius="md" withBorder>
+          <Stack gap="lg">
+            <Title order={2}>Password</Title>
+            <Password />
+          </Stack>
+        </Paper>
+      </Stack>
+    </Container>
   )
 })
 

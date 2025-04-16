@@ -2,7 +2,7 @@ import '@mantine/core/styles.css';
 import 'react-image-gallery/styles/css/image-gallery.css';
 import '@mantine/tiptap/styles.css';
 
-import { MantineProvider, createTheme, type MantineTheme } from '@mantine/core';
+import { MantineProvider, createTheme, type MantineTheme, Button, Paper, Input, NavLink, Textarea, InputWrapper } from '@mantine/core';
 import { Suspense, lazy } from 'react' // Добавляем Suspense и lazy
 import { HelmetProvider } from 'react-helmet-async'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
@@ -14,40 +14,100 @@ import { MixpanelUser } from './lib/mixpanel'
 import * as routes from './lib/routes'
 import { SentryUser } from './lib/sentry'
 import { TrpcProvider } from './lib/trpc'
+import SignInPage from './pages/auth/SignInPage/Index';
+import SignUpPage from './pages/auth/SignUpPage';
+import SignOutPage from './pages/auth/SingOutPage';
+import AllIdeasPage from './pages/ideas/AllIdeasPage';
+import ViewIdeaPage from './pages/ideas/ViewIdeaPage';
+import NotFoundPage from './pages/other/NotFoundPage';
 
 // --- Динамические импорты страниц ---
 const EditProfilePage = lazy(() => import('./pages/auth/EditProfilePage'))
-const SignInPage = lazy(() => import('./pages/auth/SignInPage/Index')) // Оставляем /Index если он есть
-const SignUpPage = lazy(() => import('./pages/auth/SignUpPage'))
-const SignOutPage = lazy(() => import('./pages/auth/SingOutPage'))
-const AllIdeasPage = lazy(() => import('./pages/ideas/AllIdeasPage')) // Исправлено: AllIdeasPage
 const EditIdeaPage = lazy(() => import('./pages/ideas/EditIdeaPage'))
 const NewIdeaPage = lazy(() => import('./pages/ideas/NewIdeaPage'))
-const ViewIdeaPage = lazy(() => import('./pages/ideas/ViewIdeaPage'))
-const NotFoundPage = lazy(() => import('./pages/other/NotFoundPage'))
+const LikedIdeasPage = lazy(() => import('./pages/ideas/LikedIdeasPage'))
+const MyIdeasPage = lazy(() => import('./pages/ideas/MyIdeasPage'))
 
 const theme = createTheme({
-  /** Шрифты */
-  fontFamily: 'Helvetica, Arial, sans-serif', // Из $defaultFontFamily
-  fontSizes: { md: '14px' }, // Из $defaultFontSize
+  /** Put your mantine theme override here */
+  fontFamily: 'Helvetica, Arial, sans-serif',
+  fontSizes: {
+    xs: '12px',
+    sm: '14px',
+    md: '16px',
+    lg: '18px',
+    xl: '20px',
+  },
+  lineHeights: { sm: '1.4', md: '1.5', lg: '1.6' }, // Slightly increased line height
+  radius: { xs: '2px', sm: '4px', md: '8px', lg: '16px' }, // Defined radii
+  defaultRadius: 'md', // Set default radius
 
-  primaryColor: 'blue',
-  lineHeights: { sm: '1.2' }, // Из $defaultLineHeight
-  radius: { sm: '3px' }, // Из $borderRadiusSmall
+  primaryColor: 'teal', // Changed primary color to teal
+  // primaryShade: 6, // Optionally specify the shade for dark/light modes
 
   headings: {
-    fontFamily: 'Helvetica, Arial, sans-serif', // Из $defaultFontFamily
+    fontFamily: 'Helvetica, Arial, sans-serif',
+    sizes: {
+      h1: { fontSize: '2.2rem', lineHeight: '1.3' }, // Example heading sizes
+      h2: { fontSize: '1.8rem', lineHeight: '1.35' },
+      h3: { fontSize: '1.5rem', lineHeight: '1.4' },
+    },
   },
 
   components: {
-    Button: {
+    Button: Button.extend({ // Extended Button styles
       defaultProps: {
-        radius: 'sm',
+        // radius: 'xl', // Example: Make buttons more rounded if desired
+      },
+      // Example: override filled variant styles
+      // styles: (theme, props) => ({
+      //   root: {
+      //     ...(props.variant === 'filled' && {
+      //       '&:hover': {
+      //         backgroundColor: theme.fn.darken(theme.colors[theme.primaryColor][6], 0.05),
+      //       },
+      //     }),
+      //   }
+      // })
+    }),
+    Paper: Paper.extend({ // Extended Paper styles
+      defaultProps: {
+        shadow: 'xs', // Add a subtle shadow by default
+        withBorder: false, // Remove border by default, can be added explicitly
+      },
+    }),
+    NavLink: NavLink.extend({ // Extended NavLink styles
+      styles: (theme) => ({
+        root: {
+          borderRadius: theme.radius.sm, // Consistent radius with theme
+        },
+        label: {
+          fontSize: theme.fontSizes.sm, // Slightly smaller font for nav links
+        },
+      }),
+    }),
+    Input: Input.extend({ // Ensure inputs use default radius
+      defaultProps: {
+        radius: 'md',
       }
-    },
+    }),
+    Textarea: Textarea.extend({ // Ensure textareas use default radius
+      defaultProps: {
+        radius: 'md',
+      }
+    }),
+    InputWrapper: InputWrapper.extend({
+      styles: (theme) => ({
+        error: {
+          fontSize: theme.fontSizes.md,
+          color: theme.colors.red[6],
+        },
+      }),
+    }),
+    // Keep Anchor default props
     Anchor: {
       defaultProps: (theme: MantineTheme) => ({
-        color: theme.primaryColor,
+        c: theme.primaryColor, // Use 'c' prop instead of 'color'
       }),
     },
   },
@@ -76,6 +136,8 @@ export const App = () => {
                     <Route path={routes.getViewIdeaRoute.definition} element={<ViewIdeaPage />} />
                     <Route path={routes.getEditIdeaRoute.definition} element={<EditIdeaPage />} />
                     <Route path={routes.getNewIdeaRoute.definition} element={<NewIdeaPage />} />
+                    <Route path={routes.getMyIdeasRoute.definition} element={<MyIdeasPage />} />
+                    <Route path={routes.getLikedIdeasRoute.definition} element={<LikedIdeasPage />} />
 
                     <Route path="*" element={<NotFoundPage />} />
                   </Route>
