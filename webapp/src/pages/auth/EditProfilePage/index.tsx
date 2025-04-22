@@ -1,7 +1,10 @@
 import type { TrpcRouterOutput } from '@brightideas/backend/src/router'
-import { zUpdatePasswordTrpcInput } from '@brightideas/backend/src/router/auth/updatePassword/input'
-import { zUpdateProfileTrpcInput } from '@brightideas/backend/src/router/auth/updateProfile/input'
-import { zPasswordsMustBeTheSame, zStringRequired } from '@brightideas/shared'
+import {
+  zPasswordsMustBeTheSame,
+  zStringRequired,
+  zUpdatePasswordTrpcInput,
+  zUpdateProfileTrpcInput,
+} from '@brightideas/shared'
 import { Container, Title, Stack, Paper, TextInput } from '@mantine/core'
 import { Alert } from '../../../components/Alert'
 import { Button } from '../../../components/Button'
@@ -84,7 +87,9 @@ const EditProfilePage = withPageWrapper({
   return (
     <Container size="md" py="xl">
       <Stack gap="xl">
-        <Title order={1} mb="lg">Edit Profile</Title>
+        <Title order={1} mb="lg">
+          Edit Profile
+        </Title>
 
         <Paper shadow="xs" p="lg" radius="md" withBorder>
           <Stack gap="lg">

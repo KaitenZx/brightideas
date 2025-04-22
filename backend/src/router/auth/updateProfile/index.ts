@@ -1,7 +1,7 @@
+import { zUpdateProfileTrpcInput } from '@brightideas/shared'
 import { ExpectedError } from '../../../lib/error.js'
 import { toClientMe } from '../../../lib/models.js'
 import { trpcLoggedProcedure } from '../../../lib/trpc.js'
-import { zUpdateProfileTrpcInput } from './input.js'
 
 export const updateProfileTrpcRoute = trpcLoggedProcedure
   .input(zUpdateProfileTrpcInput)

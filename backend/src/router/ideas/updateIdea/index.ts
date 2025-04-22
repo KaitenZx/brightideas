@@ -1,8 +1,8 @@
+import { zBaseUpdateIdeaInput } from '@brightideas/shared'
 import { trpcLoggedProcedure } from '../../../lib/trpc.js'
 import { canEditIdea } from '../../../utils/can.js'
-import { zUpdateIdeaTrpcInput } from './input.js'
 
-export const updateIdeaTrpcRoute = trpcLoggedProcedure.input(zUpdateIdeaTrpcInput).mutation(async ({ ctx, input }) => {
+export const updateIdeaTrpcRoute = trpcLoggedProcedure.input(zBaseUpdateIdeaInput).mutation(async ({ ctx, input }) => {
   const { ideaId, ...ideaInput } = input
   if (!ctx.me) {
     throw new Error('UNAUTHORIZED')

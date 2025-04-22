@@ -1,7 +1,6 @@
 // backend/src/router/ideas/getMyIdeas/index.ts
-import { omit } from '@brightideas/shared'
+import { omit, zGetMyIdeasTrpcInput } from '@brightideas/shared'
 import { trpcLoggedProcedure } from '../../../lib/trpc.js'
-import { zGetMyIdeasTrpcInput } from './input.js'
 
 export const getMyIdeasTrpcRoute = trpcLoggedProcedure.input(zGetMyIdeasTrpcInput).query(async ({ ctx, input }) => {
   if (!ctx.me) {

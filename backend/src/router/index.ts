@@ -6,6 +6,8 @@ import { signInTrpcRoute } from './auth/signIn/index.js'
 import { signUpTrpcRoute } from './auth/signUp/index.js'
 import { updatePasswordTrpcRoute } from './auth/updatePassword/index.js'
 import { updateProfileTrpcRoute } from './auth/updateProfile/index.js'
+import { addCommentTrpcRoute } from './comments/addComment/index.js'
+import { getCommentsTrpcRoute } from './comments/getComments/index.js'
 import { blockIdeaTrpcRoute } from './ideas/blockIdea/index.js'
 import { createIdeaTrpcRoute } from './ideas/createIdea/index.js'
 import { getIdeaTrpcRoute } from './ideas/getIdea/index.js'
@@ -35,6 +37,8 @@ export const trpcRouter = createTrpcRouter({
   prepareS3Upload: prepareS3UploadTrpcRoute,
   getLikedIdeas: getLikedIdeasTrpcRoute,
   getMyIdeas: getMyIdeasTrpcRoute,
+  addComment: addCommentTrpcRoute,
+  getComments: getCommentsTrpcRoute,
   // @endindex
 })
 

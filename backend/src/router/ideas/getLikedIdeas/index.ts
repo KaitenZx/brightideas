@@ -1,6 +1,5 @@
-import { omit } from '@brightideas/shared' // Используем твой omit
+import { omit, zGetLikedIdeasTrpcInput } from '@brightideas/shared' // Используем твой omit
 import { trpcLoggedProcedure } from '../../../lib/trpc.js'
-import { zGetLikedIdeasTrpcInput } from './input.js' // Убедись, что input.ts определяет cursor как number
 
 export const getLikedIdeasTrpcRoute = trpcLoggedProcedure
   .input(zGetLikedIdeasTrpcInput)

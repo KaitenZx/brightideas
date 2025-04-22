@@ -1,4 +1,4 @@
-import { zGetIdeasTrpcInput } from '@brightideas/backend/src/router/ideas/getIdeas/input'
+import { zGetIdeasTrpcInput } from '@brightideas/shared'
 import { Stack, Box, Title, SimpleGrid, Container } from '@mantine/core'
 import { IconSearch } from '@tabler/icons-react'
 import InfiniteScroll from 'react-infinite-scroller'

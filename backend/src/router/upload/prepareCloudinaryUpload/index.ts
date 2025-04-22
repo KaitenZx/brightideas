@@ -1,8 +1,7 @@
-import { cloudinaryUploadTypes } from '@brightideas/shared'
+import { cloudinaryUploadTypes, zPrepareCloudinaryUploadTrpcInput } from '@brightideas/shared'
 import { v2 as cloudinary } from 'cloudinary'
 import { env } from '../../../lib/env.js'
 import { trpcLoggedProcedure } from '../../../lib/trpc.js'
-import { zPrepareCloudinaryUploadTrpcInput } from './input.js'
 
 export const prepareCloudinaryUploadTrpcRoute = trpcLoggedProcedure
   .input(zPrepareCloudinaryUploadTrpcInput)

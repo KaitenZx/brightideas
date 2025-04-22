@@ -1,4 +1,6 @@
 import { z } from 'zod'
+import { cloudinaryUploadTypes } from './cloudinaryTypes.js'
+import { getKeysAsArray } from './getKeysAsArray.js'
 
 export const zEnvNonemptyTrimmed = z.string().trim().min(1)
 export const zEnvNonemptyTrimmedRequiredOnNotLocal = zEnvNonemptyTrimmed.optional().refine(
@@ -26,3 +28,92 @@ export const zPasswordsMustBeTheSame =
       })
     }
   }
+
+export const zBaseIdeaInput = z.object({
+  name: zStringRequired,
+  nick: zNickRequired,
+  description: zStringRequired,
+  text: zStringMin(100), // <-- Убираем transform отсюда! Просто валидация минимальной длины.
+  images: z.array(zStringRequired),
+  certificate: z.string().nullable(),
+  documents: z.array(zStringRequired),
+})
+
+// Можно сразу создать типы для удобства
+export type BaseIdeaInput = z.infer<typeof zBaseIdeaInput>
+
+// Если схема для Update похожа, но с ID и опциональными полями:
+export const zBaseUpdateIdeaInput = zBaseIdeaInput.partial().extend({
+  ideaId: zStringRequired, // ID обязателен для обновления
+  nick: zNickRequired.optional(), // Пример: ник можно сделать опциональным при обновлении, если не хочешь менять
+})
+export type BaseUpdateIdeaInput = z.infer<typeof zBaseUpdateIdeaInput>
+
+export const zSignInTrpcInput = z.object({
+  nick: zStringRequired,
+  password: zStringRequired,
+})
+
+export const zSignUpTrpcInput = z.object({
+  nick: zNickRequired,
+  email: zEmailRequired,
+  password: zStringRequired,
+})
+
+export const zUpdatePasswordTrpcInput = z.object({
+  oldPassword: zStringRequired,
+  newPassword: zStringRequired,
+})
+
+export const zUpdateProfileTrpcInput = z.object({
+  nick: zNickRequired,
+  name: z.string().max(50).default(''),
+  avatar: z.string().nullable(),
+})
+
+export const zAddCommentTrpcInput = z.object({
+  ideaId: z.string().uuid(),
+  text: z
+    .string({ required_error: 'Comment text cannot be empty.' })
+    .max(1000, 'Comment cannot exceed 1000 characters.'),
+})
+
+export const zGetCommentsTrpcInput = z.object({
+  ideaId: z.string().uuid(),
+  limit: z.number().min(1).max(50).default(10),
+  cursor: z.string().uuid().optional(), // Используем ID комментария как курсор
+})
+
+export const zBlockIdeaTrpcInput = z.object({
+  ideaId: zStringRequired,
+})
+
+export const zGetIdeaTrpcInput = z.object({
+  ideaNick: zStringRequired,
+})
+
+export const zGetIdeasTrpcInput = z.object({
+  cursor: z.coerce.number().optional(),
+  limit: z.number().min(1).max(100).default(10),
+  search: zStringOptional,
+})
+
+export const zGetLikedIdeasTrpcInput = z.object({
+  cursor: z.coerce.number().optional(), // Теперь cursor - это number (serialNumber)
+  limit: z.number().min(1).max(100).default(10),
+})
+
+export const zGetMyIdeasTrpcInput = z.object({
+  cursor: z.coerce.number().optional(),
+  limit: z.number().min(1).max(100).default(10),
+})
+
+export const zPrepareCloudinaryUploadTrpcInput = z.object({
+  type: z.enum(getKeysAsArray(cloudinaryUploadTypes)),
+})
+
+export const zPrepareS3UploadTrpcInput = z.object({
+  fileName: zStringRequired,
+  fileType: zStringRequired,
+  fileSize: z.number().int().positive(),
+})
