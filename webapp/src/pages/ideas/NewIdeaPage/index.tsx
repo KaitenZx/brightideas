@@ -1,4 +1,4 @@
-import { zCreateIdeaTrpcInput } from '@brightideas/backend/src/router/ideas/createIdea/input'
+import { zBaseIdeaInput } from '@brightideas/shared'
 import { Container, Title, Stack } from '@mantine/core'
 import { Alert } from '../../../components/Alert'
 import { Button } from '../../../components/Button'
@@ -26,7 +26,7 @@ const NewIdeaPage = withPageWrapper({
       certificate: '',
       documents: [],
     },
-    validationSchema: zCreateIdeaTrpcInput,
+    validationSchema: zBaseIdeaInput,
     onSubmit: async (values) => {
       await createIdea.mutateAsync(values)
       formik.resetForm()
@@ -36,7 +36,9 @@ const NewIdeaPage = withPageWrapper({
   return (
     <Container size="md" py="xl">
       <Stack gap="lg">
-        <Title order={1} mb="lg">New Idea</Title>
+        <Title order={1} mb="lg">
+          New Idea
+        </Title>
 
         <form
           onSubmit={(e) => {

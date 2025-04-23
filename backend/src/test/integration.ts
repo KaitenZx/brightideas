@@ -9,7 +9,7 @@ import { env } from '../lib/env.js'
 import { getTrpcContext } from '../lib/trpc.js'
 import { trpcRouter } from '../router/index.js'
 import { deepMap } from '../utils/deepMap.js'
-import { getPasswordHash } from '../utils/getPasswordHash.js'
+import { hashPassword } from '../utils/passwordUtils.js'
 import { type ExpressRequest } from '../utils/types.js'
 
 if (env.NODE_ENV !== 'test') {
@@ -59,7 +59,7 @@ export const createUser = async ({ user = {}, number = 1 }: { user?: Partial<Use
     data: {
       nick: `user${number}`,
       email: `user${number}@example.com`,
-      password: getPasswordHash(user.password || '1234'),
+      password: await hashPassword(user.password || '1234'),
       ...omit(user, ['password']),
     },
   })

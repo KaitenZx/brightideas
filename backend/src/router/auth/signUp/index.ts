@@ -1,9 +1,9 @@
+import { zSignUpTrpcInput } from '@brightideas/shared'
 import { sendWelcomeEmail } from '../../../lib/emails.js'
 import { ExpectedError } from '../../../lib/error.js'
 import { trpcLoggedProcedure } from '../../../lib/trpc.js'
-import { getPasswordHash } from '../../../utils/getPasswordHash.js'
+import { hashPassword } from '../../../utils/passwordUtils.js'
 import { signJWT } from '../../../utils/signJWT.js'
-import { zSignUpTrpcInput } from './input.js'
 
 export const signUpTrpcRoute = trpcLoggedProcedure.input(zSignUpTrpcInput).mutation(async ({ ctx, input }) => {
   const exUserWithNick = await ctx.prisma.user.findUnique({
@@ -26,7 +26,7 @@ export const signUpTrpcRoute = trpcLoggedProcedure.input(zSignUpTrpcInput).mutat
     data: {
       nick: input.nick,
       email: input.email,
-      password: getPasswordHash(input.password),
+      password: await hashPassword(input.password),
     },
   })
   void sendWelcomeEmail({ user })

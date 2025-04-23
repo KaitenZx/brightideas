@@ -1,8 +1,21 @@
+import { zBaseIdeaInput } from '@brightideas/shared'
 import { TRPCError } from '@trpc/server'
+import sanitizeHtml from 'sanitize-html'
 import { trpcLoggedProcedure } from '../../../lib/trpc.js'
-import { zCreateIdeaTrpcInput } from './input.js'
 
-export const createIdeaTrpcRoute = trpcLoggedProcedure.input(zCreateIdeaTrpcInput).mutation(async ({ input, ctx }) => {
+const sanitizeConfig: sanitizeHtml.IOptions = {
+  allowedTags: ['p', 'b', 'i', 'em', 'strong', 'ul', 'ol', 'li', 'br', 'a'],
+  allowedAttributes: {
+    a: ['href'],
+  },
+  allowedSchemes: ['http', 'https', 'mailto'],
+  allowedSchemesByTag: {},
+  allowedSchemesAppliedToAttributes: ['href', 'src', 'cite'],
+  allowProtocolRelative: false,
+  enforceHtmlBoundary: true,
+}
+
+export const createIdeaTrpcRoute = trpcLoggedProcedure.input(zBaseIdeaInput).mutation(async ({ input, ctx }) => {
   if (!ctx.me) {
     throw Error('UNAUTHORIZED')
   }
@@ -19,9 +32,15 @@ export const createIdeaTrpcRoute = trpcLoggedProcedure.input(zCreateIdeaTrpcInpu
     })
   }
 
+  const sanitizedText = sanitizeHtml(input.text, sanitizeConfig)
+
   // Создание новой записи
   await ctx.prisma.idea.create({
-    data: { ...input, authorId: ctx.me.id },
+    data: {
+      ...input,
+      text: sanitizedText,
+      authorId: ctx.me.id,
+    },
   })
 
   return true

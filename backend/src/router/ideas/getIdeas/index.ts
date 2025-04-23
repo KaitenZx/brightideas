@@ -1,6 +1,5 @@
-import { omit } from '@brightideas/shared'
+import { omit, zGetIdeasTrpcInput } from '@brightideas/shared'
 import { trpcLoggedProcedure } from '../../../lib/trpc.js'
-import { zGetIdeasTrpcInput } from './input.js'
 
 export const getIdeasTrpcRoute = trpcLoggedProcedure.input(zGetIdeasTrpcInput).query(async ({ ctx, input }) => {
   const preparedSearchQuery = input.search

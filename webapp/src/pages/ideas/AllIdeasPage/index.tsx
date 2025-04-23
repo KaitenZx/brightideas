@@ -1,4 +1,4 @@
-import { zGetIdeasTrpcInput } from '@brightideas/backend/src/router/ideas/getIdeas/input'
+import { zGetIdeasTrpcInput } from '@brightideas/shared'
 import { Stack, Box, Title, SimpleGrid, Container } from '@mantine/core'
 import { IconSearch } from '@tabler/icons-react'
 import InfiniteScroll from 'react-infinite-scroller'
@@ -37,14 +37,16 @@ const AllIdeasPage = withPageWrapper({
   return (
     <Container size="lg" py="xl">
       <Stack gap="lg">
-        <Title order={1} mb="lg">All Ideas</Title>
+        <Title order={1} mb="lg">
+          All Ideas
+        </Title>
 
         <Box mb="md">
           <Input icon={<IconSearch size="1rem" />} name="search" formik={formik} />
         </Box>
 
         {isLoading || isRefetching ? (
-          <Loader type="section" />
+          <Loader type="page" />
         ) : isError ? (
           <Alert color="red">{error.message}</Alert>
         ) : !data || !data.pages[0] || !data.pages[0].ideas.length ? (

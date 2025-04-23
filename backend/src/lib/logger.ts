@@ -79,7 +79,7 @@ const prettifyMeta = (meta: LoggerMetaData): LoggerMetaData => {
   })
 }
 
-export const winstonLogger = winston.createLogger({
+const winstonLogger = winston.createLogger({
   level: env.NODE_ENV === 'production' ? 'info' : 'debug',
   format: jsonFormat,
   defaultMeta: {

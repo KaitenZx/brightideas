@@ -1,11 +1,11 @@
 import { PutObjectCommand } from '@aws-sdk/client-s3'
 import { getSignedUrl } from '@aws-sdk/s3-request-presigner'
+import { zPrepareS3UploadTrpcInput } from '@brightideas/shared'
 import { env } from '../../../lib/env.js'
 import { ExpectedError } from '../../../lib/error.js'
 import { getS3Client } from '../../../lib/s3.js'
 import { trpcLoggedProcedure } from '../../../lib/trpc.js'
 import { getRandomString } from '../../../utils/getRandomString.js'
-import { zPrepareS3UploadTrpcInput } from './input.js'
 
 const maxFileSize = 10 * 1024 * 1024 // 10MB
 
