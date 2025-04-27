@@ -80,30 +80,3 @@ export const TrpcProvider = ({ children }: { children: React.ReactNode }) => {
     </trpc.Provider>
   )
 }
-
-//const trpcClient = trpc.createClient({
-//  transformer: superjson,
-//  links: [
-//    customTrpcLink,
-//    loggerLink({
-//      enabled: () => getWebAppEnv().NODE_ENV === 'development',
-//    }),
-//    httpBatchLink({
-//      url: getWebAppEnv().VITE_BACKEND_TRPC_URL,
-//      headers: () => {
-//        const token = Cookies.get('token')
-//        return {
-//          ...(token && { authorization: `Bearer ${token}` }),
-//        }
-//      },
-//    }),
-//  ],
-//})
-
-//export const TrpcProvider = ({ children }: { children: React.ReactNode }) => {
-//  return (
-//    <trpc.Provider client={trpcClient} queryClient={queryClient}>
-//      <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
-//    </trpc.Provider>
-//  )
-//}

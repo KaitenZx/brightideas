@@ -1,0 +1,47 @@
+name: CI Checks # Название воркфлоу
+
+on: # Триггеры для запуска
+  push: # Запускать при пуше в любую ветку
+    branches:
+      - master # Или твоя основная ветка
+      - '*' # Можно указать конкретные ветки или все (*)
+  pull_request: # Запускать при создании или обновлении Pull Request
+    branches:
+      - master # Или твоя основная ветка
+
+jobs:
+  test: # Название задачи (может быть любым)
+    name: Run Tests # Отображаемое имя задачи
+    runs-on: ubuntu-latest # Используем последнюю Ubuntu в качестве среды выполнения
+
+    strategy:
+      matrix:
+        node-version: [18.x, 20.x] # Можно тестировать на разных версиях Node.js
+
+    steps:
+      - name: Checkout code # Шаг: Клонирование репозитория
+        uses: actions/checkout@v4 # Используем готовое действие для клонирования
+
+      - name: Setup pnpm # Шаг: Установка pnpm
+        uses: pnpm/action-setup@v3 # Используем готовое действие для pnpm
+        with:
+          version: 10.7.0 # Укажи версию pnpm, если нужно (обычно последняя ок)
+
+      - name: Setup Node.js ${{ matrix.node-version }} # Шаг: Установка Node.js
+        uses: actions/setup-node@v4 # Используем готовое действие для Node.js
+        with:
+          node-version: ${{ matrix.node-version }} # Версия из матрицы
+          cache: 'pnpm' # Включаем кеширование зависимостей для pnpm
+
+      - name: Install dependencies # Шаг: Установка зависимостей
+        run: pnpm install --frozen-lockfile # Устанавливаем зависимости, используя lock-файл
+
+      - name: Run tests # Шаг: Запуск тестов
+        run: pnpm test # Запускаем команду test из корневого package.json (она должна запускать тесты во всех воркспейсах, например, через `pnpm -r test`)
+
+
+      # Опционально: можно добавить шаги для линтинга, проверки типов и т.д.
+      # - name: Run Linting
+      #   run: pnpm lint
+      # - name: Check Types
+      #   run: pnpm types

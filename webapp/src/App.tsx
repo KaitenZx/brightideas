@@ -24,17 +24,17 @@ import { MixpanelUser } from './lib/mixpanel'
 import * as routes from './lib/routes'
 import { SentryUser } from './lib/sentry'
 import { TrpcProvider } from './lib/trpc'
+import EditProfilePage from './pages/auth/EditProfilePage'
 import SignInPage from './pages/auth/SignInPage/Index'
 import SignUpPage from './pages/auth/SignUpPage'
 import SignOutPage from './pages/auth/SingOutPage'
 import AllIdeasPage from './pages/ideas/AllIdeasPage'
+import EditIdeaPage from './pages/ideas/EditIdeaPage'
+import NewIdeaPage from './pages/ideas/NewIdeaPage'
 import ViewIdeaPage from './pages/ideas/ViewIdeaPage'
 import NotFoundPage from './pages/other/NotFoundPage'
 
 // --- Динамические импорты страниц ---
-const EditProfilePage = lazy(() => import('./pages/auth/EditProfilePage'))
-const EditIdeaPage = lazy(() => import('./pages/ideas/EditIdeaPage'))
-const NewIdeaPage = lazy(() => import('./pages/ideas/NewIdeaPage'))
 const LikedIdeasPage = lazy(() => import('./pages/ideas/LikedIdeasPage'))
 const MyIdeasPage = lazy(() => import('./pages/ideas/MyIdeasPage'))
 
