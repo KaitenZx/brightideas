@@ -4,10 +4,9 @@ Hey there! Welcome to BrightIdeas, a fullstack idea management app I built using
 
 [![Build Status](https://img.shields.io/github/actions/workflow/status/KaitenZx/BrightIdeas/fly-deploy.yml?branch=master&style=flat-square)](https://github.com/KaitenZx/BrightIdeas/actions/workflows/fly-deploy.yml) [![TypeScript](https://img.shields.io/badge/TypeScript-Strict-blue?style=flat-square)](https://www.typescriptlang.org/) [![React](https://img.shields.io/badge/React-18-blue?style=flat-square)](https://reactjs.org/) [![Node.js](https://img.shields.io/badge/Node.js-22-green?style=flat-square)](https://nodejs.org/) [![tRPC](https://img.shields.io/badge/tRPC-10-orange?style=flat-square)](https://trpc.io/) [![Prisma](https://img.shields.io/badge/Prisma-6-purple?style=flat-square)](https://www.prisma.io/) [![Tested with](https://img.shields.io/badge/tested_with-Vitest-6D932B?style=flat-square)](https://vitest.dev/)
 
-The main goal was to create a practical project showcasing how tools like **tRPC, Prisma, React, Node.js, and TypeScript** can work together smoothly, especially focusing on **end-to-end type safety**.
+The main goal was to create a practical project showcasing how tools can work together smoothly, especially focusing on **end-to-end type safety**.
 
 **➡️ Check it out live:** **[https://brightideas.fly.dev](https://brightideas.fly.dev)**
-_(Feel free to sign up and look around!)_
 
 ---
 
@@ -17,13 +16,13 @@ _[ **IMPORTANT:** Add screenshots/GIFs here! Show the main pages like the idea f
 
 **Core Features:**
 
-- User accounts (sign up/in/out, profile edits)
+- User accounts
 - Create, view, update ideas
 - Like ideas
 - Search through ideas
-- Basic admin actions (blocking ideas)
-- File uploads (images to Cloudinary, docs to S3 via pre-signed URLs)
-- Email notifications (using MJML templates)
+- Basic admin action
+- File uploads
+- Email notifications
 - Responsive design
 
 ---
@@ -40,21 +39,21 @@ This project uses a **pnpm monorepo** structure (`backend`, `webapp`, `shared`).
 2.  **Modern Stack:**
 
     - **Backend:** Node.js (ESM) with Express, Prisma (PostgreSQL ORM), Passport.js (JWT).
-    - **Frontend:** React 18, Vite (fast dev/builds!), Mantine UI, React Router, TanStack Query (React Query).
+    - **Frontend:** React 18, Mantine UI, React Router, React Query.
     - **Shared Code:** The `/shared` package holds common types, Zod schemas, and utils, keeping things DRY.
 
 3.  **Developer Experience & Quality:**
 
     - **Vite:** Super fast frontend development experience.
-    - **Custom Hooks:** `useForm` and `withPageWrapper` on the frontend simplify form handling and page setup (loading/error/auth states).
+    - **Custom Hooks:** `useForm` and `withPageWrapper` on the frontend simplify form handling and page setup.
     - **Automation:** Husky + lint-staged enforce ESLint/Prettier rules before commits, keeping the codebase clean and consistent.
 
 4.  **Production-Ready Practices:**
-    - **CI/CD:** GitHub Actions automate testing, building, and deploying to Fly.io.
+    - **CI/CD:** GitHub Actions automate testing, building, and deploying.
     - **Docker:** Multi-stage Dockerfile for optimized production images.
     - **Observability:** Sentry for error tracking (FE/BE), Winston for backend logging.
     - **Secure Config:** Zod validation for environment variables on startup. Secure passing of _public_ env vars to the frontend.
-    - **Security Basics:** Rate limiting, input sanitization (`sanitize-html`), secure file uploads via pre-signed URLs.
+    - **Security Basics:** Rate limiting, input sanitization, secure file uploads via pre-signed URLs.
 
 ---
 
@@ -71,10 +70,12 @@ This project uses a **pnpm monorepo** structure (`backend`, `webapp`, `shared`).
     - Copy `.example` files in `backend/`, `webapp/`, and the root (`env.docker.example`) to `.env` / `env.docker`.
     - Fill in **required** vars: `DATABASE_URL`, `JWT_SECRET`, `PASSWORD_SALT` (in `backend/.env` & `env.docker`). Others are needed for full features.
 3.  **Start DB & Migrate:**
+
     ```bash
     docker compose up -d db # Uses env.docker
     pnpm b pmd             # Runs 'prisma migrate dev'
     ```
+
 4.  **Run Dev Servers:**
     ```bash
     pnpm dev
@@ -84,26 +85,9 @@ This project uses a **pnpm monorepo** structure (`backend`, `webapp`, `shared`).
 
 ---
 
-## 🧪 Testing & Linting
+## 🧪 Testing
 
-- `pnpm lint`: Check code style with ESLint/Stylelint.
 - `pnpm test`: Run tests (mainly backend integration for now). Requires test DB setup (`backend/.env.test`, `pnpm b pmt`).
-
----
-
-## 🚢 Deployment
-
-- Deploys automatically to **Fly.io** from the `master` branch via GitHub Actions (`.github/workflows/fly-deploy.yml`).
-- Uses `Dockerfile` and `fly.toml` for configuration. Requires secrets set on Fly.io.
-
----
-
-## 🌱 Potential Next Steps
-
-- More tests! Especially frontend component testing.
-- Real-time updates with WebSockets.
-- Comments on ideas.
-- Improved search/filtering.
 
 ---
 

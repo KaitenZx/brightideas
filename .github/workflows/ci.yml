@@ -11,12 +11,12 @@ on: # Триггеры для запуска
 
 jobs:
   test: # Название задачи (может быть любым)
-    name: Run Tests # Отображаемое имя задачи
+    name: Run Tests on Node ${{ matrix.node-version }} # Отображаемое имя задачи, включающее версию Node
     runs-on: ubuntu-latest # Используем последнюю Ubuntu в качестве среды выполнения
 
     strategy:
       matrix:
-        node-version: [18.x, 20.x] # Можно тестировать на разных версиях Node.js
+        node-version: [18.x, 20.x] # Тестируем на разных версиях Node.js
 
     steps:
       - name: Checkout code # Шаг: Клонирование репозитория
@@ -25,7 +25,7 @@ jobs:
       - name: Setup pnpm # Шаг: Установка pnpm
         uses: pnpm/action-setup@v3 # Используем готовое действие для pnpm
         with:
-          version: 10.7.0 # Укажи версию pnpm, если нужно (обычно последняя ок)
+          version: 10.7.0 # Укажи версію pnpm, якщо потрібно
 
       - name: Setup Node.js ${{ matrix.node-version }} # Шаг: Установка Node.js
         uses: actions/setup-node@v4 # Используем готовое действие для Node.js
@@ -36,8 +36,13 @@ jobs:
       - name: Install dependencies # Шаг: Установка зависимостей
         run: pnpm install --frozen-lockfile # Устанавливаем зависимости, используя lock-файл
 
+      # --- ДОБАВЛЕННЫЙ ШАГ ---
+      - name: Build Shared Package # Шаг: Сборка общего пакета
+        run: pnpm --filter @brightideas/shared build # Собираем пакет shared, чтобы его код был доступен для тестов
+      # ------------------------
+
       - name: Run tests # Шаг: Запуск тестов
-        run: pnpm test # Запускаем команду test из корневого package.json (она должна запускать тесты во всех воркспейсах, например, через `pnpm -r test`)
+        run: pnpm test # Запускаем команду test из корневого package.json
 
 
       # Опционально: можно добавить шаги для линтинга, проверки типов и т.д.
