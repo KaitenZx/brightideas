@@ -8,7 +8,7 @@ import { Input } from '../../../components/Input'
 import { useForm } from '../../../lib/form'
 import { mixpanelIdentify, mixpanelTrackSignIn } from '../../../lib/mixpanel'
 import { withPageWrapper } from '../../../lib/pageWrapper'
-import { getAllIdeasRoute, getSignUpRoute } from '../../../lib/routes' // Добавлен getSignUpRoute
+import { getAllIdeasRoute, getSignUpRoute } from '../../../lib/routes'
 import { trpc } from '../../../lib/trpc'
 
 const SignInPage = withPageWrapper({
@@ -38,18 +38,13 @@ const SignInPage = withPageWrapper({
     // Добавляем верхний отступ к контейнеру
     <Container size="xs" my="xl" mt="5rem">
       {' '}
-      {/* Увеличил верхний отступ */}
       <Stack align="center" gap="lg">
         {' '}
-        {/* Центрируем весь контент */}
-        {/* Опционально: Логотип */}
-        {/* <Image src="/path/to/your/logo.svg" alt="BrightIdeas Logo" w={80} mb="lg" /> */}
         <Title order={1} ta="center">
           Sign In
         </Title>
         <Paper withBorder shadow="md" p="xl" radius="md" w="100%">
           {' '}
-          {/* Задаем ширину 100% от контейнера */}
           <form onSubmit={formik.handleSubmit}>
             <Stack gap="md">
               <Input label="Nick" name="nick" formik={formik} />
@@ -59,9 +54,7 @@ const SignInPage = withPageWrapper({
             </Stack>
           </form>
         </Paper>
-        {/* Ссылки под формой */}
         <Text ta="center" size="sm">
-          {/* Опционально: ссылка "Забыли пароль?" */}
           {/* <Anchor href="/forgot-password" size="sm" mr="sm">
                     Forgot password?
                 </Anchor> */}

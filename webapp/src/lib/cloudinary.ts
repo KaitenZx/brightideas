@@ -1,5 +1,3 @@
-//const cloudinaryUrl = `https://res.cloudinary.com/${sharedEnvInstance.CLOUDINARY_CLOUD_NAME}/image/upload`
-
 import {
   CloudinaryUploadPresetName,
   CloudinaryUploadType,
@@ -10,7 +8,6 @@ import {
 import { getWebAppEnv } from './env'
 
 const getBaseCloudinaryUrl = (): string => {
-  // Получаем env ТОЛЬКО когда функция вызвана
   const cloudName = getWebAppEnv().VITE_CLOUDINARY_CLOUD_NAME
   return `https://res.cloudinary.com/${cloudName}/image/upload`
 }

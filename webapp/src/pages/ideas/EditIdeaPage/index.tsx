@@ -22,7 +22,6 @@ const EditIdeaPage = withPageWrapper({
       ideaNick,
     })
   },
-  // Оставляем проверки доступа и получение данных
   checkExists: ({ queryResult }) => !!queryResult.data.idea,
   checkExistsMessage: 'Idea not found',
   checkAccess: ({ queryResult, ctx }) => !!ctx.me && ctx.me.id === queryResult.data.idea?.authorId,
@@ -33,13 +32,11 @@ const EditIdeaPage = withPageWrapper({
       idea,
     }
   },
-  // Используем данные для заголовка страницы
   title: ({ idea }) => `Edit Idea: ${idea.nick}`, // Обновил формат заголовка
 })(({ idea }) => {
   const navigate = useNavigate()
   const updateIdea = trpc.updateIdea.useMutation()
   const { formik, alertProps, buttonProps } = useForm({
-    // Оставляем инициализацию формы
     initialValues: pick(idea, ['name', 'nick', 'description', 'text', 'images', 'certificate', 'documents']),
     validationSchema: zBaseUpdateIdeaInput.omit({ ideaId: true }),
     onSubmit: async (values) => {
@@ -49,23 +46,17 @@ const EditIdeaPage = withPageWrapper({
   })
 
   return (
-    // Используем Container и Stack как в NewIdeaPage
     <Container size="md" py="xl">
       <Stack gap="lg">
-        {/* Заголовок страницы */}
         <Title order={1} mb="lg">
           {`Edit Idea: ${idea.nick}`}
         </Title>
 
-        {/* Форма */}
         <form onSubmit={formik.handleSubmit}>
-          {/* Используем Stack для полей формы */}
           <Stack gap="md">
             {' '}
-            {/* Можно использовать 'md' для меньших отступов между полями */}
             <Input label="Name" name="name" formik={formik} />
             <Input label="Nick" name="nick" formik={formik} />
-            {/* Убрал maxWidth из Description, пусть Container управляет */}
             <Input label="Description" name="description" formik={formik} />
             <RichTextEditorInput name="text" label="Text" required formik={formik} />
             <UploadsToCloudinary label="Images" name="images" type="image" preset="preview" formik={formik} />

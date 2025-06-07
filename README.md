@@ -57,6 +57,18 @@ This project uses a **pnpm monorepo** structure (`backend`, `webapp`, `shared`).
 
 ---
 
+### Deeper Architectural Decisions & Patterns
+
+> Beyond the specific technologies, this project showcases several key architectural patterns and best practices:
+>
+> - **Frontend Page Controller Pattern:** The `withPageWrapper` HOC acts as a declarative "engine" for pages. It handles data fetching, loading states, error handling, existence checks, and access control, leaving page components incredibly clean and focused purely on presentation.
+> - **Data-Driven Navigation:** The main application layout is not hardcoded. Navigation links are generated from a centralized data structure, making the UI highly scalable and easy to maintain.
+> - **Graceful Shutdown (Backend):** The server correctly handles `SIGTERM` and `SIGINT` signals to gracefully close database connections before exiting, a crucial practice for reliability in containerized environments like Docker.
+> - **Accessibility (a11y) Focus:** Custom UI controls, like the gallery navigator, are built from the ground up with full accessibility in mind, supporting keyboard navigation and screen readers (`role`, `aria-label`, `onKeyDown`).
+> - **Robust Component Design:** Complex components like the rich text editor are designed to be robust, with built-in protection against race conditions (e.g., preventing external state updates from overwriting active user input).
+
+---
+
 ## 🚀 Run it Locally
 
 **Need:** Node.js (v22), pnpm (v10+), Docker, Git.

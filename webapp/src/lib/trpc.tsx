@@ -30,11 +30,7 @@ const customTrpcLink: TRPCLink<TrpcRouter> = () => {
         error(error) {
           if (!error.data?.isExpected) {
             sentryCaptureException(error)
-            if (getWebAppEnv().NODE_ENV !== 'development') {
-              console.error(error)
-            }
           }
-          sentryCaptureException(error)
           observer.error(error)
         },
         complete() {
@@ -47,21 +43,18 @@ const customTrpcLink: TRPCLink<TrpcRouter> = () => {
 }
 
 export const TrpcProvider = ({ children }: { children: React.ReactNode }) => {
-  // Используем useState для создания клиента ОДИН РАЗ при монтировании провайдера
-  // Функция внутри useState выполнится только при первом рендере
   const [trpcClientState] = useState(() => {
-    // Теперь getWebAppEnv() вызывается ЗДЕСЬ, ПОСЛЕ инициализации в main.tsx
-    const env = getWebAppEnv() // Получаем env один раз
+    const env = getWebAppEnv()
 
     return trpc.createClient({
       transformer: superjson,
       links: [
         customTrpcLink,
         loggerLink({
-          enabled: () => env.NODE_ENV === 'development', // Используем переменную env
+          enabled: () => env.NODE_ENV === 'development',
         }),
         httpBatchLink({
-          url: env.VITE_BACKEND_TRPC_URL, // Используем переменную env
+          url: env.VITE_BACKEND_TRPC_URL,
           headers: () => {
             const token = Cookies.get('token')
             return {
@@ -73,7 +66,6 @@ export const TrpcProvider = ({ children }: { children: React.ReactNode }) => {
     })
   })
 
-  // Используем созданный клиент в провайдере
   return (
     <trpc.Provider client={trpcClientState} queryClient={queryClient}>
       <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>

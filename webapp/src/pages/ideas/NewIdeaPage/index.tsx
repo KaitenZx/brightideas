@@ -40,12 +40,7 @@ const NewIdeaPage = withPageWrapper({
           New Idea
         </Title>
 
-        <form
-          onSubmit={(e) => {
-            e.preventDefault()
-            formik.handleSubmit()
-          }}
-        >
+        <form onSubmit={formik.handleSubmit}>
           <Stack gap="lg">
             <Input name="name" label="Name" formik={formik} />
             <Input name="nick" label="Nick" formik={formik} />

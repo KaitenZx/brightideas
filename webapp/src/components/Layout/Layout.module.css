@@ -1,0 +1,11 @@
+.userMenuButton {
+  display: flex;
+  align-items: center;
+  padding: var(--mantine-spacing-xs) var(--mantine-spacing-sm);
+  border-radius: var(--mantine-radius-sm);
+  transition: background-color 150ms ease;
+}
+
+.userMenuButton:hover {
+  background-color: light-dark(var(--mantine-color-gray-1), var(--mantine-color-dark-6));
+}

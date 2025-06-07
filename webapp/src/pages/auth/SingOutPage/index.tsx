@@ -9,12 +9,16 @@ const SignOutPage = () => {
   // This page is used to sign out the user
   const navigate = useNavigate()
   const trpcUtils = trpc.useUtils()
+
   useEffect(() => {
-    Cookies.remove('token')
-    void trpcUtils.invalidate().then(() => {
-      navigate(getSignInRoute())
-    })
-  }, [])
+    const handleSignOut = () => {
+      trpcUtils.getMe.setData(undefined, { me: null })
+      Cookies.remove('token')
+      navigate(getSignInRoute(), { replace: true })
+    }
+
+    handleSignOut()
+  }, [navigate, trpcUtils])
 
   return <Loader type="page" />
 }

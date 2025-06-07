@@ -28,8 +28,8 @@ export const Textarea = <TValues extends Record<string, any>>({
       onBlur={() => {
         formik.setFieldTouched(name, true)
       }}
-      autosize // Enable autosize by default, can be overridden via props if needed later
-      minRows={4} // Set a reasonable default minRows
+      autosize
+      minRows={4}
     />
   )
 }

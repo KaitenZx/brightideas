@@ -10,17 +10,17 @@ import {
   getMyIdeasPath,
   getLikedIdeasPath,
 } from '@brightideas/shared'
-import { pgr } from '../utils/pumpGetRoute'
+import { defineRoute } from '../utils/defineRoute'
 
-export const getSignUpRoute = pgr(() => signUpPath())
-export const getSignInRoute = pgr(() => signInPath())
-export const getSignOutRoute = pgr(() => signOutPath())
-export const getEditProfileRoute = pgr(() => editProfilePath())
-export const getAllIdeasRoute = pgr(() => allIdeasPath())
-export const getNewIdeaRoute = pgr(() => newIdeaPath())
-export const getMyIdeasRoute = pgr(() => getMyIdeasPath())
-export const getLikedIdeasRoute = pgr(() => getLikedIdeasPath())
+export const getSignUpRoute = defineRoute(() => signUpPath())
+export const getSignInRoute = defineRoute(() => signInPath())
+export const getSignOutRoute = defineRoute(() => signOutPath())
+export const getEditProfileRoute = defineRoute(() => editProfilePath())
+export const getAllIdeasRoute = defineRoute(() => allIdeasPath())
+export const getNewIdeaRoute = defineRoute(() => newIdeaPath())
+export const getMyIdeasRoute = defineRoute(() => getMyIdeasPath())
+export const getLikedIdeasRoute = defineRoute(() => getLikedIdeasPath())
 
-export const getViewIdeaRoute = pgr({ ideaNick: true }, ({ ideaNick }) => viewIdeaPath(ideaNick))
+export const getViewIdeaRoute = defineRoute({ ideaNick: true }, ({ ideaNick }) => viewIdeaPath(ideaNick))
 
-export const getEditIdeaRoute = pgr({ ideaNick: true }, ({ ideaNick }) => editIdeaPath(ideaNick))
+export const getEditIdeaRoute = defineRoute({ ideaNick: true }, ({ ideaNick }) => editIdeaPath(ideaNick))

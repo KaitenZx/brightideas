@@ -6,7 +6,6 @@ import { type WebAppEnv } from './env'
 let isSentryInitialized = false
 
 export function initSentry(env: WebAppEnv) {
-  // <--- Принимает env как аргумент
   if (isSentryInitialized) {
     console.warn('Sentry already initialized.')
     return
@@ -18,9 +17,8 @@ export function initSentry(env: WebAppEnv) {
       release: env.SOURCE_VERSION,
       environment: env.HOST_ENV,
       normalizeDepth: 10,
-      // Можно добавить интеграции Sentry.browserTracingIntegration(), Sentry.replayIntegration()
     })
-    isSentryInitialized = true // Устанавливаем флаг
+    isSentryInitialized = true
     console.info('Sentry initialized.')
   } else {
     console.warn('Sentry DSN not found, Sentry not initialized.')

@@ -1,16 +1,12 @@
 .cardRoot {
-  /* Add transition for smooth hover effects */
   transition:
     border-color 150ms ease,
     transform 150ms ease;
   cursor: pointer;
   height: 100%;
-
-  /* Ensure card takes full height for mt:auto in Stack */
 }
 
 .cardRoot:hover {
-  /* Use Mantine's CSS variable for the border color */
   border-color: var(--mantine-color-teal-4);
   transform: scale(1.03);
 }
