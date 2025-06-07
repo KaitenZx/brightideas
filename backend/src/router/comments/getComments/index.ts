@@ -8,7 +8,6 @@ export const getCommentsTrpcRoute = trpcLoggedProcedure.input(zGetCommentsTrpcIn
     where: { ideaId: ideaId },
     include: {
       author: {
-        // Выбираем нужные поля автора
         select: { id: true, nick: true, name: true, avatar: true },
       },
     },

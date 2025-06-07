@@ -51,7 +51,6 @@ const localConsoleFormat = winston.format.printf((info) => {
   return `${setColor(levelAndType)} ${time}${EOL}${message}${metaString}${stackString}${EOL}`
 })
 
-// --- Маскирование данных ---
 export type LoggerMetaData = Record<string, any> | undefined
 
 const keysToMask = new Set([
@@ -60,13 +59,11 @@ const keysToMask = new Set([
   'newPassword',
   'oldPassword',
   'token',
-  // 'text', // Оставляем, т.к. текст идеи/описания может быть важен в логах
-  // 'description', // Тоже оставляем
   'apiKey',
   'apiSecret',
   'secretKey',
-  'authorization', // Часто содержит 'Bearer token'
-  'cookie', // Может содержать сессионные куки
+  'authorization',
+  'cookie',
 ])
 
 const prettifyMeta = (meta: LoggerMetaData): LoggerMetaData => {
@@ -106,10 +103,10 @@ const winstonLogger = winston.createLogger({
               'DD-API-KEY': env.DATADOG_API_KEY,
               'Content-Type': 'application/json',
             },
-            format: jsonFormat, // Обязательно JSON
-            level: 'info', // Отправляем info и выше в Datadog
+            format: jsonFormat,
+            level: 'info',
             batch: true,
-            silent: env.NODE_ENV === 'test', // Если нужно заглушить в тестах
+            silent: env.NODE_ENV === 'test',
           }),
         ]
       : []),
@@ -153,7 +150,7 @@ export const logger = {
 }
 
 process.on('uncaughtException', (error: Error) => {
-  logger.error('uncaught', error, { fatal: true }) // Добавляем метаданные
+  logger.error('uncaught', error, { fatal: true })
   winstonLogger.on('finish', () => process.exit(1))
   winstonLogger.end()
   setTimeout(() => process.exit(1), 5000)
@@ -161,5 +158,5 @@ process.on('uncaughtException', (error: Error) => {
 
 process.on('unhandledRejection', (reason: unknown, promise: Promise<unknown>) => {
   const error = reason instanceof Error ? reason : new Error(`Unhandled Rejection: ${String(reason)}`)
-  logger.error('unhandledRejection', error, { promise }) // Логируем как ошибку
+  logger.error('unhandledRejection', error, { promise })
 })

@@ -6,7 +6,7 @@ type PumpedGetRouteInputBase = {
   abs?: boolean
 }
 
-function pumpGetRoute<T extends Record<string, boolean>>(
+function defineRoute<T extends Record<string, boolean>>(
   routeParamsDefinition: T,
   getRoute: (routeParams: Record<keyof T, string>) => string
 ): {
@@ -15,13 +15,13 @@ function pumpGetRoute<T extends Record<string, boolean>>(
   useParams: () => Record<keyof T, string>
   definition: string
 }
-function pumpGetRoute(getRoute: () => string): {
+function defineRoute(getRoute: () => string): {
   (routeParams?: PumpedGetRouteInputBase): string
   placeholders: {}
   useParams: () => {}
   definition: string
 }
-function pumpGetRoute(routeParamsOrGetRoute?: any, maybeGetRoute?: any) {
+function defineRoute(routeParamsOrGetRoute?: any, maybeGetRoute?: any) {
   const routeParamsDefinition = typeof routeParamsOrGetRoute === 'function' ? {} : routeParamsOrGetRoute
   const getRoute = typeof routeParamsOrGetRoute === 'function' ? routeParamsOrGetRoute : maybeGetRoute
   const placeholders = Object.keys(routeParamsDefinition).reduce((acc, key) => ({ ...acc, [key]: `:${key}` }), {})
@@ -43,4 +43,4 @@ function pumpGetRoute(routeParamsOrGetRoute?: any, maybeGetRoute?: any) {
 
 export type RouteParams<T extends { placeholders: Record<string, string> }> = T['placeholders']
 
-export const pgr = pumpGetRoute
+export { defineRoute }

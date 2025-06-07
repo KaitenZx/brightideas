@@ -4,11 +4,11 @@ import { trpcLoggedProcedure } from '../../../lib/trpc.js'
 export const getIdeasTrpcRoute = trpcLoggedProcedure.input(zGetIdeasTrpcInput).query(async ({ ctx, input }) => {
   const preparedSearchQuery = input.search
     ? input.search
-        .trim() // Убрать пробелы с краев
-        .split(/[\s\n\t]+/) // Разбить на слова по пробелам
-        .filter((term) => term.length > 0) // Убрать пустые слова
-        .map((term) => term + ':*') // Добавить суффикс префикса к каждому слову
-        .join(' & ') // Соединить через AND
+        .trim()
+        .split(/[\s\n\t]+/)
+        .filter((term) => term.length > 0)
+        .map((term) => term + ':*')
+        .join(' & ')
     : undefined
 
   const searchQuery = preparedSearchQuery && preparedSearchQuery.length > 0 ? preparedSearchQuery : undefined

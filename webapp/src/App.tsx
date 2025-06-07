@@ -4,13 +4,6 @@ import '@mantine/tiptap/styles.css'
 
 import {
   MantineProvider,
-  createTheme,
-  type MantineTheme,
-  Paper,
-  Input,
-  NavLink,
-  Textarea,
-  InputWrapper,
   Center,
 } from '@mantine/core'
 import { Suspense, lazy } from 'react' // Добавляем Suspense и lazy
@@ -23,93 +16,31 @@ import { AppContextProvider } from './lib/ctx'
 import { MixpanelUser } from './lib/mixpanel'
 import * as routes from './lib/routes'
 import { SentryUser } from './lib/sentry'
+import { theme } from './lib/theme'
 import { TrpcProvider } from './lib/trpc'
-import EditProfilePage from './pages/auth/EditProfilePage'
-import SignInPage from './pages/auth/SignInPage/Index'
-import SignUpPage from './pages/auth/SignUpPage'
-import SignOutPage from './pages/auth/SingOutPage'
-import AllIdeasPage from './pages/ideas/AllIdeasPage'
-import EditIdeaPage from './pages/ideas/EditIdeaPage'
-import NewIdeaPage from './pages/ideas/NewIdeaPage'
-import ViewIdeaPage from './pages/ideas/ViewIdeaPage'
-import NotFoundPage from './pages/other/NotFoundPage'
+// --- Убираем прямые импорты ---
+// import EditProfilePage from './pages/auth/EditProfilePage'
+// import SignInPage from './pages/auth/SignInPage/Index'
+// import SignUpPage from './pages/auth/SignUpPage'
+// import SignOutPage from './pages/auth/SingOutPage'
+// import AllIdeasPage from './pages/ideas/AllIdeasPage'
+// import EditIdeaPage from './pages/ideas/EditIdeaPage'
+// import NewIdeaPage from './pages/ideas/NewIdeaPage'
+// import ViewIdeaPage from './pages/ideas/ViewIdeaPage'
+// import NotFoundPage from './pages/other/NotFoundPage'
 
-// --- Динамические импорты страниц ---
+// --- Динамические импорты для всех страниц ---
+const EditProfilePage = lazy(() => import('./pages/auth/EditProfilePage'))
+const SignInPage = lazy(() => import('./pages/auth/SignInPage/Index'))
+const SignUpPage = lazy(() => import('./pages/auth/SignUpPage'))
+const SignOutPage = lazy(() => import('./pages/auth/SingOutPage'))
+const AllIdeasPage = lazy(() => import('./pages/ideas/AllIdeasPage'))
+const EditIdeaPage = lazy(() => import('./pages/ideas/EditIdeaPage'))
+const NewIdeaPage = lazy(() => import('./pages/ideas/NewIdeaPage'))
+const ViewIdeaPage = lazy(() => import('./pages/ideas/ViewIdeaPage'))
+const NotFoundPage = lazy(() => import('./pages/other/NotFoundPage'))
 const LikedIdeasPage = lazy(() => import('./pages/ideas/LikedIdeasPage'))
 const MyIdeasPage = lazy(() => import('./pages/ideas/MyIdeasPage'))
-
-const theme = createTheme({
-  /** Put your mantine theme override here */
-  fontFamily: 'Helvetica, Arial, sans-serif',
-  fontSizes: {
-    xs: '12px',
-    sm: '14px',
-    md: '16px',
-    lg: '18px',
-    xl: '20px',
-  },
-  lineHeights: { sm: '1.4', md: '1.5', lg: '1.6' }, // Slightly increased line height
-  radius: { xs: '2px', sm: '4px', md: '8px', lg: '16px' }, // Defined radii
-  defaultRadius: 'md', // Set default radius
-
-  primaryColor: 'teal', // Changed primary color to teal
-  // primaryShade: 6, // Optionally specify the shade for dark/light modes
-
-  headings: {
-    fontFamily: 'Helvetica, Arial, sans-serif',
-    sizes: {
-      h1: { fontSize: '2.2rem', lineHeight: '1.3' }, // Example heading sizes
-      h2: { fontSize: '1.8rem', lineHeight: '1.35' },
-      h3: { fontSize: '1.5rem', lineHeight: '1.4' },
-    },
-  },
-
-  components: {
-    Paper: Paper.extend({
-      // Extended Paper styles
-      defaultProps: {
-        shadow: 'xs', // Add a subtle shadow by default
-        withBorder: false, // Remove border by default, can be added explicitly
-      },
-    }),
-    NavLink: NavLink.extend({
-      // Extended NavLink styles
-      styles: (theme) => ({
-        root: {
-          borderRadius: theme.radius.sm, // Consistent radius with theme
-        },
-        label: {
-          fontSize: theme.fontSizes.sm, // Slightly smaller font for nav links
-        },
-      }),
-    }),
-    Input: Input.extend({
-      // Ensure inputs use default radius
-      defaultProps: {
-        radius: 'md',
-      },
-    }),
-    Textarea: Textarea.extend({
-      // Ensure textareas use default radius
-      defaultProps: {
-        radius: 'md',
-      },
-    }),
-    InputWrapper: InputWrapper.extend({
-      styles: (theme) => ({
-        error: {
-          fontSize: theme.fontSizes.md,
-          color: theme.colors.red[6],
-        },
-      }),
-    }),
-    Anchor: {
-      defaultProps: (theme: MantineTheme) => ({
-        c: theme.primaryColor, // Use 'c' prop instead of 'color'
-      }),
-    },
-  },
-})
 
 const SuspenseLoaderWrapper = () => (
   <Center style={{ height: '100vh', width: '100vw' }}>

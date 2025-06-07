@@ -1,13 +1,8 @@
-import {
-  Loader as MantineLoader,
-  Box,
-  type LoaderProps, // Типы для Mantine Loader
-  type BoxProps, // Типы для Box
-} from '@mantine/core'
+import { Loader as MantineLoader, Box, type LoaderProps, type BoxProps } from '@mantine/core'
 
 type CustomLoaderProps = {
   type: 'page' | 'section'
-  loaderProps?: Omit<LoaderProps, 'size'> // Убираем 'size' из передаваемых пропсов MantineLoader
+  loaderProps?: Omit<LoaderProps, 'size'>
   containerProps?: BoxProps
 }
 
@@ -18,8 +13,8 @@ export const Loader = ({ type, loaderProps, containerProps }: CustomLoaderProps)
     type === 'page'
       ? {
           width: '100%',
-          minHeight: `${mantineLoaderSize}px`, // Используем размер лоадера
-          height: '100%', // Пытается занять всю высоту родителя
+          minHeight: `${mantineLoaderSize}px`,
+          height: '100%',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
@@ -34,12 +29,7 @@ export const Loader = ({ type, loaderProps, containerProps }: CustomLoaderProps)
 
   return (
     <Box {...containerProps} style={{ ...containerStyles, ...containerProps?.style }}>
-      <MantineLoader
-        type="dots"
-        size={mantineLoaderSize} // Передаем числовой размер
-        color="teal"
-        {...loaderProps} // Передаем остальные пропсы, кроме size
-      />
+      <MantineLoader type="dots" size={mantineLoaderSize} color="teal" {...loaderProps} />
     </Box>
   )
 }

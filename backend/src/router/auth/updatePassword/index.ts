@@ -26,14 +26,11 @@ export const updatePasswordTrpcRoute = trpcLoggedProcedure
         id: ctx.me.id,
       },
       data: {
-        password: newPasswordHash, // Сохраняем новый хеш
+        password: newPasswordHash,
       },
     })
 
-    ctx.me = updatedMe // Обновляем данные в контексте
+    ctx.me = updatedMe
 
-    // 7. (Опционально) Инвалидировать другие сессии/токены этого пользователя.
-    // С простыми JWT это сложно, но стоит помнить как возможное улучшение.
-
-    return true // Возвращаем успех
+    return true
   })

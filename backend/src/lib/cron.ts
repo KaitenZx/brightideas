@@ -11,7 +11,7 @@ export const applyCron = (ctx: AppContext) => {
         logger.error('cron', error)
       })
     },
-    null, // onComplete
-    true // start right now
+    null,
+    true
   )
 }

@@ -1,5 +1,6 @@
 import type { TrpcRouterOutput } from '@brightideas/backend/src/router'
 import { createContext, useContext } from 'react'
+import { ErrorPageComponent } from '../components/ErrorPageComponent'
 import { Loader } from '../components/Loader'
 import { trpc } from './trpc'
 
@@ -19,7 +20,13 @@ export const AppContextProvider = ({ children }: { children: React.ReactNode }) 
         me: data?.me || null,
       }}
     >
-      {isLoading || isFetching ? <Loader type="page" /> : isError ? <p>Error: {error.message}</p> : children}
+      {isLoading || isFetching ? (
+        <Loader type="page" />
+      ) : isError ? (
+        <ErrorPageComponent title="Could not load user data" message={error.message || 'An unknown error occurred'} />
+      ) : (
+        children
+      )}
     </AppReactContext.Provider>
   )
 }

@@ -1,62 +1,48 @@
-import { Input as MantineInput } from '@mantine/core';
-import { RichTextEditor, Link } from '@mantine/tiptap';
-import { useEditor } from '@tiptap/react';
-import StarterKit from '@tiptap/starter-kit';
-import type { FormikProps } from 'formik';
-import { useEffect } from 'react';
+import { Input as MantineInput } from '@mantine/core'
+import { RichTextEditor, Link } from '@mantine/tiptap'
+import { useEditor } from '@tiptap/react'
+import StarterKit from '@tiptap/starter-kit'
+import type { FormikProps } from 'formik'
+import { useEffect } from 'react'
 
 type RichTextEditorInputProps = {
-  name: string;
-  label: string;
-  required?: boolean;
-  formik: FormikProps<any>; // Accept formik instance as prop
-};
+  name: string
+  label: string
+  required?: boolean
+  formik: FormikProps<any>
+}
 
-export const RichTextEditorInput = ({
-  name,
-  label,
-  required,
-  formik,
-}: RichTextEditorInputProps) => {
-  const value = formik.values[name] || '';
-  const error = formik.touched[name] && formik.errors[name] ? String(formik.errors[name]) : undefined;
+export const RichTextEditorInput = ({ name, label, required, formik }: RichTextEditorInputProps) => {
+  const value = formik.values[name] || ''
+  const error = formik.touched[name] && formik.errors[name] ? String(formik.errors[name]) : undefined
 
   const editor = useEditor({
-    extensions: [
-      StarterKit,
-      Link.configure({ openOnClick: false }),
-      // Add other extensions like Placeholder if needed
-    ],
-    content: value, // Initialize with the formik value
+    extensions: [StarterKit, Link.configure({ openOnClick: false })],
+    content: value,
     onUpdate({ editor }) {
-      const html = editor.getHTML();
-      // Send empty string if editor contains only an empty paragraph to satisfy min length validation
-      formik.setFieldValue(name, html === '<p></p>' ? '' : html);
+      const html = editor.getHTML()
+      formik.setFieldValue(name, html === '<p></p>' ? '' : html)
     },
-  });
+  })
 
-  // Effect to update editor content if the formik value changes externally
-  // (e.g., after loading data in EditIdeaPage or form reset)
+  // This effect synchronizes the editor's content with the form's value from outside,
+  // but only if the editor is not currently focused by the user.
+  // This prevents overwriting user's input during an external state update (e.g., form reset).
   useEffect(() => {
-    if (editor && value !== editor.getHTML()) {
-      // Use setTimeout to avoid race conditions with editor initialization/updates
-      setTimeout(() => {
-        editor.commands.setContent(value || '<p></p>'); // Set to empty paragraph if value is empty
-      }, 0);
-    }
-    // Only run this effect if the formik value changes
-    // Avoid dependency on 'editor' to prevent potential loops if editor updates trigger rerenders
-  }, [value, name, editor, formik.setFieldValue]); // Use formik.setFieldValue in deps
+    const isFocused = editor?.isFocused
+    const content = editor?.getHTML()
 
+    if (isFocused || !editor || value === content) {
+      return
+    }
+
+    editor.commands.setContent(value || '')
+  }, [value, editor])
 
   return (
     <MantineInput.Wrapper label={label} required={required} error={error}>
-      <RichTextEditor
-        editor={editor}
-        onClick={() => editor?.commands.focus()}
-      >
+      <RichTextEditor editor={editor} onClick={() => editor?.commands.focus()}>
         <RichTextEditor.Toolbar sticky stickyOffset={60}>
-          {/* Keep the same toolbar controls */}
           <RichTextEditor.ControlsGroup>
             <RichTextEditor.Bold />
             <RichTextEditor.Italic />
@@ -88,8 +74,7 @@ export const RichTextEditorInput = ({
 
         <RichTextEditor.Content style={{ minHeight: 200, cursor: 'text' }} />
       </RichTextEditor>
-      {/* Display error message manually */}
       {error && <MantineInput.Error>{error}</MantineInput.Error>}
     </MantineInput.Wrapper>
-  );
-}; 
+  )
+}

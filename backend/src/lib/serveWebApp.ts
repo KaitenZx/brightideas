@@ -3,6 +3,7 @@ import path from 'path'
 import { fileURLToPath } from 'url'
 import { parsePublicEnv } from '@brightideas/shared'
 import express, { type Express } from 'express'
+import randomstring from 'randomstring'
 import { env } from './env.js'
 import { logger } from './logger.js'
 
@@ -46,6 +47,9 @@ export const applyServeWebApp = async (expressApp: Express) => {
 
   expressApp.use(express.static(webappDistDir, { index: false }))
   expressApp.get('/*', (req, res) => {
-    res.send(htmlSourceWithEnv)
+    const nonce = randomstring.generate()
+    ;(res as any).nonce = nonce
+    const finalHtml = htmlSourceWithEnv.replace('<script>', `<script nonce="${nonce}">`)
+    res.send(finalHtml)
   })
 }

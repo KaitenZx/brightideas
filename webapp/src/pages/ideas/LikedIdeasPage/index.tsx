@@ -5,15 +5,10 @@ import { Loader } from '../../../components/Loader'
 import { withPageWrapper } from '../../../lib/pageWrapper'
 import { trpc } from '../../../lib/trpc'
 
-// Убираем определение пропсов
-
 const LikedIdeasPage = withPageWrapper({
-  // Конфигурация pageWrapper без useQuery и setProps
   title: 'Liked Ideas',
   authorizedOnly: true,
 })(() => {
-  // Компонент не принимает пропсы от pageWrapper для данных запроса
-  // --- Вызываем хук запроса ВНУТРИ компонента ---
   const { data, error, isLoading, isError, hasNextPage, fetchNextPage, isFetchingNextPage } =
     trpc.getLikedIdeas.useInfiniteQuery(
       { limit: 9 },
@@ -22,7 +17,6 @@ const LikedIdeasPage = withPageWrapper({
         initialCursor: undefined,
       }
     )
-  // -------------------------------------------
 
   const ideas = data?.pages.flatMap((page) => page.ideas) ?? []
 
@@ -33,7 +27,6 @@ const LikedIdeasPage = withPageWrapper({
           Liked Ideas
         </Title>
 
-        {/* --- Логика отображения состояний как в AllIdeasPage --- */}
         {isLoading ? (
           <Center>
             <Loader type="page" />

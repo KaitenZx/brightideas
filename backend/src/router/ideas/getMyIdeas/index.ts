@@ -25,7 +25,7 @@ export const getMyIdeasTrpcRoute = trpcLoggedProcedure.input(zGetMyIdeasTrpcInpu
           userId: currentUserId,
         },
         select: {
-          id: true, // Достаточно одного поля для проверки существования лайка
+          id: true,
         },
       },
     },

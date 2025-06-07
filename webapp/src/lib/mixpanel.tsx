@@ -7,12 +7,10 @@ import { type WebAppEnv } from './env'
 let isMixpanelInitialized = false
 
 export function initMixpanel(env: WebAppEnv) {
-  // <--- Принимает env
   if (isMixpanelInitialized) {
     console.warn('Mixpanel already initialized.')
     return
   }
-  // Проверяем ключ из переданного env
   if (env.VITE_MIXPANEL_API_KEY) {
     mixpanel.init(env.VITE_MIXPANEL_API_KEY)
     isMixpanelInitialized = true // Устанавливаем флаг
@@ -27,7 +25,6 @@ const whenEnabled = <TArgs extends any[], TResult>(
 ): ((...args: TArgs) => TResult | void) => {
   return (...args: TArgs): TResult | void => {
     if (isMixpanelInitialized) {
-      // <--- Проверяем флаг
       return fn(...args)
     }
   }

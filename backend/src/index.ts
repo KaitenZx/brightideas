@@ -1,6 +1,7 @@
 import cors from 'cors'
 import express from 'express'
 import rateLimit from 'express-rate-limit'
+import helmet from 'helmet'
 import { applyCron } from './lib/cron.js'
 import { type AppContext, createAppContext } from './lib/ctx.js'
 import { env } from './lib/env.js'
@@ -20,6 +21,16 @@ void (async () => {
     await presetDb(ctx)
     const expressApp = express()
     expressApp.set('trust proxy', 1)
+    expressApp.use(
+      helmet({
+        contentSecurityPolicy: {
+          directives: {
+            ...helmet.contentSecurityPolicy.getDefaultDirectives(),
+            'script-src': ["'self'", (req, res) => `'nonce-${(res as any).nonce}'`],
+          },
+        },
+      })
+    )
     const corsOptions = {
       origin: env.HOST_ENV === 'local' ? '*' : env.WEBAPP_URL,
       optionsSuccessStatus: 200, // some legacy browsers (IE11, various SmartTVs) choke on 204
@@ -68,11 +79,25 @@ void (async () => {
       }
       res.status(500).send('Internal server error')
     })
-    expressApp.listen(env.PORT, () => {
+    const server = expressApp.listen(env.PORT, () => {
       logger.info('express', `Listening at http://localhost:${env.PORT}`)
     })
+
+    const shutdown = async (signal: string) => {
+      logger.info('shutdown', `Received ${signal}. Shutting down gracefully...`)
+      server.close(async () => {
+        logger.info('shutdown', 'HTTP server closed.')
+        await ctx?.stop()
+        logger.info('shutdown', 'App context stopped.')
+        process.exit(0)
+      })
+    }
+
+    process.on('SIGTERM', () => shutdown('SIGTERM'))
+    process.on('SIGINT', () => shutdown('SIGINT'))
   } catch (error) {
     logger.error('app', error)
     await ctx?.stop()
+    process.exit(1)
   }
 })()

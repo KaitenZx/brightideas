@@ -1,12 +1,3 @@
-// BrightIdeas/shared/src/routes.ts
-
-/**
- * "Чистые" функции, которые возвращают относительные пути.
- * Эти функции можно вызывать и на бэке, и на фронте.
- * Параметры, если нужны, передаются аргументом.
- */
-
-// Без параметров:
 export function signUpPath() {
   return '/sign-up'
 }
@@ -38,7 +29,6 @@ export function getLikedIdeasPath() {
   return '/liked-ideas'
 }
 
-// С параметром:
 export function viewIdeaPath(ideaNick: string) {
   return `/ideas/${ideaNick}`
 }

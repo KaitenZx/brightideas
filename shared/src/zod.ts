@@ -33,19 +33,17 @@ export const zBaseIdeaInput = z.object({
   name: zStringRequired,
   nick: zNickRequired,
   description: zStringRequired,
-  text: zStringMin(100), // <-- Убираем transform отсюда! Просто валидация минимальной длины.
+  text: zStringMin(100),
   images: z.array(zStringRequired),
   certificate: z.string().nullable(),
   documents: z.array(zStringRequired),
 })
 
-// Можно сразу создать типы для удобства
 export type BaseIdeaInput = z.infer<typeof zBaseIdeaInput>
 
-// Если схема для Update похожа, но с ID и опциональными полями:
 export const zBaseUpdateIdeaInput = zBaseIdeaInput.partial().extend({
-  ideaId: zStringRequired, // ID обязателен для обновления
-  nick: zNickRequired.optional(), // Пример: ник можно сделать опциональным при обновлении, если не хочешь менять
+  ideaId: zStringRequired,
+  nick: zNickRequired.optional(),
 })
 export type BaseUpdateIdeaInput = z.infer<typeof zBaseUpdateIdeaInput>
 
@@ -81,7 +79,7 @@ export const zAddCommentTrpcInput = z.object({
 export const zGetCommentsTrpcInput = z.object({
   ideaId: z.string().uuid(),
   limit: z.number().min(1).max(50).default(10),
-  cursor: z.string().uuid().optional(), // Используем ID комментария как курсор
+  cursor: z.string().uuid().optional(),
 })
 
 export const zBlockIdeaTrpcInput = z.object({
@@ -99,7 +97,7 @@ export const zGetIdeasTrpcInput = z.object({
 })
 
 export const zGetLikedIdeasTrpcInput = z.object({
-  cursor: z.coerce.number().optional(), // Теперь cursor - это number (serialNumber)
+  cursor: z.coerce.number().optional(),
   limit: z.number().min(1).max(100).default(10),
 })
 

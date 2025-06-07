@@ -1,6 +1,6 @@
 import { describe, it, expect, vi } from 'vitest'
 import { webAppEnvSchema } from '../lib/env'
-import { pgr } from './pumpGetRoute'
+import { defineRoute } from './defineRoute'
 
 const mockEnvRaw = {
   NODE_ENV: 'development',
@@ -29,34 +29,43 @@ vi.mock('../lib/env', async (importOriginal) => {
   }
 })
 
-describe('pgr', () => {
+describe('defineRoute', () => {
   it('return simple route', () => {
-    const getSimpleRoute = pgr(() => '/simple')
+    const getSimpleRoute = defineRoute(() => '/simple')
     expect(getSimpleRoute()).toBe('/simple')
   })
 
   it('return route with params', () => {
-    const getWithParamsRoute = pgr({ param1: true, param2: true }, ({ param1, param2 }) => `/a/${param1}/b/${param2}/c`)
+    const getWithParamsRoute = defineRoute(
+      { param1: true, param2: true },
+      ({ param1, param2 }) => `/a/${param1}/b/${param2}/c`
+    )
     expect(getWithParamsRoute({ param1: 'xxx', param2: 'yyy' })).toBe('/a/xxx/b/yyy/c')
   })
 
   it('return route definition', () => {
-    const getWithParamsRoute = pgr({ param1: true, param2: true }, ({ param1, param2 }) => `/a/${param1}/b/${param2}/c`)
+    const getWithParamsRoute = defineRoute(
+      { param1: true, param2: true },
+      ({ param1, param2 }) => `/a/${param1}/b/${param2}/c`
+    )
     expect(getWithParamsRoute.definition).toBe('/a/:param1/b/:param2/c')
   })
 
   it('return route placeholders', () => {
-    const getWithParamsRoute = pgr({ param1: true, param2: true }, ({ param1, param2 }) => `/a/${param1}/b/${param2}/c`)
+    const getWithParamsRoute = defineRoute(
+      { param1: true, param2: true },
+      ({ param1, param2 }) => `/a/${param1}/b/${param2}/c`
+    )
     expect(getWithParamsRoute.placeholders).toMatchObject({ param1: ':param1', param2: ':param2' })
   })
 
   it('return absolute route', () => {
-    const getSimpleRoute = pgr(() => '/simple')
+    const getSimpleRoute = defineRoute(() => '/simple')
     expect(getSimpleRoute({ abs: true })).toBe('https://test.example.com/simple')
   })
 
   it('return absolute route with params', () => {
-    const getWithParamsRoute = pgr({ id: true }, ({ id }) => `/items/${id}`)
+    const getWithParamsRoute = defineRoute({ id: true }, ({ id }) => `/items/${id}`)
     expect(getWithParamsRoute({ id: '123', abs: true })).toBe('https://test.example.com/items/123')
   })
 })

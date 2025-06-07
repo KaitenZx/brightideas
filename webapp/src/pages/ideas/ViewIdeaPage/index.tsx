@@ -9,11 +9,11 @@ import {
   Title,
   TypographyStylesProvider,
   Divider,
-} from '@mantine/core' // <-- Добавь нужные Mantine компоненты, если их нет
+} from '@mantine/core'
 import { IconFile, IconCertificate } from '@tabler/icons-react'
 import { format } from 'date-fns/format'
-import { AddCommentForm } from '../../../components/AddCommentForm' // <<< Импорт формы комментариев
-import { CommentList } from '../../../components/CommentList' // <<< Импорт списка комментариев
+import { AddCommentForm } from '../../../components/AddCommentForm'
+import { CommentList } from '../../../components/CommentList'
 import { IdeaActions } from '../../../components/IdeaActions'
 import { IdeaGallery } from '../../../components/IdeaGallery'
 import { getAvatarUrl } from '../../../lib/cloudinary'
@@ -21,6 +21,7 @@ import { withPageWrapper } from '../../../lib/pageWrapper'
 import { getViewIdeaRoute } from '../../../lib/routes'
 import { getS3UploadName, getS3UploadUrl } from '../../../lib/s3'
 import { trpc } from '../../../lib/trpc'
+import classes from './ViewIdeaPage.module.css'
 
 const ViewIdeaPage = withPageWrapper({
   useQuery: () => {
@@ -45,7 +46,7 @@ const ViewIdeaPage = withPageWrapper({
     isError: isCommentsError,
     error: commentsError,
   } = trpc.getComments.useInfiniteQuery(
-    { ideaId: idea.id, limit: 10 }, // Запрашиваем комменты для текущей idea.id
+    { ideaId: idea.id, limit: 10 },
     {
       getNextPageParam: (lastPage) => lastPage.nextCursor,
     }
@@ -54,7 +55,6 @@ const ViewIdeaPage = withPageWrapper({
   return (
     <Container size="lg" py="xl">
       <Stack gap="xl">
-        {/* Блок 1: Инфо об идее */}
         <Stack gap="sm">
           <Title order={1}>{idea.name}</Title>
           {idea.description && <Text c="dimmed">{idea.description}</Text>}
@@ -77,15 +77,12 @@ const ViewIdeaPage = withPageWrapper({
           </Group>
         </Stack>
 
-        {/* Блок 2: Текст идеи */}
         <TypographyStylesProvider>
           <Box dangerouslySetInnerHTML={{ __html: idea.text }} />
         </TypographyStylesProvider>
 
-        {/* Блок 3: Галерея */}
         <IdeaGallery images={idea.images} />
 
-        {/* Блок 4: Документы */}
         {hasAttachments && (
           <>
             <Divider />
@@ -101,7 +98,7 @@ const ViewIdeaPage = withPageWrapper({
                     href={getS3UploadUrl(idea.certificate)}
                     target="_blank"
                     size="xs"
-                    style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}
+                    className={classes.attachmentLink}
                   >
                     {getS3UploadName(idea.certificate)}
                   </Anchor>
@@ -122,7 +119,7 @@ const ViewIdeaPage = withPageWrapper({
                         href={getS3UploadUrl(document)}
                         target="_blank"
                         size="xs"
-                        style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}
+                        className={classes.attachmentLink}
                       >
                         {getS3UploadName(document)}
                       </Anchor>
@@ -134,19 +131,14 @@ const ViewIdeaPage = withPageWrapper({
           </>
         )}
 
-        {/* Блок 5: Лайки и Действия */}
         <Divider />
         <IdeaActions idea={idea} me={me} />
 
-        {/* === Блок 6: Комментарии === */}
         <Divider />
         <Stack gap="lg">
           {' '}
-          {/* Отдельный Stack для секции комментариев */}
           <Title order={3}>Comments</Title>
-          {/* Форма добавления (только для авторизованных) */}
           {me && <AddCommentForm ideaId={idea.id} />}
-          {/* Список комментариев */}
           <CommentList
             data={commentsData}
             fetchNextPage={fetchNextCommentsPage}
@@ -157,7 +149,6 @@ const ViewIdeaPage = withPageWrapper({
             error={commentsError}
           />
         </Stack>
-        {/* ========================== */}
       </Stack>
     </Container>
   )
