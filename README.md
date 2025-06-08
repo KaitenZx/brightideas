@@ -4,7 +4,7 @@ Hey there! Welcome to BrightIdeas, a fullstack idea management app I built using
 
 [![Build Status](https://img.shields.io/github/actions/workflow/status/KaitenZx/BrightIdeas/fly-deploy.yml?branch=master&style=flat-square)](https://github.com/KaitenZx/BrightIdeas/actions/workflows/fly-deploy.yml) [![TypeScript](https://img.shields.io/badge/TypeScript-Strict-blue?style=flat-square)](https://www.typescriptlang.org/) [![React](https://img.shields.io/badge/React-18-blue?style=flat-square)](https://reactjs.org/) [![Node.js](https://img.shields.io/badge/Node.js-22-green?style=flat-square)](https://nodejs.org/) [![tRPC](https://img.shields.io/badge/tRPC-10-orange?style=flat-square)](https://trpc.io/) [![Prisma](https://img.shields.io/badge/Prisma-6-purple?style=flat-square)](https://www.prisma.io/) [![Tested with](https://img.shields.io/badge/tested_with-Vitest-6D932B?style=flat-square)](https://vitest.dev/)
 
-The main goal was to create a practical project showcasing how tools can work together smoothly, especially focusing on **end-to-end type safety**.
+BrightIdeas is a full-stack idea management application, built to demonstrate the power and reliability of an end-to-end type-safe architecture with a modern TypeScript stack.
 
 **➡️ Check it out live:** **[https://brightideas.fly.dev](https://brightideas.fly.dev)**
 
