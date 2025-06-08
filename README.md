@@ -12,7 +12,16 @@ The main goal was to create a practical project showcasing how tools can work to
 
 ## 📸 Quick Look
 
-_[ **IMPORTANT:** Add screenshots/GIFs here! Show the main pages like the idea feed, create/edit form, etc. ]_
+
+![BrightIdeas - Create idea](https://github.com/user-attachments/assets/33e8f65f-11a8-40a0-adc3-401a1d8211d3)
+
+![BrightIdeas - Update profile](https://github.com/user-attachments/assets/3bd43e66-dbd6-44db-be13-3cd27d203868)
+
+![BrightIdeas - All ideas](https://github.com/user-attachments/assets/f97b3c4e-eac5-4384-8598-c187393e8986)
+
+![BrightIdeas - View Idea](https://github.com/user-attachments/assets/d24bff6e-8ed9-475d-bba3-fcc495b38290)
+
+![BrightIdeas - Sign in](https://github.com/user-attachments/assets/3eaa7564-807c-47db-a18b-14ead8e558e1)
 
 **Core Features:**
 
